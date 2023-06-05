@@ -1,9 +1,12 @@
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+import MainPage from './pages/MainPage/MainPage';
 
 export default function App() {
   return (
-    <div>
-      App page
-    </div>
+    <Routes>
+      <Route path="/main" element={<MainPage />}/>
+    </Routes>
   );
 }

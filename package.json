@@ -2,7 +2,7 @@
   "name": "danggeunedaong-frontend",
   "version": "0.0.0",
   "description": "danggeunedaong",
-  "main": "./src/index.js",
+  "main": "./src/index.tsx",
   "scripts": {
     "start": "NODE_ENV=development webpack serve",
     "build": "NODE_ENV=production webpack"
