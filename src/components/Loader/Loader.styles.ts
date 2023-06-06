@@ -28,8 +28,4 @@ const LoaderContainer = styled.div<LoaderCSSProps>`
   ${(props) => handleLoaderType(props)}
 `;
 
-const S = {
-  LoaderContainer,
-};
-
-export default S;
+export default { LoaderContainer };

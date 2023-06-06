@@ -18,7 +18,7 @@ function Loader({ width = 40, height = 40, bgColor }: LoaderProps) {
   const theme = useTheme();
 
   return (
-    <S.LoaderContainer>
+    <S.LoaderContainer bgColor={bgColor}>
       <Oval
         width={width}
         height={height}
