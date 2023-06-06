@@ -49,8 +49,6 @@ function Input(
           name={name}
           type={type}
           className={errorKEY && 'error'}
-          width={width}
-          height={height}
           placeholder={placeholder}
           spellCheck="false"
           autoComplete="off"
