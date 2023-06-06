@@ -6,7 +6,7 @@ import MainPage from './pages/MainPage/MainPage';
 export default function App() {
   return (
     <Routes>
-      <Route path="/main" element={<MainPage />}/>
+      <Route path="/" element={<MainPage />} />
     </Routes>
   );
 }
