@@ -1,7 +1,7 @@
 import { Oval } from 'react-loader-spinner';
 import { useTheme } from 'styled-components';
 
-import * as S from './Loader.styles';
+import S from './Loader.styles';
 
 export interface LoaderCSSProps {
   // loader dimmed layer color
