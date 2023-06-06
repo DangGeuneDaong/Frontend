@@ -8,6 +8,7 @@ import { ThemeProvider } from "styled-components";
 
 import App from "./App";
 import { theme } from "./assets/styles/theme";
+import GlobalStyles from "./assets/styles/GlobalStyles";
 
 const $root = document.getElementById("root") as HTMLElement;
 
@@ -20,6 +21,7 @@ ReactDOM.createRoot($root).render(
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <App />
+            <GlobalStyles />
           </BrowserRouter>
         </ThemeProvider>
       </QueryClientProvider>
