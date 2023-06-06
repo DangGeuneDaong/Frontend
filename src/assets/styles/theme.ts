@@ -6,6 +6,7 @@ const color = {
 
   red: '#F85A40',
   gray: '#E5E5E5',
+  lightGray: '#D9D9D9',
 };
 
 const font = {
@@ -22,6 +23,10 @@ const font = {
       font-weight: 600;
       font-size: 20px;
     `,
+  heading_sm: `
+      font-weight: 600;
+      font-size: 18px;
+  `,
   contents: `
       font-weight: 400;
       font-size: 14px;
