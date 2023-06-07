@@ -1,4 +1,4 @@
-import S from './Footer.styles';
+import * as S from './Footer.styles';
 
 function Footer() {
   return (

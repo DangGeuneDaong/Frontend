@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const HeaderContainer = styled.header`
+export const HeaderContainer = styled.header`
   position: relative;
   display: flex;
   top: 0;
@@ -13,7 +13,7 @@ const HeaderContainer = styled.header`
   background-color: ${(props) => props.theme.color.primary};
 `;
 
-const HeaderInner = styled.div`
+export const HeaderInner = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -21,10 +21,8 @@ const HeaderInner = styled.div`
   margin: 0 auto;
 `;
 
-const HeaderRightMenu = styled.div`
+export const HeaderRightMenu = styled.div`
   display: flex;
   align-items: center;
   margin-left: auto;
 `;
-
-export default { HeaderContainer, HeaderInner, HeaderRightMenu };

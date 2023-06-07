@@ -58,7 +58,7 @@ const handleInputSize: any = (props: InputCSSProps) => {
   }
 };
 
-const InputContainer = styled.div<InputCSSProps>`
+export const InputContainer = styled.div<InputCSSProps>`
   display: flex;
   flex-direction: ${(props) => props.direction || 'column'};
   justify-content: center;
@@ -69,11 +69,11 @@ const InputContainer = styled.div<InputCSSProps>`
   ${(props) => handleInputSize(props)}
 `;
 
-const InputLabel = styled.label<InputCSSProps>`
+export const InputLabel = styled.label<InputCSSProps>`
   margin-bottom: 5px;
 `;
 
-const commonInputStyle = css<InputCSSProps>`
+export const commonInputStyle = css<InputCSSProps>`
   width: 100%;
   border: 0;
   font: inherit;
@@ -93,18 +93,18 @@ const commonInputStyle = css<InputCSSProps>`
     `}
 `;
 
-const InputDescription = styled.p`
+export const InputDescription = styled.p`
   font-size: 14px;
   margin-top: -4px;
   margin-bottom: 5px;
 `;
 
-const Input = styled.input<InputCSSProps>`
+export const Input = styled.input<InputCSSProps>`
   ${commonInputStyle}
   max-width: ${(props) => props.width || '100%'};
 `;
 
-const Textarea = styled.textarea<InputCSSProps>`
+export const Textarea = styled.textarea<InputCSSProps>`
   ${commonInputStyle}
   padding: 10px;
   resize: none;
@@ -117,7 +117,7 @@ const Textarea = styled.textarea<InputCSSProps>`
 `;
 
 // 체크박스
-const CheckboxContainer = styled.div<InputCSSProps>`
+export const CheckboxContainer = styled.div<InputCSSProps>`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -125,9 +125,9 @@ const CheckboxContainer = styled.div<InputCSSProps>`
   gap: 10px 22px;
 `;
 
-const CheckBox = styled.div``;
+export const CheckBox = styled.div``;
 
-const InputCheckbox = styled.input`
+export const InputCheckbox = styled.input`
   display: none;
 
   & + label {
@@ -148,12 +148,12 @@ const InputCheckbox = styled.input`
 `;
 
 // 라디오 버튼
-const RadioContainer = styled.div`
+export const RadioContainer = styled.div`
   display: flex;
   align-checkbox: center;
 `;
 
-const RadioBox = styled.div`
+export const RadioBox = styled.div`
   display: flex;
   align-items: center;
   margin-right: 16px;
@@ -162,7 +162,7 @@ const RadioBox = styled.div`
   }
 `;
 
-const InputRadio = styled.input`
+export const InputRadio = styled.input`
   display: none;
 
   & + label {
@@ -175,7 +175,7 @@ const InputRadio = styled.input`
   }
 `;
 
-const InputRadioIcon = styled.span<InputCSSProps>`
+export const InputRadioIcon = styled.span<InputCSSProps>`
   display: inline-block;
   width: 24px;
   height: 24px;
@@ -188,24 +188,8 @@ const InputRadioIcon = styled.span<InputCSSProps>`
 `;
 
 // 기타 입력(인풋 단위)
-const InputErrorMessage = styled.p`
+export const InputErrorMessage = styled.p`
   margin-top: 4px;
   font-size: 14px;
   color: ${(props) => props.theme.color.red};
 `;
-
-export default {
-  InputContainer,
-  InputLabel,
-  InputDescription,
-  Input,
-  RadioContainer,
-  RadioBox,
-  InputRadio,
-  InputRadioIcon,
-  CheckboxContainer,
-  CheckBox,
-  InputCheckbox,
-  Textarea,
-  InputErrorMessage,
-};

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const FooterContainer = styled.footer`
+export const FooterContainer = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +9,7 @@ const FooterContainer = styled.footer`
   background-color: ${(props) => props.theme.color.lightGray};
 `;
 
-const FooterInner = styled.div`
+export const FooterInner = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px 0;
@@ -19,5 +19,3 @@ const FooterInner = styled.div`
   text-align: center;
   font-size: 16px;
 `;
-
-export default { FooterContainer, FooterInner };

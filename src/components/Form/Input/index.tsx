@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import S from '../Form.styles';
+import * as S from '../Form.styles';
 
 export interface InputCSSProps {
   width?: string;
