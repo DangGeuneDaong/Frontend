@@ -7,8 +7,8 @@ import DetailPage from './pages/DetailPage/DetailPage';
 export default function App() {
   return (
     <Routes>
-      <Route path="/main" element={<MainPage />} />
       <Route path="/taker" element={<DetailPage />} />
+      <Route path="/" element={<MainPage />} />
     </Routes>
   );
 }
