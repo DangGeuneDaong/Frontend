@@ -1,4 +1,4 @@
-import { forwardRef, ChangeEventHandler } from 'react';
+import { forwardRef } from 'react';
 
 import S from '../Form.styles';
 
@@ -17,7 +17,7 @@ interface InputProps extends InputCSSProps {
   placeholder?: string; // placeholder
   label?: string; // input 이름
   errors?: any;
-  onChange?: ChangeEventHandler<HTMLInputElement>; //onChange handler
+  readOnly: boolean;
 }
 
 function Input(
@@ -32,7 +32,7 @@ function Input(
     inputDescription,
     placeholder,
     errors,
-    onChange,
+    readOnly,
     ...rest
   }: InputProps,
   ref: React.Ref<HTMLInputElement>
@@ -54,9 +54,9 @@ function Input(
           placeholder={placeholder}
           spellCheck="false"
           autoComplete="off"
-          onChange={onChange}
           ref={ref}
           focusStyle
+          readOnly={readOnly}
           {...rest}
         />
       </div>
