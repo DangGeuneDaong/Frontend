@@ -17,7 +17,7 @@ interface InputProps extends InputCSSProps {
   placeholder?: string; // placeholder
   label?: string; // input 이름
   errors?: any;
-  readOnly: boolean;
+  readOnly?: boolean;
 }
 
 function Input(
