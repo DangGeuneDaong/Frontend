@@ -18,6 +18,9 @@ interface InputProps extends InputCSSProps {
   label?: string; // input 이름
   errors?: any;
   readOnly?: boolean;
+  style?: React.CSSProperties;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function Input(
@@ -33,6 +36,9 @@ function Input(
     placeholder,
     errors,
     readOnly,
+    style,
+    onKeyDown,
+    onKeyUp,
     ...rest
   }: InputProps,
   ref: React.Ref<HTMLInputElement>
@@ -55,8 +61,11 @@ function Input(
           spellCheck="false"
           autoComplete="off"
           ref={ref}
-          focusStyle
+          style={style}
           readOnly={readOnly}
+          focusStyle
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
           {...rest}
         />
       </div>

@@ -101,7 +101,6 @@ export const InputDescription = styled.p`
 
 export const Input = styled.input<InputCSSProps>`
   ${commonInputStyle}
-  max-width: ${(props) => props.width || '100%'};
 `;
 
 export const Textarea = styled.textarea<InputCSSProps>`
