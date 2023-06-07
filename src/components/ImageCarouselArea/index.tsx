@@ -28,9 +28,6 @@ function ImageCarouselArea({ config }: ConfigProps) {
   return (
     <S.Container>
       <S.ImageContainer src={config[imageIndex].image} />
-      <S.Title>
-        {config[imageIndex].title}
-      </S.Title>
       <S.Button right onClick={next}>▶</S.Button>
       <S.Button onClick={prev}>◀</S.Button>
       <S.DotContainer>

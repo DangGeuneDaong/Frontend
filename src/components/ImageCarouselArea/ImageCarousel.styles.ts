@@ -16,7 +16,7 @@ const ImageContainer = styled.img`
   object-fit: cover;
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ right?: boolean }>`
   position: absolute;
   top: 50%;
 
@@ -34,27 +34,13 @@ const Button = styled.button`
   transform: translate(0, -50%);
 
   ${(props) =>
-    props.right === true
+    props.right
       ? css`
           right: 2%;
         `
       : css`
           left: 2%;
-        `}
-`;
-
-const Title = styled.h3`
-  font-size: 18px;
-
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-
-  color: white;
-
-  box-shadow: 0px 4px 10px 15px rgba(3, 3, 3, 0.9),
-    inset 0 --3em 3em rgba(3, 3, 3, 0.5);
-  transform: translate(-50%, 0);
+        `};
 `;
 
 const DotContainer = styled.div`
@@ -68,20 +54,13 @@ const DotContainer = styled.div`
 
   transform: translate(-50%, 0);
 `;
-const Dot = styled.div`
+const Dot = styled.div<{ active: boolean }>`
   width: 10px;
   height: 10px;
   border-radius: 50%;
   cursor: pointer;
 
-  ${(props) =>
-    props.active === true
-      ? css`
-          background-colr: white;
-        `
-      : css`
-          background-color: grey;
-        `}
+  background-color: ${(props) => (props.active === true ? 'white' : 'grey')};
 `;
 
 const UnorderedList = styled.ul``;
@@ -101,4 +80,4 @@ const List = styled.li`
   }
 `;
 
-export default { Container, ImageContainer, Button, Title, DotContainer, Dot };
+export default { Container, ImageContainer, Button, DotContainer, Dot };
