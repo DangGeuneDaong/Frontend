@@ -37,7 +37,7 @@ export const SelectedItemLabel = styled.div`
 
   .dropdownIcon {
     min-width: 15px;
-    margin-right: 10px;
+    margin-right: 8px;
     margin-left: 2px;
   }
 `;
@@ -68,7 +68,7 @@ export const DropdownItem = styled.li`
   align-items: center;
   justify-content: center;
   min-width: fit-content;
-  padding: 5px 27px 5px 10px;
+  padding: 5px 25px 5px 10px;
   border-radius: 4px;
   white-space: nowrap;
   cursor: pointer;
