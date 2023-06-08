@@ -24,6 +24,7 @@
   "homepage": "https://github.com/DangGeuneDaong/Frontend#readme",
   "dependencies": {
     "react": "^18.2.0",
+    "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.3",
     "react-loader-spinner": "^5.3.4",
