@@ -1,4 +1,4 @@
-import * as S from './Hashtag.styles';
+import * as S from './styles';
 import { AiOutlineClose } from 'react-icons/ai';
 
 export interface HashtagCSSProps {
