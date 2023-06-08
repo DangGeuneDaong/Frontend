@@ -34,6 +34,10 @@ export function addTag(
   if (inputTag !== '' && allowEventKey) {
     let trimmedTag = inputTag.trim();
 
+    if (trimmedTag.includes(',')) {
+      trimmedTag = trimmedTag.split(',').join('');
+    }
+
     if (trimmedTag.endsWith(',')) {
       trimmedTag = trimmedTag.slice(0, -1);
     }
