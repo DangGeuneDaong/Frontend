@@ -1,4 +1,4 @@
-import * as S from './Button.styles';
+import * as S from './styles';
 
 export interface ButtonCSSProps {
   type?: 'button' | 'submit' | 'reset'; // 버튼 타입
