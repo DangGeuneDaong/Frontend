@@ -5,6 +5,7 @@ import S from './DetailPage.styles';
 import ImageCarouselArea from '../../components/ImageCarouselArea';
 import PostArea from '../../components/PostArea';
 import CommentArea from '../../components/CommentArea';
+import MainTemplate from '../../components/template/MainTemplate'
 
 const config = [
   {
@@ -23,30 +24,21 @@ const config = [
 
 const DetailPage = () => {
   return (
-    <S.Container>
-      <ImageCarouselArea config={config} />
-      <PostArea
-        nickname={"whale2200d"}
-        location={""}
-        productName={ }
-        firstCategory={ }
-        secondCategory={ }
-        uploadTime={ }
-        productDetails={ }
-      />
-      <textarea placeholder="궁금한 사항을 적어주세요!"></textarea>
-      <button>신청하기</button>
-    </div>
-      {/* <S.Container>
-        
-        <PostArea>
-          {"PostArea"}
-        </PostArea>
-        <CommentArea>
-          {"CommentArea"}
-        </CommentArea>
-      </S.Container> */}
-    </S.Container >
+    <MainTemplate>
+      <S.Container>
+        <ImageCarouselArea config={config} />
+        <PostArea
+          nickname={"whale2200d"}
+          location={"대구 달서구 대곡동"}
+          productName={"웰시코기 유기농 사료"}
+          firstCategory={"강아지"}
+          secondCategory={"사료"}
+          uploadTime={"1달 전"}
+          productDetails={"안녕하세요! 웰시코기 유기농 사료 나눔합니다!"}
+        />
+        <CommentArea />
+      </S.Container >
+    </MainTemplate>
   );
 };
 

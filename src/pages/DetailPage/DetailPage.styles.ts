@@ -3,7 +3,8 @@ import styled from 'styled-components';
 const Container = styled.div`
   width: 800px;
   height: 800px;
-  background-color: ${(props) => props.theme.color.primary};
+  background-color: white;
+  border: 1px solid ${(props) => props.theme.color.gray};
 `;
 
 const Image = styled.img`
