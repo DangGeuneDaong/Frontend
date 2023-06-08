@@ -1,11 +1,21 @@
-import React from "react";
+import Header from '../Layout/Header';
+import Footer from '../Layout/Footer';
 
+import * as S from './Template.styles';
 interface MainTemplateProps {
   children: React.ReactNode;
 }
 
 function MainTemplate({ children }: MainTemplateProps) {
-  return <div>{children}</div>;
+  return (
+    <>
+      <Header />
+      <S.TemplateContainer>
+        <S.TemplateInner>{children}</S.TemplateInner>
+      </S.TemplateContainer>
+      <Footer />
+    </>
+  );
 }
 
 export default MainTemplate;
