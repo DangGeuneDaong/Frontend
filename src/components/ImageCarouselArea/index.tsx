@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import S from './ImageCarousel.styles';
+import * as S from './ImageCarousel.styles';
 
 
 interface ImageCarouselProps {

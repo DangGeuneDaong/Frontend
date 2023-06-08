@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 700px;
   height: 400px;
   background-color: blue;
@@ -10,13 +10,13 @@ const Container = styled.div`
   position: relative;
 `;
 
-const ImageContainer = styled.img`
+export const ImageContainer = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
 
-const Button = styled.button<{ right?: boolean }>`
+export const Button = styled.button<{ right?: boolean }>`
   position: absolute;
   top: 50%;
 
@@ -43,7 +43,7 @@ const Button = styled.button<{ right?: boolean }>`
         `};
 `;
 
-const DotContainer = styled.div`
+export const DotContainer = styled.div`
   display: flex;
   justify-content: center;
   align-item: center;
@@ -54,7 +54,7 @@ const DotContainer = styled.div`
 
   transform: translate(-50%, 0);
 `;
-const Dot = styled.div<{ active: boolean }>`
+export const Dot = styled.div<{ active: boolean }>`
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -62,22 +62,3 @@ const Dot = styled.div<{ active: boolean }>`
 
   background-color: ${(props) => (props.active === true ? 'white' : 'grey')};
 `;
-
-const UnorderedList = styled.ul``;
-
-const List = styled.li`
-  display: inline-block;
-
-  width: 30px;
-  height: 50px;
-
-  text-align: center;
-  line-height: 50px;
-
-  &:hover {
-    background-color: gray;
-    opacity: 0.8;
-  }
-`;
-
-export default { Container, ImageContainer, Button, DotContainer, Dot };
