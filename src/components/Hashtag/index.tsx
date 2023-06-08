@@ -1,19 +1,24 @@
 import * as S from './Hashtag.styles';
 import { AiOutlineClose } from 'react-icons/ai';
 
-interface HashtagProps {
+export interface HashtagCSSProps {
+  onClick?: () => void;
+}
+
+interface HashtagProps extends HashtagCSSProps {
   tag: string;
   onDelete: (tag: string) => void;
 }
 
-function Hashtag({ tag, onDelete }: HashtagProps) {
+function Hashtag({ tag, onClick, onDelete }: HashtagProps) {
   return (
     <S.Hashtag>
-      #&nbsp;{tag}
-      <AiOutlineClose
-        style={{ marginTop: '1px', marginLeft: '2px', fill: '#9E9D9D' }}
-        onClick={() => onDelete(tag)}
-      />
+      <span onClick={onClick}>#&nbsp;{tag}</span>
+
+      {/* 삭제 이벤트가 있을 때 close 버튼 노출 */}
+      {onDelete && (
+        <AiOutlineClose className="closeButton" onClick={() => onDelete(tag)} />
+      )}
     </S.Hashtag>
   );
 }
