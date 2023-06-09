@@ -1,13 +1,14 @@
 import * as S from './styles';
 
 export interface ButtonCSSProps {
-  type?: 'button' | 'submit' | 'reset'; // 버튼 타입
-  styleType?: 'primary' | 'warning' | 'disabled'; // 버튼 디자인 타입
+  type?: 'button' | 'submit' | 'reset'; // 버튼 타입, default: submit
+  styleType?: 'primary' | 'warning' | 'disabled'; // 버튼 디자인 타입, default: primary
   width?: string; // 버튼 너비, 지정하지 않을 경우 full width
   height?: string; // 버튼 높이, default: 40px
-  inverted?: boolean; // 버튼 색상 반전, true 일때 outline 스타일
-  borderRadius?: string; // 버튼 둥글기, ex) 5px, 10px
-  borderWidth?: string; // 버튼 테두리 두께, ex) 1px, 2px
+  inverted?: boolean; // 버튼 색상 반전, default: false, true 일때 outline 스타일,
+  borderRadius?: string; // 버튼 둥글기, default: 0, ex) 5px, 10px
+  borderWidth?: string; // 버튼 테두리 두께, default: 1px, ex) 1px, 2px
+  hoverStyle?: string; // 'border:1px solid #000' 과 같이 hoverStyle 지정
 }
 
 interface ButtonProps extends ButtonCSSProps {
@@ -26,6 +27,7 @@ function Button({
   borderRadius,
   borderWidth,
   onClickHandler,
+  hoverStyle,
   style,
 }: ButtonProps) {
   return (
@@ -37,6 +39,7 @@ function Button({
       borderWidth={borderWidth}
       borderRadius={borderRadius}
       onClick={onClickHandler}
+      hoverStyle={hoverStyle}
       style={style}
       inverted={inverted}
     >
