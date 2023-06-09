@@ -1,46 +1,39 @@
 import Button from '../Button';
-import * as S from './CommentArea.styles';
+import * as S from './styles';
 
 import React, { useState } from "react";
 import { useForm } from 'react-hook-form';
 
 import Textarea from '../Form/Textarea'
 
-function CommentArea() {
-  // let [userName] = useState('홍길동');
-  // let [comment, setComment] = useState('');
-  // let [feedComments, setFeedComments] = useState([]);
-  // let [isValid, setIsValid] = useState(false);
+interface CommentAreaProps {
+  setProps: (comment: string) => void;
+}
 
-  // 유효성 검사를 통과하고 '신청하기' 클릭 시 발생하는 함수 post 구현
-  // let post = e => {
-  //   const copyFeedComments = [...feedComments];
-  //   copyFeedComments.push(comment);
-  //   setFeedComments(copyfeedComments);
-  //   setComment('');
-  // }
-
+function CommentArea({ setProps }: CommentAreaProps) {
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
     watch, // 실시간 값 감시 가능
-  } = useForm({ mode: ‘onBlur’ });
+  } = useForm();
 
   const getCommentInfo = () => {
-    return console.log('1')
+    const formData = watch('comment')
+    setProps(formData);
   }
 
+  console.log(watch('comment'))
 
   return (
     <S.Container>
-      <S.CommentTextarea placeholder="궁금한 사항을 적어주세요!" />
       <Textarea
-        type="text"
-        label="이메일 *"
         errors={errors}
-        {...register("email")}
+        {...register("comment")}
+
+        width={'590px'}
+        height={'90px'}
       />
       <Button
         width={'90px'}
@@ -76,7 +69,3 @@ function CommentArea() {
 }
 
 export default CommentArea;
-function useForm(arg0: { mode: any; onBlur: any; }): { register: any; handleSubmit: any; setValue: any; formState: { errors: any; }; watch: any; } {
-  throw new Error('Function not implemented.');
-}
-
