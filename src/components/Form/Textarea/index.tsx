@@ -17,10 +17,9 @@ interface InputProps extends InputCSSProps {
   placeholder?: string; // placeholder
   label?: string; // input 이름
   errors?: any;
-  style?: React.CSSProperties;
 }
 
-function Input(
+function Textarea(
   {
     size,
     direction,
@@ -29,7 +28,6 @@ function Input(
     inputDescription,
     placeholder,
     errors,
-    style,
     ...rest
   }: InputProps,
   ref: React.Ref<HTMLTextAreaElement>
@@ -48,7 +46,6 @@ function Input(
           name={name}
           className={errorKEY && 'error'}
           placeholder={placeholder}
-          style={style}
           spellCheck="false"
           autoComplete="off"
           ref={ref}
@@ -61,4 +58,4 @@ function Input(
   );
 }
 
-export default forwardRef(Input);
+export default forwardRef(Textarea);
