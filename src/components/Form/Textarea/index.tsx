@@ -17,6 +17,7 @@ interface InputProps extends InputCSSProps {
   placeholder?: string; // placeholder
   label?: string; // input 이름
   errors?: any;
+  style?: React.CSSProperties;
 }
 
 function Textarea(
@@ -28,6 +29,7 @@ function Textarea(
     inputDescription,
     placeholder,
     errors,
+    style,
     ...rest
   }: InputProps,
   ref: React.Ref<HTMLTextAreaElement>
@@ -49,6 +51,7 @@ function Textarea(
           spellCheck="false"
           autoComplete="off"
           ref={ref}
+          style={style}
           focusStyle
           {...rest}
         />
