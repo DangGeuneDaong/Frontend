@@ -67,6 +67,10 @@ export const InputContainer = styled.div<InputCSSProps>`
   margin-bottom: 24px;
 
   ${(props) => handleInputSize(props)}
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 export const InputLabel = styled.label<InputCSSProps>`

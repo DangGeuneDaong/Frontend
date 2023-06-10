@@ -42,20 +42,18 @@ function Textarea(
       {inputDescription && (
         <S.InputDescription>{inputDescription}</S.InputDescription>
       )}
-      <div>
-        <S.Textarea
-          id={name}
-          name={name}
-          className={errorKEY && 'error'}
-          placeholder={placeholder}
-          spellCheck="false"
-          autoComplete="off"
-          ref={ref}
-          style={style}
-          focusStyle
-          {...rest}
-        />
-      </div>
+      <S.Textarea
+        id={name}
+        name={name}
+        className={errorKEY && 'error'}
+        placeholder={placeholder}
+        spellCheck="false"
+        autoComplete="off"
+        ref={ref}
+        style={style}
+        focusStyle
+        {...rest}
+      />
       {errorKEY && <S.InputErrorMessage>{errorKEY}</S.InputErrorMessage>}
     </S.InputContainer>
   );
