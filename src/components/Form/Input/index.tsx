@@ -31,6 +31,7 @@ function Input(
     size,
     direction,
     type,
+    containerType,
     name,
     label,
     inputDescription,
@@ -47,7 +48,7 @@ function Input(
   const errorKEY = errors?.[name as string]?.message as string;
 
   return (
-    <S.InputContainer direction={direction}>
+    <S.InputContainer direction={direction} containerType={containerType}>
       {label && <S.InputLabel htmlFor={name}>{label}</S.InputLabel>}
       {inputDescription && (
         <S.InputDescription>{inputDescription}</S.InputDescription>
