@@ -1,4 +1,4 @@
-import * as S from './PostArea.styles';
+import * as S from './styles';
 
 import React from "react";
 
