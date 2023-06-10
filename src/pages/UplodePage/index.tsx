@@ -159,6 +159,7 @@ function UplodePage() {
               <Input
                 type="text"
                 label="제목 *"
+                containerType="content"
                 errors={errors}
                 style={{ borderRadius: '4px', margin: '0', maxWidth: '656px' }}
                 {...register('title', {
@@ -171,11 +172,18 @@ function UplodePage() {
             <S.InputContainer>
               <Textarea
                 label="제품정보 *"
+                containerType="content"
                 errors={errors}
                 style={{ borderRadius: '4px', margin: '0' }}
                 {...register('description', {
                   required: '내용을 입력해주세요',
                 })}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    setValue('description', `${watch('description')}\n`);
+                  }
+                }}
               ></Textarea>
             </S.InputContainer>
 
