@@ -1,10 +1,10 @@
 import Button from '../Button';
 import * as S from './styles';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import Textarea from '../Form/Textarea'
+import Textarea from '../Form/Textarea';
 
 interface CommentAreaProps {
   setProps: (comment: string) => void;
@@ -20,18 +20,17 @@ function CommentArea({ setProps }: CommentAreaProps) {
   } = useForm();
 
   const getCommentInfo = () => {
-    const formData = watch('comment')
+    const formData = watch('comment');
     setProps(formData);
-  }
+  };
 
-  console.log(watch('comment'))
+  console.log(watch('comment'));
 
   return (
     <S.Container>
       <Textarea
         errors={errors}
-        {...register("comment")}
-
+        {...register('comment')}
         width={'590px'}
         height={'90px'}
       />
@@ -44,7 +43,9 @@ function CommentArea({ setProps }: CommentAreaProps) {
           margin: '5px 0px 5px 10px',
           lineHeight: '90px',
         }}
-      >신청하기</Button>
+      >
+        신청하기
+      </Button>
       {/* <input
         type='text'
         placeholder='궁금한 사항을 적어주세요!' onChange={e => {
@@ -64,7 +65,7 @@ function CommentArea({ setProps }: CommentAreaProps) {
       >
         신청하기
       </button> */}
-    </S.Container >
+    </S.Container>
   );
 }
 
