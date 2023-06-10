@@ -19,6 +19,7 @@ interface InputProps extends InputCSSProps {
   label?: string; // input 이름
   errors?: any;
   style?: React.CSSProperties;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
 function Textarea(
@@ -32,6 +33,7 @@ function Textarea(
     placeholder,
     errors,
     style,
+    onKeyDown,
     ...rest
   }: InputProps,
   ref: React.Ref<HTMLTextAreaElement>
@@ -54,6 +56,7 @@ function Textarea(
         ref={ref}
         style={style}
         focusStyle
+        onKeyDown={onKeyDown}
         {...rest}
       />
       {errorKEY && <S.InputErrorMessage>{errorKEY}</S.InputErrorMessage>}
