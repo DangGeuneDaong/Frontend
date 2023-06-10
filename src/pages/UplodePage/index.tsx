@@ -8,9 +8,16 @@ import Input from '../../components/Form/Input';
 import Button from '../../components/Button';
 import Textarea from '../../components/Form/Textarea';
 import Hashtag from '../../components/Hashtag';
+import Dropdown from '../../components/Dropdown';
+
+export interface UplodePageCSSProps {
+  inputContainerDirection?: 'row' | 'column';
+}
 
 function UplodePage() {
   const [tags, setTags] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedProduct, setSelectedProduct] = useState<string>('');
 
   const {
     register,
@@ -85,8 +92,23 @@ function UplodePage() {
           <S.Inner>
             {/* 이미지 등록 컨테이너 */}
             {/* 카테고리 선택 */}
-            <S.InputContainer>
+            <S.InputContainer inputContainerDirection="row">
               <S.Title>카테고리</S.Title>
+              <S.DropdownContainer>
+                <Dropdown
+                  listData={['강아지', '고양이']}
+                  selectedItem={selectedCategory}
+                  onSelectItem={(item) => setSelectedCategory(item)}
+                ></Dropdown>
+              </S.DropdownContainer>
+
+              <S.DropdownContainer>
+                <Dropdown
+                  listData={['사료', '간식', '용품']}
+                  selectedItem={selectedProduct}
+                  onSelectItem={(item) => setSelectedProduct(item)}
+                ></Dropdown>
+              </S.DropdownContainer>
             </S.InputContainer>
 
             {/* 제목 입력 */}

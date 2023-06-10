@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { UplodePageCSSProps } from '.';
 
 export const Container = styled.div`
   width: 100%;
@@ -16,13 +17,43 @@ export const Inner = styled.div`
 
 export const Title = styled.p`
   ${(props) => props.theme.font.heading_sm};
-  margin-bottom: 5px;
 `;
 
-export const InputContainer = styled.div`
-  padding: 14px 0;
+export const DropdownContainer = styled.div`
+  margin-right: 5px;
+  &:last-child {
+    margin-right: 0;
+  }
+`;
+
+export const InputContainer = styled.div<UplodePageCSSProps>`
+  display: flex;
+  align-items: ${(props) =>
+    props.inputContainerDirection === 'row' ? 'center' : 'flex-start'};
+  flex-direction: ${(props) => props.inputContainerDirection || 'column'};
+  padding: 14px 16px;
   border-top: 3px solid ${(props) => props.theme.color.primary};
-  /* border-bottom: 3px solid ${(props) => props.theme.color.primary}; */
+
+  ${(props) => {
+    switch (props.inputContainerDirection) {
+      case 'row':
+        return css`
+          ${Title} {
+            margin-right: 10px;
+          }
+        `;
+      case 'column':
+        return css`
+          margin-bottom: 5px;
+        `;
+      default:
+        return css`
+          ${Title} {
+            margin-right: 10px;
+          }
+        `;
+    }
+  }}
 `;
 
 export const HashtagContainer = styled.div`
