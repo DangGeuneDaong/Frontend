@@ -64,13 +64,10 @@ export const InputContainer = styled.div<InputCSSProps>`
   justify-content: center;
   width: 100%;
   max-width: ${(props) => props.width || '100%'};
-  margin-bottom:${(props) => (props.containerType !== 'content' ? '24px' : '0')}
+  margin-bottom: ${(props) =>
+    props.containerType !== 'content' ? '24px' : '0'};
 
   ${(props) => handleInputSize(props)}
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 `;
 
 export const InputLabel = styled.label<InputCSSProps>`
