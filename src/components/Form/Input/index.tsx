@@ -9,6 +9,7 @@ export interface InputCSSProps {
   direction?: string; // default:column, row
   inputDescription?: string; // input 제목 하단 설명
   focusStyle?: boolean; // 클릭 시 input 포커스 스타일 적용
+  containerType?: string; // optional : content
 }
 
 interface InputProps extends InputCSSProps {
