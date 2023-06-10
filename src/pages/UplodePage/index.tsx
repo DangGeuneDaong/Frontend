@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
 
 import { addTag, deleteTag } from '../../utils/hashtag';
@@ -11,6 +12,7 @@ import Button from '../../components/Button';
 import Textarea from '../../components/Form/Textarea';
 import Hashtag from '../../components/Hashtag';
 import Dropdown from '../../components/Dropdown';
+import MultiUploader from '../../components/FileUploader/MultiUploader';
 
 export interface UplodePageCSSProps {
   inputContainerDirection?: 'row' | 'column';
@@ -20,6 +22,7 @@ function UplodePage() {
   const [tags, setTags] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const {
     register,
@@ -44,6 +47,10 @@ function UplodePage() {
     console.log('태그', tags);
   }, [tags]);
 
+  useEffect(() => {
+    console.log('선택된 파일', selectedFiles);
+  }, [selectedFiles]);
+
   // 엔터 입력 시 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
@@ -63,7 +70,57 @@ function UplodePage() {
     setTags(deleteTag(tags, tag));
   };
 
-  const onSubmit = (data: any) => console.log(data);
+  // 폼 전송
+  const addPost = async (data: any) => {
+    const postData = {
+      // id : postID(autoIncrease 확인)
+      // user_id : userID
+      main_category: selectedCategory,
+      sub_category: selectedProduct,
+      title: data.title,
+      description: data.description,
+      // latitude : 위도
+      // longitude :  경도
+      status: '판매중',
+      good_image_list: selectedFiles,
+      view_cnt: 0,
+      created_at: new Date(),
+      modified_at: new Date(),
+      hashtag: tags,
+    };
+
+    console.log(data);
+    console.log(postData);
+
+    await fetch('/post', {
+      method: 'POST',
+      body: JSON.stringify(postData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
+
+  const { mutate } = useMutation(addPost, {
+    onSuccess: () => {
+      console.log('성공');
+    },
+
+    onError: (error: any) => {
+      console.log(error);
+
+      console.log(typeof error);
+
+      if (error.response && error.response.status === 401) {
+        // 로그인 페이지로 이동
+      }
+    },
+  });
+
+  const onSubmit = async (data: any) => {
+    // TODO : 폼 전송 클릭 시, 로그인 된 유저가 아닐 경우 로그인 페이지로 이동
+    mutate(data);
+  };
 
   return (
     <MainTemplate>
@@ -71,6 +128,12 @@ function UplodePage() {
         <form onSubmit={handleSubmit(onSubmit)} onKeyDown={handleFormKeyDown}>
           <S.Inner>
             {/* 이미지 등록 컨테이너 */}
+            <div style={{ marginBottom: '20px' }}>
+              <MultiUploader
+                onSelectItem={(files) => setSelectedFiles(files)}
+              />
+            </div>
+
             {/* 카테고리 선택 */}
             <S.InputContainer inputContainerDirection="row">
               <S.Title>카테고리</S.Title>
