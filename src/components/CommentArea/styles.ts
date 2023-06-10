@@ -3,9 +3,11 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 700px;
   height: 100px;
-  margin: 0 auto;
+  margin: 5px auto 10px;
 
   display: flex;
+  align-items: center;
+  gap: 0 10px;
 `;
 
 export const CommentContainer = styled.div``;

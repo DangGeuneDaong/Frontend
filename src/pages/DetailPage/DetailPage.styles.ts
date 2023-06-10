@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 800px;
-  height: 800px;
+  height: fit-content;
   background-color: white;
   border: 1px solid ${(props) => props.theme.color.gray};
 `;

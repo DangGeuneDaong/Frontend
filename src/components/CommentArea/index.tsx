@@ -34,8 +34,7 @@ function CommentArea({ setProps }: CommentAreaProps) {
         width={'590px'}
         style={{
           height: '90px',
-          margin: '5px 10px 5px 0px',
-
+          margin: '',
         }}
       />
       <Button
@@ -44,8 +43,8 @@ function CommentArea({ setProps }: CommentAreaProps) {
         borderRadius={'10px'}
         onClickHandler={getCommentInfo}
         style={{
-          margin: '5px 0px 5px 10px',
           lineHeight: '90px',
+          margin: '',
         }}
       >
         신청하기
