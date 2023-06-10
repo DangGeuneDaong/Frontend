@@ -3,7 +3,6 @@ import * as S from './PostArea.styles';
 import React from "react";
 
 interface MainTemplateProps {
-  children: React.ReactNode;
   nickname: string;
   location: string;
   productName: string;
@@ -13,33 +12,32 @@ interface MainTemplateProps {
   productDetails: string;
 }
 
-function ImageCarousel({ children, nickname, location, productName, firstCategory, secondCategory, uploadTime, productDetails, }: MainTemplateProps) {
+function ImageCarousel({ nickname, location, productName, firstCategory, secondCategory, uploadTime, productDetails, }: MainTemplateProps) {
   return (
     <S.Container>
-      <div>{children}</div>
-      <div>
+      <S.ProfileContainer>
+        <div></div>
         <div>
-          <div>img</div>
-          <div>
-            <span>${nickname}</span>
-            <span>${location}</span>
-          </div>
+          <div>{nickname}</div>
+          <div>{location}</div>
         </div>
+      </S.ProfileContainer>
+      <S.PostContainer>
         <div>
-          <div>${productName}</div>
+          <S.ProductName>{productName}</S.ProductName>
           <div>
-            <span>${firstCategory}</span>
-            <span>${secondCategory}</span>
-            <span>${uploadTime}</span>
+            <S.FirstCategory>{firstCategory}</S.FirstCategory>|
+            <S.SecondCategory>{secondCategory}</S.SecondCategory>
+            <S.UploadTime>{uploadTime}</S.UploadTime>
           </div>
-          <div>${productDetails}</div>
+          <S.ProductDetails>{productDetails}</S.ProductDetails>
         </div>
         <div>
           <span># 웰시코기</span>
           <span># 유기농</span>
           <span># 알러지</span>
         </div>
-      </div>
+      </S.PostContainer>
     </S.Container>
   );
 }

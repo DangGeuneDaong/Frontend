@@ -1,13 +1,71 @@
-import * as S from './CommentArea.styles';
+import Button from '../Button';
+import * as S from './styles';
 
-import React from "react";
+import React, { useState } from "react";
+import { useForm } from 'react-hook-form';
 
-interface MainTemplateProps {
-  children: React.ReactNode;
+import Textarea from '../Form/Textarea'
+
+interface CommentAreaProps {
+  setProps: (comment: string) => void;
 }
 
-function ImageCarousel({ children }: MainTemplateProps) {
-  return <S.Container>{children}</S.Container>;
+function CommentArea({ setProps }: CommentAreaProps) {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    watch, // 실시간 값 감시 가능
+  } = useForm();
+
+  const getCommentInfo = () => {
+    const formData = watch('comment')
+    setProps(formData);
+  }
+
+  console.log(watch('comment'))
+
+  return (
+    <S.Container>
+      <Textarea
+        errors={errors}
+        {...register("comment")}
+
+        width={'590px'}
+        height={'90px'}
+      />
+      <Button
+        width={'90px'}
+        height={'90px'}
+        borderRadius={'10px'}
+        onClickHandler={getCommentInfo}
+        style={{
+          margin: '5px 0px 5px 10px',
+          lineHeight: '90px',
+        }}
+      >신청하기</Button>
+      {/* <input
+        type='text'
+        placeholder='궁금한 사항을 적어주세요!' onChange={e => {
+          setComment(e.target.value);
+        }}
+        onKeyUp={e => {
+          e.target.value.length > 0
+            ? setIsValid(true)
+            : setIsValid(false)
+        }}
+        value={comment}
+      />
+      <button
+        type='button'
+        onClick={post}
+        disabled={isValid ? false : true}
+      >
+        신청하기
+      </button> */}
+    </S.Container >
+  );
 }
 
-export default ImageCarousel;
+export default CommentArea;
