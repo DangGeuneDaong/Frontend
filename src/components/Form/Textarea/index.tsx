@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import S from '../Form.styles';
+import * as S from '../styles';
 
 export interface InputCSSProps {
   width?: string;
@@ -19,7 +19,7 @@ interface InputProps extends InputCSSProps {
   errors?: any;
 }
 
-function Input(
+function Textarea(
   {
     size,
     direction,
@@ -58,4 +58,4 @@ function Input(
   );
 }
 
-export default forwardRef(Input);
+export default forwardRef(Textarea);

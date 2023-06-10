@@ -18,7 +18,7 @@ const handleLoaderType = (props: LoaderCSSProps) => {
   }
 };
 
-const LoaderContainer = styled.div<LoaderCSSProps>`
+export const LoaderContainer = styled.div<LoaderCSSProps>`
   position: absolute;
   top: 0;
   left: 0;
@@ -27,5 +27,3 @@ const LoaderContainer = styled.div<LoaderCSSProps>`
   pointer-events: none;
   ${(props) => handleLoaderType(props)}
 `;
-
-export default { LoaderContainer };

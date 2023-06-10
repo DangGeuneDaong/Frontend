@@ -3,8 +3,8 @@ import { DefaultTheme } from 'styled-components';
 const color = {
   primary: '#F8BF52',
   lightPrimary: '#FFD15F',
-
   red: '#F85A40',
+  lightRed: '#F07474',
   gray: '#E5E5E5',
   lightGray: '#D9D9D9',
 };
