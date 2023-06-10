@@ -5,7 +5,7 @@ import { addTag, deleteTag } from '../../utils/hashtag';
 
 import MainTemplate from '../../components/template/MainTemplate';
 
-import * as S from './UplodePage.styles';
+import * as S from './styles';
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button';
 import Textarea from '../../components/Form/Textarea';
