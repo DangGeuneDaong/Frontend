@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { addTag, deleteTag } from '../../utils/hashtag';
+
 import MainTemplate from '../../components/template/MainTemplate';
 
 import * as S from './UplodePage.styles';
@@ -49,38 +51,16 @@ function UplodePage() {
     }
   };
 
-  // 태그 입력 시 태그 추가
+  // 태그 추가
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const inputTag = watch('hashtag');
-    const regExp = /[\{\}\[\]\/?.;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+    const newTags = addTag(tags, inputTag, e, setValue, setFocus, setError);
+    setTags(newTags);
+  };
 
-    // 엔터, 스페이스바, 콤마 입력 시 태그 추가
-    const allowEventKey =
-      inputTag !== '' &&
-      (e.key === 'Enter' || inputTag.endsWith(' ') || inputTag.endsWith(','));
-
-    // 특수문자 입력 시 에러, 입력해도 배열에 추가되지 않음
-    if (regExp.test(inputTag)) {
-      setError('hashtag', {
-        type: 'validate',
-        message: '태그는 한글, 영문, 숫자로 이루어진 10자 이하의 문자열입니다.',
-      });
-      return;
-    }
-
-    // 태그 추가
-    if (inputTag !== '' && allowEventKey) {
-      let trimmedTag = inputTag.trim();
-
-      if (trimmedTag.endsWith(',')) {
-        trimmedTag = trimmedTag.slice(0, -1);
-      }
-
-      !tags.includes(trimmedTag) && setTags([...tags, trimmedTag]);
-
-      setValue('hashtag', '');
-      setFocus('hashtag');
-    }
+  // 태그 삭제 버튼 클릭 시 태그 삭제
+  const handleTagDelete = (tag: string) => {
+    setTags(deleteTag(tags, tag));
   };
 
   const onSubmit = (data: any) => console.log(data);
@@ -145,7 +125,7 @@ function UplodePage() {
                   <Hashtag
                     tag={tag}
                     key={index}
-                    onDelete={() => console.log('delete')}
+                    onDelete={() => handleTagDelete(tag)}
                   ></Hashtag>
                 ))}
               </S.HashtagContainer>
