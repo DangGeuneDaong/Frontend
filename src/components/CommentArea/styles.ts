@@ -11,15 +11,15 @@ export const Container = styled.div`
 export const CommentContainer = styled.div``;
 
 export const CommentTextarea = styled.textarea`
-  width: 590px;
-  height: 90px;
-  margin: 5px 10px 5px 0px;
-  padding: 5px;
+  // width: 590px;
+  // height: 90px;
+  // margin: 5px 10px 5px 0px;
+  // padding: 5px;
 
-  resize: none;
+  // resize: none;
 
-  border: 1px solid ${(props) => props.theme.color.gray};
-  border-radius: 10px;
+  // border: 1px solid ${(props) => props.theme.color.gray};
+  // border-radius: 10px;
 `;
 
 export const ButtonContainer = styled.div`

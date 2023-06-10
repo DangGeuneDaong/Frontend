@@ -32,7 +32,11 @@ function CommentArea({ setProps }: CommentAreaProps) {
         errors={errors}
         {...register('comment')}
         width={'590px'}
-        height={'90px'}
+        style={{
+          height: '90px',
+          margin: '5px 10px 5px 0px',
+
+        }}
       />
       <Button
         width={'90px'}
