@@ -30,6 +30,7 @@ function CommentArea({ setProps }: CommentAreaProps) {
     <S.Container>
       <Textarea
         errors={errors}
+        containerType="content"
         {...register('comment')}
         width={'590px'}
         style={{
