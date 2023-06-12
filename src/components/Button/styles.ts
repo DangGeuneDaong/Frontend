@@ -14,6 +14,10 @@ export const Button = styled.button<ButtonCSSProps>`
   border-width: ${(props) => props.borderWidth || props.borderWidth};
   white-space: nowrap;
 
+  &:hover {
+    ${(props) => props.hoverStyle}
+  }
+
   // font weight, font-size 디자인 시스템
   ${(props) => props.theme.font.button}
 

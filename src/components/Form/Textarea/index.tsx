@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import * as S from '../Form.styles';
+import * as S from '../styles';
 
 export interface InputCSSProps {
   width?: string;
@@ -9,6 +9,7 @@ export interface InputCSSProps {
   direction?: string; // default:column, row
   inputDescription?: string; // input 제목 하단 설명
   focusStyle?: boolean; // 클릭 시 input 포커스 스타일 적용
+  containerType?: string; // optional : content
 }
 
 interface InputProps extends InputCSSProps {
@@ -18,18 +19,21 @@ interface InputProps extends InputCSSProps {
   label?: string; // input 이름
   errors?: any;
   style?: React.CSSProperties;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
-function Input(
+function Textarea(
   {
     size,
     direction,
+    containerType,
     name,
     label,
     inputDescription,
     placeholder,
     errors,
     style,
+    onKeyDown,
     ...rest
   }: InputProps,
   ref: React.Ref<HTMLTextAreaElement>
@@ -37,28 +41,27 @@ function Input(
   const errorKEY = errors?.[name as string]?.message as string;
 
   return (
-    <S.InputContainer direction={direction}>
+    <S.InputContainer direction={direction} containerType={containerType}>
       {label && <S.InputLabel htmlFor={name}>{label}</S.InputLabel>}
       {inputDescription && (
         <S.InputDescription>{inputDescription}</S.InputDescription>
       )}
-      <div>
-        <S.Textarea
-          id={name}
-          name={name}
-          className={errorKEY && 'error'}
-          placeholder={placeholder}
-          style={style}
-          spellCheck="false"
-          autoComplete="off"
-          ref={ref}
-          focusStyle
-          {...rest}
-        />
-      </div>
+      <S.Textarea
+        id={name}
+        name={name}
+        className={errorKEY && 'error'}
+        placeholder={placeholder}
+        spellCheck="false"
+        autoComplete="off"
+        ref={ref}
+        style={style}
+        focusStyle
+        onKeyDown={onKeyDown}
+        {...rest}
+      />
       {errorKEY && <S.InputErrorMessage>{errorKEY}</S.InputErrorMessage>}
     </S.InputContainer>
   );
 }
 
-export default forwardRef(Input);
+export default forwardRef(Textarea);

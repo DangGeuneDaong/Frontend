@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import * as S from '../Form.styles';
+import * as S from '../styles';
 
 export interface InputCSSProps {
   width?: string;
@@ -9,6 +9,7 @@ export interface InputCSSProps {
   direction?: string; // default:column, row
   inputDescription?: string; // input 제목 하단 설명
   focusStyle?: boolean; // 클릭 시 input 포커스 스타일 적용
+  containerType?: string; // optional : content
 }
 
 interface InputProps extends InputCSSProps {
@@ -30,6 +31,7 @@ function Input(
     size,
     direction,
     type,
+    containerType,
     name,
     label,
     inputDescription,
@@ -46,7 +48,7 @@ function Input(
   const errorKEY = errors?.[name as string]?.message as string;
 
   return (
-    <S.InputContainer direction={direction}>
+    <S.InputContainer direction={direction} containerType={containerType}>
       {label && <S.InputLabel htmlFor={name}>{label}</S.InputLabel>}
       {inputDescription && (
         <S.InputDescription>{inputDescription}</S.InputDescription>

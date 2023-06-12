@@ -1,7 +1,7 @@
 import Header from '../Layout/Header';
 import Footer from '../Layout/Footer';
 
-import * as S from './Template.styles';
+import * as S from './styles';
 interface MainTemplateProps {
   children: React.ReactNode;
 }

@@ -64,7 +64,8 @@ export const InputContainer = styled.div<InputCSSProps>`
   justify-content: center;
   width: 100%;
   max-width: ${(props) => props.width || '100%'};
-  margin-bottom: 24px;
+  margin-bottom: ${(props) =>
+    props.containerType !== 'content' ? '24px' : '0'};
 
   ${(props) => handleInputSize(props)}
 `;
@@ -149,7 +150,7 @@ export const InputCheckbox = styled.input`
 // 라디오 버튼
 export const RadioContainer = styled.div`
   display: flex;
-  align-checkbox: center;
+  align-items: center;
 `;
 
 export const RadioBox = styled.div`
