@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
 
@@ -19,6 +21,8 @@ export interface UplodePageCSSProps {
 }
 
 function UplodePage() {
+  const navigate = useNavigate();
+
   const [tags, setTags] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -31,7 +35,7 @@ function UplodePage() {
     formState: { errors },
     setFocus,
     setError,
-    watch, // 실시간 값 감시 가능
+    watch,
   } = useForm({ mode: 'onBlur' });
 
   // 디버깅용 코드
@@ -72,9 +76,39 @@ function UplodePage() {
 
   // 폼 전송
   const addPost = async (data: any) => {
+    try {
+      const response = await fetch('/good/offer/info', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      switch (response.status) {
+        // 400 (Bad Request) 401 (Unauthorized) 404 (Not Found) 500 (Internal Server Error)
+        case 400:
+        case 404:
+          throw new Error('API 요청에 실패했습니다.');
+        case 401:
+          // TODO : 비 로그인 유저일 때, 확인 알럿 띄우고 로그인 페이지로 이동
+          throw new Error('로그인이 필요합니다.');
+        case 500:
+          throw new Error('서버에 오류가 발생했습니다.');
+        default:
+          // api 요청 성공했을 때 실행 로직
+          return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const { mutate } = useMutation(addPost);
+
+  const onSubmit = async (data: any) => {
     const postData = {
-      // id : postID(autoIncrease 확인)
-      // user_id : userID
+      // user_id : userID 로그인 시 recoil state에서 가져오기
       main_category: selectedCategory,
       sub_category: selectedProduct,
       title: data.title,
@@ -89,37 +123,7 @@ function UplodePage() {
       hashtag: tags,
     };
 
-    console.log(data);
-    console.log(postData);
-
-    await fetch('/post', {
-      method: 'POST',
-      body: JSON.stringify(postData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  };
-
-  const { mutate } = useMutation(addPost, {
-    onSuccess: () => {
-      console.log('성공');
-    },
-
-    onError: (error: any) => {
-      console.log(error);
-
-      console.log(typeof error);
-
-      if (error.response && error.response.status === 401) {
-        // 로그인 페이지로 이동
-      }
-    },
-  });
-
-  const onSubmit = async (data: any) => {
-    // TODO : 폼 전송 클릭 시, 로그인 된 유저가 아닐 경우 로그인 페이지로 이동
-    mutate(data);
+    mutate(postData);
   };
 
   return (
