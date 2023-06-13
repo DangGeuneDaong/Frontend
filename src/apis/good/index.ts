@@ -1,10 +1,15 @@
-import axios from 'axios';
+import { AxiosInstance } from 'axios';
 import axiosInstance from '..';
 
 // 폼 전송
 export const addPost = async (data: any) => {
   try {
-    const response = await axios.post('/good/offer/info', data);
+    const instance: AxiosInstance = axiosInstance();
+    // const response = await instance.post('/good/offer/info', data);
+    const response = await instance.post('http://localhost:3001/good', data);
+
+    // 성공 로직
+    console.log('성공');
 
     return response;
   } catch (error: any) {
