@@ -15,7 +15,7 @@ import Textarea from '../../components/Form/Textarea';
 import Hashtag from '../../components/Hashtag';
 import Dropdown from '../../components/Dropdown';
 import MultiUploader from '../../components/FileUploader/MultiUploader';
-import { addPost } from '../../apis/good';
+import { addPost, uploadImage } from '../../apis/good';
 
 export interface UplodePageCSSProps {
   inputContainerDirection?: 'row' | 'column';
@@ -56,6 +56,11 @@ function UplodePage() {
     console.log('선택된 파일', selectedFiles);
   }, [selectedFiles]);
 
+  useEffect(() => {
+    setValue('title', '제목');
+    setValue('description', '내용');
+  }, []);
+
   // 엔터 입력 시 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
@@ -75,26 +80,36 @@ function UplodePage() {
     setTags(deleteTag(tags, tag));
   };
 
-  const { mutate } = useMutation(addPost);
+  // 폼 전송
+  const { mutateAsync: uploadImagesMutation } = useMutation(uploadImage);
+  const { mutate: addPostMutation } = useMutation(addPost);
 
   const onSubmit = async (data: any) => {
-    const postData = {
-      // user_id : userID 로그인 시 recoil state에서 가져오기
-      main_category: selectedCategory,
-      sub_category: selectedProduct,
-      title: data.title,
-      description: data.description,
-      // latitude : 위도
-      // longitude :  경도
-      status: '판매중',
-      good_image_list: selectedFiles,
-      view_cnt: 0,
-      created_at: new Date(),
-      modified_at: new Date(),
-      // hashtag: tags,
-    };
+    try {
+      // NOTE : 이미지 업로드 순서 보장을 위해 mutateAsync 사용
+      // muatate는 반환값이 없지만, mutateAsync는 return 값을 Promise로 반환
+      const uploadedImages = await uploadImagesMutation(selectedFiles);
 
-    mutate(postData);
+      const postData = {
+        // user_id : userID 로그인 시 recoil state에서 가져오기
+        main_category: selectedCategory,
+        sub_category: selectedProduct,
+        title: data.title,
+        description: data.description,
+        // latitude : 위도
+        // longitude :  경도
+        status: '판매중',
+        good_image_list: uploadedImages,
+        view_cnt: 0,
+        created_at: new Date(),
+        modified_at: new Date(),
+        // hashtag: tags,
+      };
+
+      addPostMutation(postData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
