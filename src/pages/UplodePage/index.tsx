@@ -91,7 +91,7 @@ function UplodePage() {
       view_cnt: 0,
       created_at: new Date(),
       modified_at: new Date(),
-      hashtag: tags,
+      // hashtag: tags,
     };
 
     mutate(postData);
