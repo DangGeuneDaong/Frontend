@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 // 기준 URL에 따라 axios 인스턴스를 생성하는 함수
-export const createAxiosInstance = (baseURL: string) => {
+export const axiosInstance = (baseURL: string) => {
   const instance: AxiosInstance = axios.create({
     baseURL,
     headers: {
@@ -12,4 +12,4 @@ export const createAxiosInstance = (baseURL: string) => {
   return instance;
 };
 
-export default createAxiosInstance;
+export default axiosInstance;
