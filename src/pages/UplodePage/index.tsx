@@ -15,6 +15,7 @@ import Textarea from '../../components/Form/Textarea';
 import Hashtag from '../../components/Hashtag';
 import Dropdown from '../../components/Dropdown';
 import MultiUploader from '../../components/FileUploader/MultiUploader';
+import { addPost } from '../../apis/good';
 
 export interface UplodePageCSSProps {
   inputContainerDirection?: 'row' | 'column';
@@ -72,36 +73,6 @@ function UplodePage() {
   // 태그 삭제 버튼 클릭 시 태그 삭제
   const handleTagDelete = (tag: string) => {
     setTags(deleteTag(tags, tag));
-  };
-
-  // 폼 전송
-  const addPost = async (data: any) => {
-    try {
-      const response = await fetch('/good/offer/info', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      switch (response.status) {
-        // 400 (Bad Request) 401 (Unauthorized) 404 (Not Found) 500 (Internal Server Error)
-        case 400:
-        case 404:
-          throw new Error('API 요청에 실패했습니다.');
-        case 401:
-          // TODO : 비 로그인 유저일 때, 확인 알럿 띄우고 로그인 페이지로 이동
-          throw new Error('로그인이 필요합니다.');
-        case 500:
-          throw new Error('서버에 오류가 발생했습니다.');
-        default:
-          // api 요청 성공했을 때 실행 로직
-          return response;
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const { mutate } = useMutation(addPost);
