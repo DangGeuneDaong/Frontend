@@ -12,6 +12,9 @@ export const ProfileContainer = styled.div`
   > div:first-child {
     width: 50px;
     height: 50px;
+
+    margin-right: 5px;
+
     background-color: ${(props) => props.theme.color.red};
     border-radius: 50%;
   }

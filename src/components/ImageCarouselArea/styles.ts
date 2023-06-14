@@ -3,8 +3,7 @@ import styled, { css } from 'styled-components';
 export const Container = styled.div`
   width: 700px;
   height: 400px;
-  background-color: blue;
-  margin: 0 auto;
+  margin: 10px auto 0;
   color: white;
 
   position: relative;
@@ -14,6 +13,8 @@ export const ImageContainer = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  border-radius: 10px;
 `;
 
 export const Button = styled.button<{ right?: boolean }>`

@@ -8,11 +8,11 @@ interface MainTemplateProps {
   productName: string;
   firstCategory: string;
   secondCategory: string;
-  uploadTime: string;
+  createdTime: string;
   productDetails: string;
 }
 
-function ImageCarousel({ nickname, location, productName, firstCategory, secondCategory, uploadTime, productDetails, }: MainTemplateProps) {
+function ImageCarousel({ nickname, location, productName, firstCategory, secondCategory, createdTime, productDetails }: MainTemplateProps) {
   return (
     <S.Container>
       <S.ProfileContainer>
@@ -28,14 +28,9 @@ function ImageCarousel({ nickname, location, productName, firstCategory, secondC
           <div>
             <S.FirstCategory>{firstCategory}</S.FirstCategory>|
             <S.SecondCategory>{secondCategory}</S.SecondCategory>
-            <S.UploadTime>{uploadTime}</S.UploadTime>
+            <S.UploadTime>{createdTime}</S.UploadTime>
           </div>
           <S.ProductDetails>{productDetails}</S.ProductDetails>
-        </div>
-        <div>
-          <span># 웰시코기</span>
-          <span># 유기농</span>
-          <span># 알러지</span>
         </div>
       </S.PostContainer>
     </S.Container>
