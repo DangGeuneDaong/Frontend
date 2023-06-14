@@ -2,22 +2,31 @@ import * as S from './styles'
 import { useTheme } from 'styled-components'
 
 import { BsSend } from 'react-icons/bs'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineArrowLeft, AiOutlineMenu } from 'react-icons/ai'
 
 import Input from '../Form/Input'
 import Button from '../Button'
 
-function ChatRoomArea() {
+interface OfferPageProps {
+  getBack: () => void;
+}
+
+function ChatRoomArea({ getBack }: OfferPageProps) {
   const theme = useTheme();
 
   return (
     <S.Container>
       <S.ChatHeaderContainer>
-        <S.ProfileContainer></S.ProfileContainer>
-        <S.NameDistanceContainer>
-          <span>밥먹는 춘식이</span>
-          <span>거리 약 2.5km</span>
-        </S.NameDistanceContainer>
+        <button onClick={getBack}
+        ><AiOutlineArrowLeft /></button>
+        <S.ProfileContainer>
+          <S.PictureContainer></S.PictureContainer>
+          <S.NameDistanceContainer>
+            <span>밥먹는 춘식이</span>
+            <span>거리 약 2.5km</span>
+          </S.NameDistanceContainer>
+        </S.ProfileContainer>
+        <button><AiOutlineMenu /></button>
       </S.ChatHeaderContainer>
       <S.ChatBodyContainer>
         <S.OfferContainer>

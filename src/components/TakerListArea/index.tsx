@@ -11,10 +11,6 @@ interface OfferPageProps {
 function TakerListArea({ setProps, children }: OfferPageProps) {
   // const address = await fetch(`${SERVER_URL}/address`)
 
-  const showChange = () => {
-    setProps()
-  }
-
   return (
     <S.Container>
       <S.ListTitleContainer>Taker 목록</S.ListTitleContainer>
@@ -37,6 +33,8 @@ function TakerListArea({ setProps, children }: OfferPageProps) {
           >{children}</Button>
         </S.ChatButtonContainer>
       </S.ListItemContainer>
+
+      <div>페이지네이션</div>
     </S.Container >
   )
 }

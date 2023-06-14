@@ -15,6 +15,7 @@ export const ListItemContainer = styled.div`
 
   padding-top: 5px;
   padding-bottom: 5px;
+  margin-bottom: 5px;
 
   border-bottom: 1px solid ${(props) => props.theme.color.gray};
 `;

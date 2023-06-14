@@ -13,7 +13,8 @@ export const Container = styled.div`
 
 export const ChatHeaderContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
 
   padding-top: 10px;
   padding-bottom: 10px;
@@ -22,10 +23,23 @@ export const ChatHeaderContainer = styled.div`
   border-top-right-radius: 10px;
   border-bottom: 3px solid ${(props) => props.theme.color.primary};
 
-  
+  > button {
+    width: 30px;
+    height: 30px;
+
+    margin: 0 5px 0;
+
+    background-color: ${(props) => props.theme.color.gray};
+    border-radius: 50%;
+  }
 `
 
 export const ProfileContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+export const PictureContainer = styled.div`
   width: 75px;
   height: 75px;
   margin-right: 5px;
@@ -102,14 +116,16 @@ export const OfferContainer = styled.div`
 
 export const ChatFooterContainer = styled.div`
   height: 50px;
-  
+
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 
   > button {
     width: 30px;
     height: 30px;
+    margin: 0 5px 0;
+
     background-color: ${(props) => props.theme.color.gray};
     border-radius: 50%;
 
@@ -119,7 +135,7 @@ export const ChatFooterContainer = styled.div`
 
 export const ChatInputContainer = styled.div`
   > input {
-    width: 300px;
+    width: 400px;
     height: 30px;
     border: 1px solid ${(props) => props.theme.color.gray};
     border-radius: 10px;

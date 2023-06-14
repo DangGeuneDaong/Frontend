@@ -55,5 +55,5 @@ export const UploadTime = styled.span`
 `;
 
 export const ProductDetails = styled.div`
-  min-height: calc(300px - 60px - 36px - 24px - 24px);
+  min-height: calc(300px - 60px - 36px - 24px);
 `;
