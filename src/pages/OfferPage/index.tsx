@@ -49,7 +49,7 @@ function DetailPage() {
             createdTime={'1달 전'}
             productDetails={'안녕하세요! 웰시코기 유기농 사료 나눔합니다!'}
           />
-          <TakerListArea setProps={showChange}>{showChatRoom ? '숨기기' : '채팅하기'}</TakerListArea>
+          <TakerListArea setProps={showChange}>{showChatRoom ? '채팅하기' : '숨기기'}</TakerListArea>
         </S.OfferContainer>
         {!showChatRoom && <ChatRoomArea />}
       </S.Container>
