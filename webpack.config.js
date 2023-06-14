@@ -6,8 +6,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-console.log('isProduction : ', isProduction);
-
 module.exports = {
   mode: isProduction ? 'production' : 'development',
   resolve: {

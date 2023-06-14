@@ -15,7 +15,7 @@ const $root = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot($root).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
@@ -26,5 +26,5 @@ ReactDOM.createRoot($root).render(
         </ThemeProvider>
       </QueryClientProvider>
     </RecoilRoot>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

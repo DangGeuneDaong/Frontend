@@ -1,0 +1,56 @@
+import styled from "styled-components";
+
+interface ItemStatusCSSProps {
+  status: string;
+}
+
+export const Container = styled.li`
+  display: flex;
+  flex-direction: column;
+  padding: 24px 32px 28px;
+  width: 100%;
+  min-height: 265px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+
+  &:hover {
+    background-color: rgba(242, 183, 5, 0.25);
+  }
+`;
+
+export const ItemSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+export const ItemBasicInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export const ItemTitle = styled.h2`
+  font-size: 18px;
+`;
+
+export const ItemLocation = styled.span`
+  font-size: 13px;
+`;
+
+export const ItemStatus = styled.span<ItemStatusCSSProps>`
+  /* margin: 12px 0px 0 0; */
+  margin-bottom: 4px;
+  width: 40px;
+  font-size: 12px;
+  font-weight: bold;
+  color: ${props => props.status === '나눔중' ? props.theme.color.primary : 'black'};
+`;
+
+export const ItemImages = styled.div`
+  margin-top: 20px;
+  height: 158px;
+  line-height: 158px;
+  text-align: center;
+  border: 1px solid rgba(0,0,0, 0.1);
+  border-radius: 8px;
+`;

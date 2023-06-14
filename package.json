@@ -5,7 +5,8 @@
   "main": "./src/index.tsx",
   "scripts": {
     "start": "NODE_ENV=development webpack serve",
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "dev": "json-server --watch db.json --port 5000"
   },
   "repository": {
     "type": "git",
@@ -45,7 +46,10 @@
     "css-loader": "^6.8.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.1",
+    "json-server": "^0.17.3",
+    "kakao.maps.d.ts": "^0.1.38",
     "mini-css-extract-plugin": "^2.7.6",
+    "react-icons": "^4.9.0",
     "style-loader": "^3.3.3",
     "ts-loader": "^9.4.3",
     "typescript": "^5.1.3",
