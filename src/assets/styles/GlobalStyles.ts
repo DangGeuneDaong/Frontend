@@ -21,7 +21,6 @@ const GlobalStyles = createGlobalStyle`
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
 
     @supports (-webkit-touch-callout: none) {
       height: -webkit-fill-available;
