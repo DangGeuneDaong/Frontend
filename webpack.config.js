@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -34,7 +35,7 @@ module.exports = {
           {
             test: /\.(ts|tsx)$/,
             exclude: /node_modules/,
-            use: ['babel-loader', 'ts-loader'],            
+            use: ['babel-loader', 'ts-loader'],
           },
           {
             test: /\.css$/,
@@ -47,9 +48,9 @@ module.exports = {
           {
             test: /\.(png|jpg|jpeg|svg)$/,
             use: {
-              loader:'file-loader',
-            }
-          }
+              loader: 'file-loader',
+            },
+          },
         ],
       },
     ],
@@ -75,6 +76,7 @@ module.exports = {
       linkType: false,
       filename: '[name].[contenthash].css',
       chunkFilename: '[id].[contenthash].css',
-    })
+    }),
+    new Dotenv(),
   ],
 };
