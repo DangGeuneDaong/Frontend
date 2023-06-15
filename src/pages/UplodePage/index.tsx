@@ -83,12 +83,8 @@ function UplodePage() {
         sub_category: selectedProduct,
         title: data.title,
         description: data.description,
-        // location : 주소
         status: '판매중',
         good_image_list: uploadedImages,
-        view_cnt: 0,
-        created_at: new Date(),
-        modified_at: new Date(),
       };
 
       addPostMutation(postData);
