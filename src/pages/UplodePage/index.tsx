@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
 
-import { addTag, deleteTag } from '../../utils/hashtag';
+// api
+import { addPost, uploadImage } from '../../apis/good';
 
+// components
 import MainTemplate from '../../components/template/MainTemplate';
 
 import * as S from './styles';
@@ -14,7 +16,6 @@ import Button from '../../components/Button';
 import Textarea from '../../components/Form/Textarea';
 import Dropdown from '../../components/Dropdown';
 import MultiUploader from '../../components/FileUploader/MultiUploader';
-import { addPost, uploadImage } from '../../apis/good';
 
 export interface UplodePageCSSProps {
   inputContainerDirection?: 'row' | 'column';
@@ -60,16 +61,34 @@ function UplodePage() {
     setValue('description', '내용');
   }, []);
 
-  // 엔터 입력 시 다른 폼으로 넘어가지 않도록 방지
+  // 엔터 입력 시 포커스가 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
     }
   };
 
+  // 폼 전송 취소
+  const onClickCancel = () => {
+    // TODO : confirm() 부분 Confirm Modal으로 변경
+    if (window.confirm('게시글 작성을 취소하시겠습니까?')) {
+      navigate('/');
+    }
+  };
+
   // 폼 전송
   const { mutateAsync: uploadImagesMutation } = useMutation(uploadImage);
-  const { mutate: addPostMutation } = useMutation(addPost);
+  const { mutate: addPostMutation } = useMutation(addPost, {
+    // TODO : alert() 부분 Alert Modal으로 변경
+    onSuccess: () => {
+      alert('게시글이 등록되었습니다.');
+      navigate('/');
+    },
+    onError: (error) => {
+      alert('게시글 등록에 실패했습니다. 다시 시도해주세요.');
+      console.log(error);
+    },
+  });
 
   const onSubmit = async (data: any) => {
     try {
@@ -164,7 +183,7 @@ function UplodePage() {
                 styleType="warning"
                 width="128px"
                 borderRadius="20px"
-                onClickHandler={() => console.log('취소')}
+                onClickHandler={onClickCancel}
               >
                 취소
               </Button>
