@@ -5,10 +5,6 @@ export const Container = styled.div`
   margin: 0 auto;
 `;
 
-export const ListTitleContainer = styled.div`
-  ${(props) => props.theme.font.heading_sm}
-`;
-
 export const ListItemContainer = styled.div`
   display: flex;
   align-items: center;

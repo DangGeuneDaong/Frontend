@@ -10,7 +10,6 @@ interface ConfigProps {
   config: ImageCarouselProps[];
 }
 
-
 function ImageCarouselArea({ config }: ConfigProps) {
   const [imageIndex, setImageIndex] = useState(0)
 

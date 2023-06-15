@@ -36,8 +36,8 @@ function CommentArea({ setProps }: CommentAreaProps) {
 
   return (
     <S.Container>
-      {!changeButton && <>
-        <form onSubmit={handleSubmit(async (data: any) => {
+      {!changeButton &&
+        <S.Form onSubmit={handleSubmit(async (data: any) => {
           await new Promise((r) => setTimeout(r, 1000));
           console.log(JSON.stringify(data))
         })}>
@@ -63,8 +63,7 @@ function CommentArea({ setProps }: CommentAreaProps) {
           >
             신청하기
           </Button>
-        </form>
-      </>
+        </S.Form>
       }
       {changeButton &&
         <Button

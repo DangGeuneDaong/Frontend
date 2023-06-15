@@ -23,3 +23,10 @@ export const Image = styled.img`
   height: 50px;
   background-color: gray;
 `;
+
+export const ListTitleContainer = styled.div`
+  width: 700px;
+  margin: 0 auto;
+
+  ${(props) => props.theme.font.heading_sm}
+`;
