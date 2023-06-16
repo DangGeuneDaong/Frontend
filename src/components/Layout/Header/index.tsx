@@ -81,7 +81,9 @@ function Header() {
               >
                 로그인
               </button>
-              <strong aria-hidden>&nbsp;/&nbsp;</strong>
+              <span style={{ fontWeight: '600' }} aria-hidden>
+                &nbsp;/&nbsp;
+              </span>
               {/* 회원가입 버튼  */}
               <button
                 style={{ fontWeight: '600' }}
