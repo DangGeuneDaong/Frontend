@@ -31,6 +31,6 @@ export const ListItem = styled.li`
   cursor: pointer;
 
   &.hover {
-    background-color: rgba(248, 191, 82, 0.2);
+    ${(props) => props.theme.color.opacityPrimary};
   }
 `;
