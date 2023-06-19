@@ -6,6 +6,7 @@ export const DropdownContainer = styled.div<DropdownCSSProps>`
   display: inline-flex;
   align-items: center;
   width: ${(props) => (props.listWidth ? `${props.listWidth}px` : props.width)};
+  min-width: 100px;
   border: 1px solid #e6e6e6;
   border-radius: 4px;
   font-size: 15px;
