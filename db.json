@@ -10,7 +10,7 @@
       "productDetails": "안녕하세요! 웰시코기 유기농 사료 나눔합니다!"
     }
   ],
-  "image": [
+  "images": [
     {
       "image": "https://images.unsplash.com/photo-1472552944129-b035e9ea3744?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
     },
@@ -21,7 +21,7 @@
       "image": "https://images.unsplash.com/photo-1616668983570-a971956d8928?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80"
     }
   ],
-  "takerlist": [
+  "takerlists": [
     {
       "id": 1,
       "nickname": "밥먹는 춘식이1",
@@ -147,6 +147,70 @@
       "nickname": "밥먹는 춘식이5",
       "distance": 2.5,
       "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
+    },
+    {
+      "id": 22
+    },
+    {
+      "id": 23
+    },
+    {
+      "id": 24
+    },
+    {
+      "id": 25
+    },
+    {
+      "id": 26
+    },
+    {
+      "id": 27
+    },
+    {
+      "id": 28
+    },
+    {
+      "id": 29
+    },
+    {
+      "id": 30
+    },
+    {
+      "id": 31
+    },
+    {
+      "id": 32
+    },
+    {
+      "id": 33
+    },
+    {
+      "content": "comment",
+      "id": 34
+    },
+    {
+      "content": "",
+      "id": 35
+    },
+    {
+      "content": "",
+      "id": 36
+    },
+    {
+      "content": "",
+      "id": 37
+    },
+    {
+      "content": "",
+      "id": 38
+    },
+    {
+      "content": "",
+      "id": 39
+    },
+    {
+      "content": "",
+      "id": 40
     }
   ]
 }

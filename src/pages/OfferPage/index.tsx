@@ -1,6 +1,7 @@
 import * as S from './styles';
 
 import { useEffect, useState } from 'react';
+import axios from 'axios'
 
 import ImageCarouselArea from '../../components/ImageCarouselArea';
 import PostArea from '../../components/PostArea';
@@ -27,7 +28,7 @@ const config = [
 ];
 
 function OfferPage() {
-  // const [showImages, setShowImages] = useState([])
+  const [showImages, setShowImages] = useState([])
   const [showPosts, setShowPosts] = useState([])
   const [showChatRoom, setShowChatRoom] = useState(false); // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
   const [showTakerlists, setShowTakerlists] = useState([])
@@ -36,19 +37,30 @@ function OfferPage() {
   const offset = (page - 1) * limit;
 
   useEffect(() => {
-    const SERVER_URL = 'http://localhost:5000'
+    // const fetchData = async () => {
+    //   const result_1 = fetch(`${SERVER_URL}/posts`)
+    //     .then((response) => response.json())
+    //     .then((data) => setShowPosts(data))
 
-    fetch(`${SERVER_URL}/posts`)
-      .then((response) => response.json())
-      .then((data) => setShowPosts(data))
-
-    // fetch(`${SERVER_URL}/image`)
+    // const result_2 = fetch(`${SERVER_URL}/image`)
     //   .then((response) => response.json())
     //   .then((data) => setShowImages(data))
 
-    fetch(`${SERVER_URL}/takerlist`)
-      .then((response) => response.json())
-      .then((data) => setShowTakerlists(data))
+    //   const result_3 = fetch(`${SERVER_URL}/takerlists`)
+    //     .then((response) => response.json())
+    //     .then((data) => setShowTakerlists(data))
+    // }
+
+    const SERVER_URL = 'http://localhost:5000'
+    const fetchData = async () => {
+      const result_posts = await axios.get(`${SERVER_URL}/posts`)
+      setShowPosts(result_posts.data)
+      // const result_images = await axios.get(`${SERVER_URL}/images`)
+      // setShowImages(result_images.data)
+      const result_takerlists = await axios.get(`${SERVER_URL}/takerlists`)
+      setShowTakerlists(result_takerlists.data)
+    }
+    fetchData()
   }, [])
 
 
@@ -61,7 +73,7 @@ function OfferPage() {
     <MainTemplate>
       <S.Container>
         <S.OfferContainer>
-          {/* {showImages.map(({ image }) => ())} */}
+          {/* {showImages.map(({ images }) => ())} */}
           <ImageCarouselArea config={config} />
 
           {showPosts.map(({ nickname, location, productName, firstCategory, secondCategory, createdTime, productDetails }) => (

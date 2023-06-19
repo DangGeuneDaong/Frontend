@@ -1,7 +1,7 @@
 import * as S from './styles';
 
 import { useEffect, useState } from 'react';
-import { getPost, addPost } from '../../../src/api/api'
+import axios from 'axios'
 
 import ImageCarouselArea from '../../components/ImageCarouselArea';
 import PostArea from '../../components/PostArea';
@@ -24,20 +24,17 @@ const config = [
 
 const TakerPage = () => {
   const [showPosts, setShowPosts] = useState([])
-  const [comment, setComment] = useState<string>(''); // 댓글 작성
 
-  // const getPosts = async () => {
-  //   const response = await getPost()
-  // }
 
   useEffect(() => {
     const SERVER_URL = 'http://localhost:5000'
-
-    fetch(`${SERVER_URL}/posts`)
-      .then((response) => response.json())
-      .then((data) => setShowPosts(data))
-
-    // getPosts()
+    const fetchData = async () => {
+      const result_posts = await axios.get(`${SERVER_URL}/posts`)
+      setShowPosts(result_posts.data)
+      // const result_images = await axios.get(`${SERVER_URL}/images`)
+      // setShowImages(result_images.data)
+    }
+    fetchData()
   }, [])
 
   return (
@@ -56,7 +53,7 @@ const TakerPage = () => {
           />
         ))}
 
-        <CommentArea setProps={(comment) => setComment(comment)} />
+        <CommentArea />
       </S.TakerContainer>
     </MainTemplate>
   );
