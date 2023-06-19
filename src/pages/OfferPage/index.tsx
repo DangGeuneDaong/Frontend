@@ -30,27 +30,13 @@ const config = [
 function OfferPage() {
   const [showImages, setShowImages] = useState([])
   const [showPosts, setShowPosts] = useState([])
-  const [showChatRoom, setShowChatRoom] = useState(false); // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
   const [showTakerlists, setShowTakerlists] = useState([])
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
+  const [isChat, setIsChat] = useState<number>(-1) // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const result_1 = fetch(`${SERVER_URL}/posts`)
-    //     .then((response) => response.json())
-    //     .then((data) => setShowPosts(data))
-
-    // const result_2 = fetch(`${SERVER_URL}/image`)
-    //   .then((response) => response.json())
-    //   .then((data) => setShowImages(data))
-
-    //   const result_3 = fetch(`${SERVER_URL}/takerlists`)
-    //     .then((response) => response.json())
-    //     .then((data) => setShowTakerlists(data))
-    // }
-
     const SERVER_URL = 'http://localhost:5000'
     const fetchData = async () => {
       const result_posts = await axios.get(`${SERVER_URL}/posts`)
@@ -64,11 +50,14 @@ function OfferPage() {
   }, [])
 
 
-  const showChange = () => {
-    setShowChatRoom(!showChatRoom)
+  const showChange = (id: number) => {
+    if (isChat === -1) {
+      setIsChat(id)
+    } else {
+      setIsChat(-1)
+    }
   }
 
-  console.log('showTakerlists : ', showTakerlists);
   return (
     <MainTemplate>
       <S.Container>
@@ -90,13 +79,18 @@ function OfferPage() {
           <EditArea />
           <S.ListTitleContainer>Taker 목록</S.ListTitleContainer>
           {showTakerlists.slice(offset, offset + limit).map(({ id, nickname, distance, content }) => (
-            <TakerListArea
-              key={id}
-              nickname={nickname}
-              distance={distance}
-              content={content}
-              setProps={showChange}
-            >{!showChatRoom ? '채팅하기' : '숨기기'}</TakerListArea>
+            <>
+              <TakerListArea
+                key={id}
+                nickname={nickname}
+                distance={distance}
+                content={content}
+                setProps={() => showChange(id)}
+              >{isChat === id ? '숨기기' : '채팅하기'}</TakerListArea>
+              {/* <S.ChatRoomContainer>
+                {isChat === id && <ChatRoomArea getBack={() => showChange(id)} nickname={nickname} distance={distance} />}
+              </S.ChatRoomContainer> */}
+            </>
           ))}
 
           <Pagination
@@ -106,7 +100,12 @@ function OfferPage() {
             setPage={setPage}
           />
         </S.OfferContainer>
-        {showChatRoom && <ChatRoomArea getBack={showChange} />}
+
+        {showTakerlists.map(({ id, nickname, distance }) => (
+          <>
+            {isChat === id && <ChatRoomArea getBack={() => showChange(id)} nickname={nickname} distance={distance} />}
+          </>
+        ))}
       </S.Container>
     </MainTemplate>
   );
