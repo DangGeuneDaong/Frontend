@@ -16,6 +16,8 @@ import Button from '../../components/Button';
 import Textarea from '../../components/Form/Textarea';
 import Dropdown from '../../components/Dropdown';
 import MultiUploader from '../../components/FileUploader/MultiUploader';
+import AlertModal from '../../components/Modal/Alert';
+import ConfirmModal from '../../components/Modal/Confirm';
 
 export interface UplodePageCSSProps {
   inputContainerDirection?: 'row' | 'column';
@@ -24,10 +26,20 @@ export interface UplodePageCSSProps {
 function UplodePage() {
   const navigate = useNavigate();
 
-  const [tags, setTags] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState({
+    title: '',
+    message: '',
+  });
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState({
+    title: '',
+    message: '',
+  });
 
   const {
     register,
@@ -49,10 +61,6 @@ function UplodePage() {
   }, [watch]);
 
   useEffect(() => {
-    console.log('태그', tags);
-  }, [tags]);
-
-  useEffect(() => {
     console.log('선택된 파일', selectedFiles);
   }, [selectedFiles]);
 
@@ -70,22 +78,30 @@ function UplodePage() {
 
   // 폼 전송 취소
   const onClickCancel = () => {
-    // TODO : confirm() 부분 Confirm Modal으로 변경
-    if (window.confirm('게시글 작성을 취소하시겠습니까?')) {
-      navigate('/');
-    }
+    setConfirmMessage({
+      title: '나눔글 작성 취소',
+      message: '나눔글 작성을 취소하고 이전 페이지로 돌아가시겠습니까?',
+    });
+    setShowConfirm(true);
   };
 
   // 폼 전송
   const { mutateAsync: uploadImagesMutation } = useMutation(uploadImage);
   const { mutate: addPostMutation } = useMutation(addPost, {
-    // TODO : alert() 부분 Alert Modal으로 변경
     onSuccess: () => {
-      alert('게시글이 등록되었습니다.');
+      setAlertMessage({
+        title: '나눔글 등록',
+        message: '나눔글이 등록되었습니다.',
+      });
+      setShowAlert(true);
       navigate('/');
     },
     onError: (error) => {
-      alert('게시글 등록에 실패했습니다. 다시 시도해주세요.');
+      setAlertMessage({
+        title: '나눔글 등록 실패',
+        message: '나눔글이 등록에 실패했습니다. 다시 시도해주세요.',
+      });
+      setShowAlert(true);
       console.log(error);
     },
   });
@@ -195,6 +211,30 @@ function UplodePage() {
           </S.Inner>
         </form>
       </S.Container>
+
+      {showAlert && (
+        <AlertModal
+          title={alertMessage.title}
+          message={alertMessage.message}
+          alignType="top"
+          onConfirm={() => setShowAlert(false)}
+        />
+      )}
+
+      {showConfirm && (
+        <ConfirmModal
+          title={confirmMessage.title}
+          message={confirmMessage.message}
+          confirmType="warning"
+          alignType="top"
+          onCancel={() => {
+            setShowConfirm(false);
+          }}
+          onConfirm={() => {
+            navigate('/');
+          }}
+        />
+      )}
     </MainTemplate>
   );
 }
