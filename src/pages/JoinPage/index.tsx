@@ -1,9 +1,10 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
 import MainTemplate from '../../components/template/MainTemplate';
-import Input, { InputCSSProps } from '../../components/Form/Input';
+import Input from '../../components/Form/Input';
 import SearchLocation from '../../components/Join/SearchLocation';
 
 import * as S from './styles';
@@ -28,12 +29,6 @@ function JoinPage() {
     setValue,
     watch,
   } = useForm<JoinPageProps>({ mode: 'onBlur' });
-  const InputCSSProps: InputCSSProps = {
-    width: '100%',
-    height: '100px',
-    size: 'lg',
-    focusStyle: true,
-  };
   const password = watch('password');
   const [alertMessage, setAlertMessage] = useState<string | undefined>(
     undefined
@@ -57,19 +52,17 @@ function JoinPage() {
     event.preventDefault();
     try {
       const data = await handleSubmit(onValid);
-      const response = await fetch('backend-api/user/signup', {
-        method: 'POST',
+      const response = await axios.post('/register', data, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        console.log('회원가입이 완료되었습니다.');
+      if (response.status === 200) {
+        alert('회원가입이 완료되었습니다.');
         navigate('/');
       } else {
-        const errorData = await response.json();
+        const errorData = await response.data;
         setAlertMessage(errorData.message || '회원가입에 실패했습니다.');
       }
     } catch (error) {
@@ -88,7 +81,6 @@ function JoinPage() {
           <S.H1>회원가입</S.H1>
           <form onSubmit={handleSubmit(onValid)}>
             <Input
-              {...InputCSSProps}
               label="닉네임"
               placeholder="닉네임 입력"
               {...register('nickname', {
@@ -106,7 +98,6 @@ function JoinPage() {
             />
 
             <Input
-              {...InputCSSProps}
               label="아이디"
               placeholder="아이디 입력"
               {...register('userId', {
