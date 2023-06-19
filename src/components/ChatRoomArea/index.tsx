@@ -4,15 +4,33 @@ import { useTheme } from 'styled-components'
 import { BsSend } from 'react-icons/bs'
 import { AiOutlinePlus, AiOutlineArrowLeft, AiOutlineMenu } from 'react-icons/ai'
 
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
 import Input from '../Form/Input'
 import Button from '../Button'
 
 interface OfferPageProps {
   getBack: () => void;
+  nickname: string,
+  distance: string,
 }
 
-function ChatRoomArea({ getBack }: OfferPageProps) {
+function ChatRoomArea({ getBack, nickname, distance }: OfferPageProps) {
+  const [showTakerlists, setShowTakerlists] = useState([])
+
   const theme = useTheme();
+
+  useEffect(() => {
+    const SERVER_URL = 'http://localhost:5000'
+    const fetchData = async () => {
+      const result_takerlists = await axios.get(`${SERVER_URL}/takerlists`)
+      setShowTakerlists(result_takerlists.data)
+      console.log('result_takerlists.data :', result_takerlists.data)
+    }
+    fetchData()
+  }, [])
+
 
   return (
     <S.Container>
@@ -22,8 +40,8 @@ function ChatRoomArea({ getBack }: OfferPageProps) {
         <S.ProfileContainer>
           <S.PictureContainer></S.PictureContainer>
           <S.NameDistanceContainer>
-            <span>밥먹는 춘식이</span>
-            <span>거리 약 2.5km</span>
+            <span>{nickname}</span>
+            <span>거리 약 {distance}km</span>
           </S.NameDistanceContainer>
         </S.ProfileContainer>
         <button><AiOutlineMenu /></button>
@@ -46,7 +64,9 @@ function ChatRoomArea({ getBack }: OfferPageProps) {
         </S.ChatInputContainer>
         <button><BsSend /></button>
       </S.ChatFooterContainer>
-    </S.Container >
+
+    </S.Container>
+
   )
 }
 

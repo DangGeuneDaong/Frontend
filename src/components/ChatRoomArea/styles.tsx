@@ -6,6 +6,8 @@ export const Container = styled.div`
 
   margin-left: 10px;
 
+  background: white;
+
   border: 1px solid ${(props) => props.theme.color.gray};
   border-radius: 10px;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
