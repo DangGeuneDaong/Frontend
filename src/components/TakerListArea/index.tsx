@@ -17,8 +17,6 @@ interface OfferPageProps extends OfferPageDataProps {
 
 
 function TakerListArea({ nickname, distance, content, setProps, children }: OfferPageProps) {
-  // const address = await fetch(`${SERVER_URL}/address`)
-
   return (
     <S.Container>
       <S.ListItemContainer>

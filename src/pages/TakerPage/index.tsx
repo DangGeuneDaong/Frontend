@@ -52,7 +52,6 @@ const TakerPage = () => {
             productDetails={productDetails}
           />
         ))}
-
         <CommentArea />
       </S.TakerContainer>
     </MainTemplate>

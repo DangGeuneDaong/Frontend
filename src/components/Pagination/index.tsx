@@ -10,7 +10,6 @@ interface OfferPageProps {
 
 function Pagination({ total, limit, page, setPage }: OfferPageProps) {
   const numPages = Math.ceil(total / limit);
-  console.log('numPages :', numPages)
 
   return (
     <S.Container>
