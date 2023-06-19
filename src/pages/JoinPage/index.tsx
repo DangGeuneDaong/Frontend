@@ -6,6 +6,7 @@ import axios from 'axios';
 import MainTemplate from '../../components/template/MainTemplate';
 import Input from '../../components/Form/Input';
 import SearchLocation from '../../components/Join/SearchLocation';
+import Modal from '../../components/Modal';
 
 import * as S from './styles';
 
@@ -33,49 +34,52 @@ function JoinPage() {
   const [alertMessage, setAlertMessage] = useState<string | undefined>(
     undefined
   );
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const onValid = (data: JoinPageProps) => {
-    if (data.password !== data.pwConfirm) {
-      setError(
-        'pwConfirm',
-        { message: '비밀번호가 일치하지 않습니다.' },
-        { shouldFocus: true }
-      );
-    } else {
-      console.log('회원가입이 가능합니다.');
-    }
-  };
-
-  const handleJoinSubmit = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+  const onValid = async (data: JoinPageProps) => {
+    //비밀번호 확인은 제거
+    const { pwConfirm, ...postData } = data;
     try {
-      const data = await handleSubmit(onValid);
-      const response = await axios.post('/register', data, {
+      const response = await axios.post('/register', postData, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       if (response.status === 200) {
-        alert('회원가입이 완료되었습니다.');
-        navigate('/');
+        setAlertMessage('회원가입이 완료되었습니다.');
+        setShowModal(true);
       } else {
-        const errorData = await response.data;
-        setAlertMessage(errorData.message || '회원가입에 실패했습니다.');
+        throw new Error();
       }
-    } catch (error) {
-      setAlertMessage('서버에 연결할 수 없습니다.');
+    } catch (error: any) {
+      setAlertMessage(
+        error.response
+          ? error.response.data.message || '회원가입에 실패했습니다.'
+          : '서버에 연결할 수 없습니다.'
+      );
+      setShowModal(true);
     }
   };
 
   const closeAlert = () => {
     setAlertMessage(undefined);
+    setShowModal(false);
+    if (alertMessage === '회원가입이 완료되었습니다.') {
+      navigate('/signin');
+    }
   };
 
   return (
     <MainTemplate>
+      {showModal && (
+        <Modal
+          onClose={closeAlert}
+          color={alertMessage === '회원가입이 완료되었습니다' ? 'blue' : 'red'}
+        >
+          <span>{alertMessage}</span>
+        </Modal>
+      )}
       <S.Container>
         <S.SubContainer>
           <S.H1>회원가입</S.H1>
@@ -154,16 +158,8 @@ function JoinPage() {
             <SearchLocation setValue={setValue} />
             {errors.extraError && <span>{errors.extraError.message}</span>}
 
-            {alertMessage && (
-              <div>
-                <span>{alertMessage}</span>
-                <button onClick={closeAlert}>x</button>
-              </div>
-            )}
             {isValid ? (
-              <S.ActiveJoinButton onClick={handleJoinSubmit}>
-                회원가입
-              </S.ActiveJoinButton>
+              <S.ActiveJoinButton>회원가입</S.ActiveJoinButton>
             ) : (
               <S.InactiveJoinButton disabled>회원가입</S.InactiveJoinButton>
             )}
