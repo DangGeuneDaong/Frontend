@@ -6,21 +6,54 @@ import axios from 'axios';
 import MainTemplate from '../../../components/template/MainTemplate';
 import Input from '../../../components/Form/Input';
 import Loader from '../../../components/Loader';
-//import SearchLocation from '../../components/Join/SearchLocation';
+import SearchLocation from '../../../components/Join/SearchLocation';
 
 import * as S from './styles';
 
-interface AddInfoProps {
+export interface AddInfoProps {
   nickname: string;
   location: string;
   profile_url: string;
 }
+const DEFAULT_PROFILE_URL =
+  'https://www.thechooeok.com/common/img/default_profile.png';
+const randomAdjective = [
+  '멍때리는',
+  '건방진',
+  '잠자는',
+  '신난',
+  '드러누운',
+  '밥먹는',
+  '코딩하는',
+  '삐진',
+  '귀여운',
+];
+const randomNicknames = [
+  '프로도',
+  '라이언',
+  '어피치',
+  '네오',
+  '춘식',
+  '튜브',
+  '콘',
+  '무지',
+  '제이지',
+];
+//랜덤닉네임 함수
+function generateRandomNickname() {
+  const randomAdjectiveValue =
+    randomAdjective[Math.floor(Math.random() * randomAdjective.length)];
+  const randomNicknameValue =
+    randomNicknames[Math.floor(Math.random() * randomNicknames.length)];
 
-function AddInfoPage() {
-  const [imgFile, setImgFile] = useState<string>(
-    'https://www.thechooeok.com/common/img/default_profile.png'
-  );
+  return `${randomAdjectiveValue} ${randomNicknameValue}`;
+}
+function AddInfoPage({ accessToken }: { accessToken: string | null }) {
+  const initialNickname = generateRandomNickname();
+  const [nicknameEdited, setNicknameEdited] = useState<boolean>(false);
+  const [randomNickname, setRandomNickname] = useState<string>(initialNickname);
   const fileInput = useRef<HTMLInputElement>(null);
+
   const {
     register,
     control,
@@ -28,11 +61,25 @@ function AddInfoPage() {
     handleSubmit,
     setError,
     setValue,
-  } = useForm<AddInfoProps>({ mode: 'onBlur' });
+    trigger,
+    watch,
+  } = useForm<AddInfoProps>({
+    mode: 'onBlur',
+    defaultValues: {
+      nickname: initialNickname,
+      location: '',
+      profile_url: 'https://www.thechooeok.com/common/img/default_profile.png',
+    },
+  });
+  const watchProfileUrl = watch('profile_url');
 
   const handleInfoSubmit = async (data: AddInfoProps) => {
     try {
-      await axios.post('/guest', data);
+      await axios.post('/guest', {
+        ...data,
+        profile_url: watchProfileUrl,
+        access_token: accessToken,
+      });
     } catch (error) {
       setError('nickname', { message: '추가 정보 저장에 실패했습니다' });
     }
@@ -59,33 +106,25 @@ function AddInfoPage() {
       // 읽기 동작이 성공적으로 완료 되었을 시 실행
       reader.onload = () => {
         if (reader.result) {
-          setImgFile(reader.result.toString());
+          setValue('profile_url', reader.result.toString());
         }
       };
     }
   };
-  //랜덤 닉네임을 다시 가져오는 함수 아직 미정!
+  //랜덤 닉네임
   const handleRefreshNickname = async () => {
-    try {
-      const response = await axios.get('/미정');
-      const data = response.data;
-      const newRandomNickname = data.nickname;
+    if (!nicknameEdited) {
+      const newRandomNickname = await generateRandomNickname();
+      setRandomNickname(newRandomNickname);
       setValue('nickname', newRandomNickname);
-    } catch (error) {
-      console.error(error);
     }
   };
-
   const handleUploadImg = () => {
-    if (fileInput.current) {
-      fileInput.current.click();
-    }
+    fileInput.current?.click();
   };
   const resetImg = () => {
-    setImgFile('https://www.thechooeok.com/common/img/default_profile.png');
-    if (fileInput.current) {
-      fileInput.current.value = '';
-    }
+    setValue('profile_url', DEFAULT_PROFILE_URL);
+    fileInput.current?.value && (fileInput.current.value = '');
   };
   return (
     <MainTemplate>
@@ -93,9 +132,8 @@ function AddInfoPage() {
         <S.SubContainer>
           <S.H1>추가 정보 입력</S.H1>
           <S.Form onSubmit={handleSubmit(handleInfoSubmit)}>
-            <S.ProfileImg src={imgFile} />
-            {imgFile !==
-            'https://www.thechooeok.com/common/img/default_profile.png' ? (
+            <S.ProfileImg src={watchProfileUrl} />
+            {watchProfileUrl !== DEFAULT_PROFILE_URL ? (
               <S.CancelButton onClick={resetImg}>
                 프로필 이미지 변경 취소
               </S.CancelButton>
@@ -112,34 +150,48 @@ function AddInfoPage() {
               onChange={(e) => onPreviewImg(e)}
             />
             <S.NicknameContainer>
-              <Input
-                label="닉네임"
-                placeholder={'닉네임 입력'}
-                {...register('nickname', {
-                  required: '닉네임은 필수 입력입니다.',
-                })}
-                errors={errors}
+              <Controller
+                control={control}
+                name="nickname"
+                defaultValue=""
+                rules={{ required: '닉네임은 필수 입력입니다.' }}
+                render={({ field }) => (
+                  <Input
+                    label="닉네임"
+                    placeholder={randomNickname}
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setNicknameEdited(true);
+                    }}
+                    readOnly={false}
+                  />
+                )}
               />
               <S.RefreshButton onClick={handleRefreshNickname}>
                 🔁
               </S.RefreshButton>
             </S.NicknameContainer>
-
-            <Controller
-              control={control}
-              name="location"
-              defaultValue=""
-              rules={{ required: '주소를 입력해주세요.' }}
-              render={({ field }) => (
-                <Input
-                  label="주소정보 입력"
-                  placeholder="주소 입력"
-                  {...field}
-                  readOnly
-                />
-              )}
-            />
-            {/* <SearchLocation setValue={setValue} /> */}
+            <S.NicknameContainer>
+              <Controller
+                control={control}
+                name="location"
+                defaultValue=""
+                rules={{ required: '주소를 입력해주세요.' }}
+                render={({ field }) => (
+                  <Input
+                    label="주소정보 입력"
+                    placeholder="주소 입력"
+                    {...field}
+                    readOnly
+                  />
+                )}
+              />
+              <SearchLocation
+                setValue={setValue}
+                triggerValidation={() => trigger('location')}
+              />
+            </S.NicknameContainer>
             {isValid ? (
               <S.ActiveSaveButton disabled={isLoading}>
                 {isLoading ? <Loader /> : '저장하기'}
