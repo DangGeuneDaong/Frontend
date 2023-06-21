@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: 'http://localhost:5000',
 });
 
-const POST = '/posts';
+const POST = '/Good';
 
 export const getPost = async () => {
   const response = await api.get(POST);
