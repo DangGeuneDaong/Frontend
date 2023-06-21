@@ -1,152 +1,58 @@
 {
-  "posts": [
-    {
-      "nickname": "춤추는 무지",
-      "location": "대구 달서구 대곡동",
-      "productName": "웰시코기 유기농 사료",
-      "firstCategory": "강아지",
-      "secondCategory": "사료",
-      "createdTime": "1달 전",
-      "productDetails": "안녕하세요! 웰시코기 유기농 사료 나눔합니다!"
-    }
-  ],
-  "images": [
-    {
-      "image": "https://images.unsplash.com/photo-1472552944129-b035e9ea3744?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
-    },
-    {
-      "image": "https://images.unsplash.com/photo-1597843786186-826cc3489f56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
-    },
-    {
-      "image": "https://images.unsplash.com/photo-1616668983570-a971956d8928?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80"
-    }
-  ],
-  "takerlists": [
+  "Good": [
     {
       "id": 1,
-      "nickname": "밥먹는 춘식이1",
+      "main_category": "강아지",
+      "sub_category": "사료",
+      "title": "웰시코기 유기농 사료",
+      "description": "안녕하세요! 웰시코기 유기농 사료 나눔합니다!",
+      "status": "나눔 중",
+      "good_image_list": [
+        "https://images.unsplash.com/photo-1472552944129-b035e9ea3744?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+        "https://images.unsplash.com/photo-1597843786186-826cc3489f56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80",
+        "https://images.unsplash.com/photo-1616668983570-a971956d8928?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80"
+      ],
+      "view_cnt": 333,
+      "created_at": "1달 전",
+      "modified_at": "1주일 전",
+      "user_id": {
+        "nickname": "춤추는 무지",
+        "location": "대구 달서구 대곡동"
+      }
+    }
+  ],
+  "Sharing_Application": [
+    {
+      "id": 1,
       "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
+      "nickname": "밥먹는 춘식이1",
+      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!",
+      "good_id": 1,
+      "user_id": 1
     },
     {
       "id": 2,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
+      "distance": "2.3",
+      "nickname": "밥먹는 춘식이12",
+      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!",
+      "good_id": 1,
+      "user_id": 2
     },
     {
       "id": 3,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
+      "distance": "2.3",
+      "nickname": "밥먹는 춘식이12",
+      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!",
+      "good_id": 1,
+      "user_id": 3
     },
     {
       "id": 4,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 5,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 6,
-      "nickname": "밥먹는 춘식이2",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 7,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 8,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 9,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 10,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 11,
-      "nickname": "밥먹는 춘식이3",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 12,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 13,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 14,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 15,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 16,
-      "nickname": "밥먹는 춘식이4",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 17,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 18,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 19,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 20,
-      "nickname": "밥먹는 춘식이",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
-    },
-    {
-      "id": 21,
-      "nickname": "밥먹는 춘식이5",
-      "distance": "2.5",
-      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!"
+      "distance": "2.3",
+      "nickname": "밥먹는 춘식이12",
+      "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!",
+      "good_id": 1,
+      "user_id": 4
     }
   ]
 }
