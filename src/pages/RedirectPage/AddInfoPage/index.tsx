@@ -81,7 +81,7 @@ function AddInfoPage({ accessToken }: { accessToken: string | null }) {
         access_token: accessToken,
       });
     } catch (error) {
-      setError('nickname', { message: '추가 정보 저장에 실패했습니다' });
+      setError('nickname', { message: '닉네임이 중복되었습니다.' });
     }
   };
 
@@ -96,17 +96,23 @@ function AddInfoPage({ accessToken }: { accessToken: string | null }) {
   });
 
   //프로필 사진 미리보기
+  // const createImageURL = (fileBlob) => {  // createObjectURL 방식
+  //   if (URLThumbnail) URL.revokeObjectURL(URLThumbnail);
+
+  //   setURLThumbnail(url);
+  // };
   const onPreviewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     const file = e.target.files?.[0];
-
+    console.log(file);
     if (file) {
-      reader.readAsDataURL(file); //file => URL
+      // reader.readAsDataURL(file); //file => URL
+      const url = URL.createObjectURL(file);
+      setValue('profile_url', url);
 
       // 읽기 동작이 성공적으로 완료 되었을 시 실행
       reader.onload = () => {
         if (reader.result) {
-          setValue('profile_url', reader.result.toString());
         }
       };
     }
@@ -146,7 +152,6 @@ function AddInfoPage({ accessToken }: { accessToken: string | null }) {
             <S.ImgInput
               ref={fileInput}
               type="file"
-              accept="image/*"
               onChange={(e) => onPreviewImg(e)}
             />
             <S.NicknameContainer>
@@ -187,10 +192,7 @@ function AddInfoPage({ accessToken }: { accessToken: string | null }) {
                   />
                 )}
               />
-              <SearchLocation
-                setValue={setValue}
-                triggerValidation={() => trigger('location')}
-              />
+              <SearchLocation setValue={setValue} />
             </S.NicknameContainer>
             {isValid ? (
               <S.ActiveSaveButton disabled={isLoading}>
