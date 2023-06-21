@@ -49,18 +49,11 @@ function OfferPage() {
   useEffect(() => {
     const SERVER_URL = 'http://localhost:5000'
     const fetchData = async () => {
-      const { data } = await axios.get(`${SERVER_URL}/Good`, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': 'true'
-        }
-      })
+      const { data } = await axios.get(`${SERVER_URL}/Good`)
       setShowPosts(data)
       // const result_images = await axios.get(`${SERVER_URL}/images`)
       // setShowImages(result_images.data)
-      const result_takerlists = await axios.get(`${SERVER_URL}/Sharing_Application`, {
-        withCredentials: true
-      })
+      const result_takerlists = await axios.get(`${SERVER_URL}/Sharing_Application`)
       setShowTakerlists(result_takerlists.data)
     }
     fetchData()
@@ -98,19 +91,27 @@ function OfferPage() {
           {/* {showImages.map(({ images }) => ())} */}
           <ImageCarouselArea config={config} />
 
-          {showPosts.map(({ main_category, sub_category, title, description, status, good_image_list, created_at, user_id, nickname, location }) => (
-            <PostArea
-              nickname={nickname}
-              location={location}
-              status={status}
-              title={title}
-              firstCategory={main_category}
-              secondCategory={sub_category}
-              createdTime={created_at}
-              productDetails={description}
-            />
+          {showPosts.map(({ id, main_category, sub_category, title, description, status, good_image_list, created_at, user_id }) => (
+            <>
+              <PostArea
+                key={id}
+                nickname={user_id["nickname"]}
+                location={user_id["location"]}
+                status={status}
+                title={title}
+                firstCategory={main_category}
+                secondCategory={sub_category}
+                createdTime={created_at}
+                productDetails={description}
+              />
+            </>
           ))}
-          <EditArea />
+          {/* <EditArea /> */}
+          <S.EditContainer>
+            <Button>삭제하기</Button>
+            <Button>수정하기</Button>
+            <Button>나눔완료</Button>
+          </S.EditContainer>
           <S.ListTitleContainer>Taker 목록</S.ListTitleContainer>
           {showTakerlists.slice(offset, offset + limit).map(({ id, nickname, distance, content }) => (
             <>
@@ -134,11 +135,7 @@ function OfferPage() {
 
 
         {/* {showTakerlists.map(({ id, nickname, distance }) => ())} */}
-        <>
-          <ChatRoomArea id={selectedUserData.id} nickname={selectedUserData.nickname} distance={selectedUserData.distance} />
-        </>
-
-
+        {isChat !== -1 && <ChatRoomArea nickname={selectedUserData.nickname} distance={selectedUserData.distance} />}
       </S.Container>
     </MainTemplate>
   );

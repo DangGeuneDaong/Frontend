@@ -24,12 +24,7 @@ function CommentArea() {
 
   const SERVER_URL = 'http://localhost:5000'
   const fetchData = async (content: any) => {
-    const result_comment = await axios.post(`${SERVER_URL}/Sharing_Application`, content, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true'
-      }
-    })
+    const result_comment = await axios.post(`${SERVER_URL}/Sharing_Application`, content)
     setPostComment(result_comment.data.content)
   }
   const deleteData = async (content: any) => {

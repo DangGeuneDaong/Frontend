@@ -29,12 +29,7 @@ const TakerPage = () => {
   useEffect(() => {
     const SERVER_URL = 'http://localhost:5000'
     const fetchData = async () => {
-      const result_posts = await axios.get(`${SERVER_URL}/Good`, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': 'true'
-        }
-      })
+      const result_posts = await axios.get(`${SERVER_URL}/Good`)
       setShowPosts(result_posts.data)
       // const result_images = await axios.get(`${SERVER_URL}/images`)
       // setShowImages(result_images.data)

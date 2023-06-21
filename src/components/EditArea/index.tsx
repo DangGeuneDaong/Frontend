@@ -11,13 +11,8 @@ function EditArea() {
 
   const SERVER_URL = 'http://localhost:5000'
   const fetchData = async () => {
-    const { data } = await axios.post(`${SERVER_URL}/Good`, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true'
-      }
-    })
-    setPostStatus(data)
+    // const { data } = await axios.post(`${SERVER_URL}/Good`)
+    // setPostStatus(data)
   }
   fetchData()
 
