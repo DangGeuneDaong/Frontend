@@ -8,6 +8,7 @@ export const Container = styled.div`
 
 export const ProfileContainer = styled.div`
   display: flex;
+  align-items: center;
 
   > div:first-child {
     width: 50px;
@@ -17,6 +18,13 @@ export const ProfileContainer = styled.div`
 
     background-color: ${(props) => props.theme.color.red};
     border-radius: 50%;
+  }
+
+  > div:last-child {
+    margin-left: auto;
+    color: ${(props) => props.theme.color.red};
+    ${(props) => props.theme.font.heading_md}
+    margin-right: 5px;
   }
 
   padding-top: 5px;
