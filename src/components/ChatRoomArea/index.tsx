@@ -11,35 +11,37 @@ import Input from '../Form/Input'
 import Button from '../Button'
 
 interface OfferPageProps {
-  getBack: () => void;
-  nickname: string,
-  distance: string,
+  // getBack: () => void;
+  id?: number,
+  nickname?: string,
+  distance?: string,
 }
 
-function ChatRoomArea({ getBack, nickname, distance }: OfferPageProps) {
+function ChatRoomArea({ id, nickname, distance }: OfferPageProps) {
   const [showTakerlists, setShowTakerlists] = useState([])
 
   const theme = useTheme();
 
-  useEffect(() => {
-    const SERVER_URL = 'http://localhost:5000'
-    const fetchData = async () => {
-      const result_takerlists = await axios.get(`${SERVER_URL}/takerlists`)
-      setShowTakerlists(result_takerlists.data)
-      console.log('result_takerlists.data :', result_takerlists.data)
-    }
-    fetchData()
-  }, [])
+  // useEffect(() => {
+  //   const SERVER_URL = 'http://localhost:5000'
+  //   const fetchData = async () => {
+  //     const result_takerlists = await axios.get(`${SERVER_URL}/Sharing_Application`)
+  //     setShowTakerlists(result_takerlists.data)
+  //     console.log('result_takerlists.data :', result_takerlists.data)
+  //   }
+  //   fetchData()
+  // }, [])
 
 
   return (
     <S.Container>
       <S.ChatHeaderContainer>
-        <button onClick={getBack}
+        <button
         ><AiOutlineArrowLeft /></button>
         <S.ProfileContainer>
           <S.PictureContainer></S.PictureContainer>
           <S.NameDistanceContainer>
+            <span>{id}</span>
             <span>{nickname}</span>
             <span>거리 약 {distance}km</span>
           </S.NameDistanceContainer>

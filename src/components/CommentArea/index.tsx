@@ -22,15 +22,18 @@ function CommentArea() {
   const { register, handleSubmit, formState: { errors }, watch, // 실시간 값 감시 가능
   } = useForm();
 
+  const SERVER_URL = 'http://localhost:5000'
   const fetchData = async (content: any) => {
-    const SERVER_URL = 'http://localhost:5000'
-    const result_comment = await axios.post(`${SERVER_URL}/takerlists`, content)
+    const result_comment = await axios.post(`${SERVER_URL}/Sharing_Application`, content, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }
+    })
     setPostComment(result_comment.data.content)
   }
-
   const deleteData = async (content: any) => {
-    const SERVER_URL = 'http://localhost:5000'
-    const result_comment = await axios.delete(`${SERVER_URL}/takerlists`)
+    const result_comment = await axios.delete(`${SERVER_URL}/Sharing_Application`)
     setPostComment(result_comment.data.content)
   }
 

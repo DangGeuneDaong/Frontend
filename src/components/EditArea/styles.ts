@@ -4,7 +4,7 @@ export const Container = styled.div`
   width: 700px;
   margin: 0 auto;
 
-  > button {
+  button {
     width: 90px;
     height: 40px;
 
@@ -15,3 +15,5 @@ export const Container = styled.div`
     font-weight: 600;
   }
 `;
+
+export const Form = styled.form``;

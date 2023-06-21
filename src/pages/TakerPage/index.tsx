@@ -29,7 +29,12 @@ const TakerPage = () => {
   useEffect(() => {
     const SERVER_URL = 'http://localhost:5000'
     const fetchData = async () => {
-      const result_posts = await axios.get(`${SERVER_URL}/posts`)
+      const result_posts = await axios.get(`${SERVER_URL}/Good`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': 'true'
+        }
+      })
       setShowPosts(result_posts.data)
       // const result_images = await axios.get(`${SERVER_URL}/images`)
       // setShowImages(result_images.data)
@@ -41,15 +46,16 @@ const TakerPage = () => {
     <MainTemplate>
       <S.TakerContainer>
         <ImageCarouselArea config={config} />
-        {showPosts.map(({ nickname, location, productName, firstCategory, secondCategory, createdTime, productDetails }) => (
+        {showPosts.map(({ main_category, sub_category, title, description, status, created_at, user_id }) => (
           <PostArea
-            nickname={nickname}
-            location={location}
-            productName={productName}
-            firstCategory={firstCategory}
-            secondCategory={secondCategory}
-            createdTime={createdTime}
-            productDetails={productDetails}
+            nickname={user_id[0]}
+            location={user_id[1]}
+            status={status}
+            title={title}
+            firstCategory={main_category}
+            secondCategory={sub_category}
+            createdTime={created_at}
+            productDetails={description}
           />
         ))}
         <CommentArea />
