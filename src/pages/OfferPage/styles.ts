@@ -18,6 +18,23 @@ export const OfferContainer = styled.div`
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
 `;
 
+export const EditContainer = styled.div`
+  width: 700px;
+  margin: 0 auto;
+
+  display: flex;
+  button {
+    width: 90px;
+    height: 40px;
+
+    margin: 10px;
+
+    background-color: ${(props) => props.theme.color.primary};
+    border-radius: 10px;
+    font-weight: 600;
+  }
+`;
+
 export const Image = styled.img`
   width: 50px;
   height: 50px;
