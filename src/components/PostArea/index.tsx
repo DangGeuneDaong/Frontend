@@ -1,10 +1,10 @@
 import * as S from './styles';
 
-import React from "react";
+import React from 'react';
 
 interface MainTemplateProps {
-  nickname: string;
-  location: string;
+  nickname?: string;
+  location?: string;
   status: string;
   title: string;
   firstCategory: string;
@@ -13,8 +13,16 @@ interface MainTemplateProps {
   productDetails: string;
 }
 
-function ImageCarousel({ nickname, location, status, title, firstCategory, secondCategory, createdTime, productDetails }: MainTemplateProps) {
-
+function ImageCarousel({
+  nickname,
+  location,
+  status,
+  title,
+  firstCategory,
+  secondCategory,
+  createdTime,
+  productDetails,
+}: MainTemplateProps) {
   return (
     <S.Container>
       <S.ProfileContainer>

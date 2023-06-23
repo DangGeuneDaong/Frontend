@@ -29,7 +29,6 @@ export const EditContainer = styled.div`
 
     margin: 10px;
 
-    background-color: ${(props) => props.theme.color.primary};
     border-radius: 10px;
     font-weight: 600;
   }
