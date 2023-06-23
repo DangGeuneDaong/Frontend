@@ -26,3 +26,27 @@ export const HeaderRightMenu = styled.div`
   align-items: center;
   margin-left: auto;
 `;
+
+export const UserProfileContainer = styled.div`
+  position: relative;
+  cursor: pointer;
+`;
+
+export const UserProfileImage = styled.span`
+  display: inline-flex;
+  overflow: hidden;
+
+  width: 55px;
+  min-width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 1px solid ${(props) => props.theme.color.lightGray};
+
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
