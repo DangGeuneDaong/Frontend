@@ -9,32 +9,32 @@ import CommentArea from '../../components/CommentArea';
 import MainTemplate from '../../components/template/MainTemplate';
 import axiosInstance from '../../api';
 
-const config = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1472552944129-b035e9ea3744?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1597843786186-826cc3489f56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1616668983570-a971956d8928?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80',
-  },
-];
+interface PostsProps {
+  id: number;
+  main_category: string;
+  sub_category: string;
+  title: string;
+  description: string;
+  status: string;
+  good_image_list: string[];
+  view_cnt: number;
+  created_at: string;
+  modified_at: string;
+  user_id: {
+    nickname: string;
+    location: string;
+  };
+}
 
-const TakerPage = () => {
-  const [showPosts, setShowPosts] = useState([]);
+function TakerPage() {
+  const [showPosts, setShowPosts] = useState<PostsProps>();
 
   useEffect(() => {
     const SERVER_URL = 'http://localhost:5000';
     const fetchData = async () => {
       const instance: AxiosInstance = axiosInstance();
-      const result_posts = await instance.get(`${SERVER_URL}/Good`);
-      setShowPosts(result_posts.data);
-      // const result_images = await axios.get(`${SERVER_URL}/images`)
-      // setShowImages(result_images.data)
+      const { data } = await instance.get(`${SERVER_URL}/Good/1`);
+      setShowPosts(data);
     };
     fetchData();
   }, []);
@@ -42,33 +42,26 @@ const TakerPage = () => {
   return (
     <MainTemplate>
       <S.TakerContainer>
-        <ImageCarouselArea config={config} />
-        {showPosts.map(
-          ({
-            main_category,
-            sub_category,
-            title,
-            description,
-            status,
-            created_at,
-            user_id,
-          }) => (
+        {showPosts && (
+          <>
+            <ImageCarouselArea config={showPosts?.good_image_list} />
             <PostArea
-              nickname={user_id[0]}
-              location={user_id[1]}
-              status={status}
-              title={title}
-              firstCategory={main_category}
-              secondCategory={sub_category}
-              createdTime={created_at}
-              productDetails={description}
+              key={showPosts.id}
+              nickname={showPosts.user_id.nickname}
+              location={showPosts.user_id.location}
+              status={showPosts.status}
+              title={showPosts.title}
+              firstCategory={showPosts.main_category}
+              secondCategory={showPosts.sub_category}
+              createdTime={showPosts.created_at}
+              productDetails={showPosts.description}
             />
-          )
+          </>
         )}
         <CommentArea />
       </S.TakerContainer>
     </MainTemplate>
   );
-};
+}
 
 export default TakerPage;

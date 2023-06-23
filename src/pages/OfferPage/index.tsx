@@ -35,10 +35,27 @@ interface DataProps {
   distance?: string;
 }
 
+interface PostsProps {
+  id: number;
+  main_category: string;
+  sub_category: string;
+  title: string;
+  description: string;
+  status: string;
+  good_image_list: string[];
+  view_cnt: number;
+  created_at: string;
+  modified_at: string;
+  user_id: {
+    nickname: string;
+    location: string;
+  };
+}
+
 function OfferPage() {
   const [showImages, setShowImages] = useState([]);
-  const [showPosts, setShowPosts] = useState([]);
-  const [showTakerlists, setShowTakerlists] = useState([]);
+  const [showPosts, setShowPosts] = useState<PostsProps>(); // 1개를 받아오기 때문에 배열 사용 X
+  const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
 
   const LIMIT = 5;
   const [page, setPage] = useState(1);
@@ -52,22 +69,18 @@ function OfferPage() {
     const SERVER_URL = 'http://localhost:5000';
     const fetchData = async () => {
       const instance: AxiosInstance = axiosInstance();
-      const { data } = await instance.get(`${SERVER_URL}/Good`);
+      const { data } = await instance.get(`${SERVER_URL}/Good/1`);
+      // for (const key in goodData) {
+      //   console.log('key : ', key);
+      // }
       setShowPosts(data);
-      // const result_images = await axios.get(`${SERVER_URL}/images`)
-      // setShowImages(result_images.data)
       const result_takerlists = await instance.get(
         `${SERVER_URL}/Sharing_Application`
       );
       setShowTakerlists(result_takerlists.data);
     };
     fetchData();
-  }, []);
-
-  // 디버깅용
-  useEffect(() => {
-    console.log('selectedButtonId', selectedButtonId);
-  }, [selectedButtonId]);
+  }, [showPosts]);
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
     id: -1,
@@ -95,50 +108,50 @@ function OfferPage() {
     setSelectedUserData(data);
   };
 
-  const changeSharing = (status: string) => {
-    if (status === '나눔 중') {
-    }
+  const onClickStatusHandler = () => {
+    const instance: AxiosInstance = axiosInstance();
+    instance.patch('http://localhost:5000/Good/1', {
+      status: '나눔 완료',
+    });
+
+    showPosts?.status === '나눔 완료' && 'disabled';
   };
+
+  // useEffect(() => {}, [showPosts?.status]);
 
   return (
     <MainTemplate>
       <S.Container>
         <S.OfferContainer>
-          {/* {showImages.map(({ images }) => ())} */}
-          <ImageCarouselArea config={config} />
-
-          {showPosts.map(
-            ({
-              id,
-              main_category,
-              sub_category,
-              title,
-              description,
-              status,
-              good_image_list,
-              created_at,
-              user_id,
-            }) => (
-              <>
-                <PostArea
-                  key={id}
-                  nickname={user_id['nickname']}
-                  location={user_id['location']}
-                  status={status}
-                  title={title}
-                  firstCategory={main_category}
-                  secondCategory={sub_category}
-                  createdTime={created_at}
-                  productDetails={description}
-                />
-              </>
-            )
+          {showPosts && (
+            <>
+              <ImageCarouselArea config={showPosts?.good_image_list} />
+              <PostArea
+                key={showPosts.id}
+                nickname={showPosts.user_id.nickname}
+                location={showPosts.user_id.location}
+                status={showPosts.status}
+                title={showPosts.title}
+                firstCategory={showPosts.main_category}
+                secondCategory={showPosts.sub_category}
+                createdTime={showPosts.created_at}
+                productDetails={showPosts.description}
+              />
+            </>
           )}
+
           {/* <EditArea /> */}
           <S.EditContainer>
             <Button>삭제하기</Button>
             <Button>수정하기</Button>
-            <Button>나눔완료</Button>
+            <Button
+              onClickHandler={onClickStatusHandler}
+              styleType={
+                showPosts?.status === '나눔 완료' ? 'disabled' : 'primary'
+              }
+            >
+              나눔완료
+            </Button>
           </S.EditContainer>
           <S.ListTitleContainer>Taker 목록</S.ListTitleContainer>
           {showTakerlists
