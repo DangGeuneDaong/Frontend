@@ -1,12 +1,9 @@
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
 import axios from 'axios';
 
-import AddInfoPage from '../AddInfoPage';
-import { kakaoAccessTokenState } from '../../../states/authState';
+import Loader from '../../../components/Loader';
 
 function RedirectKakaoPage() {
-  const [accessToken, setAccessToken] = useRecoilState(kakaoAccessTokenState);
   useEffect(() => {
     const params = new URL(window.location.href).searchParams;
     const code = params.get('code');
@@ -29,7 +26,6 @@ function RedirectKakaoPage() {
       .then((res) => {
         console.log(res);
         //엑세스 토큰 저장
-        setAccessToken(res.data.access_token);
       })
 
       .catch((error) => {
@@ -48,7 +44,7 @@ function RedirectKakaoPage() {
         console.log(error.config);
       });
   }, []);
-  return <AddInfoPage accessToken={accessToken} />;
+  return <Loader />;
 }
 
 export default RedirectKakaoPage;

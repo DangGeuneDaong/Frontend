@@ -1,14 +1,10 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
 
-import { naverAccessTokenState } from '../../../states/authState';
-import AddInfoPage from '../AddInfoPage';
+import Loader from '../../../components/Loader';
 
 function RedirectNaverPage() {
-  const [accessToken, setAccessToken] = useRecoilState(naverAccessTokenState);
-
   useEffect(() => {
     const params = new URL(window.location.href).searchParams;
     const code = params.get('code');
@@ -29,7 +25,6 @@ function RedirectNaverPage() {
       .then((res) => {
         console.log(res);
         //엑세스 토큰 저장
-        setAccessToken(res.data.access_token);
       })
 
       .catch((error) => {
@@ -48,7 +43,7 @@ function RedirectNaverPage() {
         console.log(error.config);
       });
   }, []);
-  return <AddInfoPage accessToken={accessToken} />;
+  return <Loader />;
 }
 
 export default RedirectNaverPage;
