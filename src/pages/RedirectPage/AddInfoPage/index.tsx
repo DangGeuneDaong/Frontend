@@ -96,17 +96,12 @@ function AddInfoPage({ accessToken }: { accessToken: string | null }) {
   });
 
   //프로필 사진 미리보기
-  // const createImageURL = (fileBlob) => {  // createObjectURL 방식
-  //   if (URLThumbnail) URL.revokeObjectURL(URLThumbnail);
-
-  //   setURLThumbnail(url);
-  // };
   const onPreviewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     const file = e.target.files?.[0];
     console.log(file);
     if (file) {
-      // reader.readAsDataURL(file); //file => URL
+      //file => URL
       const url = URL.createObjectURL(file);
       setValue('profile_url', url);
 
