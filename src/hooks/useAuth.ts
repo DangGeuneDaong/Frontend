@@ -1,19 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { accessTokenState } from '../states/authState';
+import { useState } from 'react';
+import axios from 'axios';
+
 import { LoginPageProps } from '../pages/LoginPage';
 //import { JoinPageProps } from '../pages/JoinPage';
 import {
   //registerRequest,
   loginRequest,
-  silentRefreshRequest,
 } from '../apis/auth/api';
 
-//엑세스토큰 만료시간 : 6시간
-const JWT_EXPIRY_TIME = 6 * 60 * 60 * 1000;
-
 export function useAuth() {
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | undefined>(
@@ -43,6 +38,7 @@ export function useAuth() {
   //     setError(error);
   //   }
   // };
+
   //로그인 요청 함수
   const handleLogin = async (data: LoginPageProps) => {
     setIsLoading(true);
@@ -55,7 +51,6 @@ export function useAuth() {
       setShowModal(true);
       if (!accessToken) throw new Error('토큰이 존재하지 않습니다.');
       setIsLoading(false);
-      setAccessToken(accessToken);
     } catch (error: any) {
       setAlertMessage(
         error.response
@@ -67,33 +62,6 @@ export function useAuth() {
       setError(error);
     }
   };
-  //토큰이 만료되기 전 요청하는 함수로 자동으로 토큰 갱신
-  const handleSilentRefresh = async () => {
-    try {
-      const response = await silentRefreshRequest();
-      if (response.status !== 200) throw new Error('서버가 작동하지 않습니다.');
-
-      const { accessToken } = response.data;
-      if (!accessToken) throw new Error('토큰이 존재하지 않습니다.');
-      setAccessToken(accessToken);
-    } catch (error: any) {
-      setError(error);
-    }
-  };
-
-  //액세스 토큰이 변경될때마다 만료시간 후에 handleSilentRefresh를 호출해서 액세스 토큰 갱신
-  useEffect(() => {
-    let refreshTimeout: NodeJS.Timeout;
-    if (accessToken) {
-      refreshTimeout = setTimeout(handleSilentRefresh, JWT_EXPIRY_TIME);
-    }
-    //useEffect가 다시 호출되는 경우 이전에 설정한 setTimeout을 초기화
-    return () => {
-      if (refreshTimeout) {
-        clearTimeout(refreshTimeout);
-      }
-    };
-  }, [accessToken]);
 
   return {
     handleLogin,
