@@ -4,15 +4,17 @@ import * as S from './styles';
 
 interface ItemSearchBarProps {
   onChangeKeyword: Dispatch<SetStateAction<string>>;
+  setPage: Dispatch<SetStateAction<number>>;
 }
 
-const ItemSearchBar = ({onChangeKeyword}: ItemSearchBarProps) => {
+const ItemSearchBar = ({onChangeKeyword, setPage}: ItemSearchBarProps) => {
   const [keyword, setKeyword] = useState<string>('');
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
   const searchItemByKeyword = () => {
     if (keyword !== '') {
       onChangeKeyword(keyword);
+      setPage(1);
     } else {
       console.log('검색할 키워드를 입력해주세요!'); // 모달창?
       setIsFocus(true);
@@ -22,6 +24,7 @@ const ItemSearchBar = ({onChangeKeyword}: ItemSearchBarProps) => {
   const removeInputValue = () => {
     setKeyword('');
     onChangeKeyword('');
+    setPage(1);
   };
 
   return (

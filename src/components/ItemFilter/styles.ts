@@ -71,6 +71,7 @@ export const PetTypeLabel = styled.label`
   text-align: center;
   box-sizing: border-box;
   background-color: white;
+  cursor: pointer;
 
   &:hover {
     /* border: 1px solid ${props => props.theme.color.primary}; */
@@ -112,6 +113,7 @@ export const StatusLabel = styled.label`
   text-align: center;
   box-sizing: border-box;
   background-color: white;
+  cursor: pointer;
 
   &:hover {
     /* border: 1px solid ${props => props.theme.color.primary}; */

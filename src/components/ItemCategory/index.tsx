@@ -8,12 +8,14 @@ import * as S from './styles';
 
 interface ItemCategoryProps {
   onSelectCategory: Dispatch<SetStateAction<string>>;
+  setPage: Dispatch<SetStateAction<number>>;
 }
 
-const ItemCategory = ({ onSelectCategory }: ItemCategoryProps) => {
+const ItemCategory = ({ onSelectCategory, setPage }: ItemCategoryProps) => {
   const selectCategory = (e: ChangeEvent<HTMLFormElement>) => {
     onSelectCategory(e.target.value);
-  }
+    setPage(1);
+  };
 
   return (
     <S.Container onChange={selectCategory}>

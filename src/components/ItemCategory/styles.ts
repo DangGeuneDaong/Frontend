@@ -19,9 +19,11 @@ export const CategoryLabel = styled.label`
   border-radius: 16px;
   text-align: center;
   box-sizing: border-box;
+  cursor: pointer;
 
   &:hover {
-    border: 1px solid ${props => props.theme.color.primary};
+    /* border: 1px solid ${props => props.theme.color.primary}; */
+    border: 1px solid #FA5672;
   }
 `;
 
@@ -29,7 +31,9 @@ export const Category = styled.input`
   display: none;
   
   &:checked + label{
-    background-color: ${props => props.theme.color.primary};
+    /* background-color: ${props => props.theme.color.primary}; */
+    background-color: #FA5672;
+    color: white;
     border: none;
   }
 `;

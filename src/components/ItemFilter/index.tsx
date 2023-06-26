@@ -14,9 +14,10 @@ interface ItemFilterButtonProps {
   condition: ItemFilterProps;
   onClose: Dispatch<SetStateAction<boolean>>;
   onSelectFilter: Dispatch<SetStateAction<ItemFilterProps>>;
+  setPage: Dispatch<SetStateAction<number>>;
 }
 
-const ItemFilter = ({ condition, onClose, onSelectFilter } : ItemFilterButtonProps) => {
+const ItemFilter = ({ condition, onClose, onSelectFilter, setPage } : ItemFilterButtonProps) => {
   const [petType, setPetType] = useState<string>(condition.petType);
   const [status, setStatus] = useState<string>(condition.status);
 
@@ -32,6 +33,7 @@ const ItemFilter = ({ condition, onClose, onSelectFilter } : ItemFilterButtonPro
       }
     }
     onSelectFilter({...condition});
+    setPage(1);
     onClose(false);
   };
 

@@ -25,9 +25,10 @@ export const ItemSearchInputLabel = styled.label<ItemSearchInputLabelCSSProps>`
   gap: 8px;
   width: 310px;
   height: 45px;
-  border: ${props => props.focus && '1.5px solid' + props.theme.color.primary};
+  /* border: ${props => props.focus && '1.5px solid' + props.theme.color.primary}; */
+  border: ${props => props.focus && '1.5px solid' + '#FA5672'};
   border-radius: 14px;
-  background-color: white;
+  background-color: transparent;
   box-shadow: ${props => !props.focus && '0 0 5px 2px rgba(0,0,0,0.1)'};
 `;
 
@@ -37,6 +38,7 @@ export const ItemSearchInput = styled.input`
   height: 32px;
   font-size: 15px;
   border: none;
+  background-color: transparent;
 `;
 
 export const ItemSearchButton = styled(AiOutlineSearch)<ItemSearchButtonCSSProps>`
@@ -44,7 +46,8 @@ export const ItemSearchButton = styled(AiOutlineSearch)<ItemSearchButtonCSSProps
   margin-left: 18px;
   width: 18px;
   height: 18px;
-  color: ${props => props.$isFocus && props.theme.color.primary};
+  /* color: ${props => props.$isFocus && props.theme.color.primary}; */
+  color: ${props => props.$isFocus && '#FA5672'};
 `;
 
 export const RemoveInputValueButton = styled.button`
