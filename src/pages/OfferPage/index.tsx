@@ -57,7 +57,7 @@ function OfferPage() {
   const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
   const [selectedButtonId, setSelectedButtonId] = useState<number | null>(null); // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
   const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isOpenSharingModal, setIsOpenSharingModal] = useState<boolean>(false);
   const [page, setPage] = useState(1);
 
   const LIMIT = 5;
@@ -104,22 +104,22 @@ function OfferPage() {
     setSelectedUserData(data);
   };
 
-  const onClickConfirmModalHandler = () => {
+  const onClickSharingConfirmModalHandler = () => {
     // 없던 모달창이 생김
     {
-      !isOpenModal && setIsOpenModal(true);
+      !isOpenSharingModal && setIsOpenSharingModal(true);
     }
   };
-  const onClickCancelModalHandler = () => {
+  const onClickSharingCancelModalHandler = () => {
     // 있던 모달창이 사라짐
     {
-      isOpenModal && setIsOpenModal(false);
+      isOpenSharingModal && setIsOpenSharingModal(false);
     }
   };
 
   const onClickStatusHandler = async () => {
     const instance: AxiosInstance = axiosInstance();
-    const { data } = await instance.patch('http://localhost:5000/Good/1', {
+    const { data } = await instance.patch(`${SERVER_URL}/Good/1`, {
       status: '나눔 완료',
     }); // 구조 분해 할당
     if (showPosts) {
@@ -129,7 +129,29 @@ function OfferPage() {
 
     // 있던 모달창이 사라짐
     {
-      isOpenModal && setIsOpenModal(false);
+      isOpenSharingModal && setIsOpenSharingModal(false);
+    }
+  };
+
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
+  const onClickDeleteConfirmModalHandler = () => {
+    {
+      !isOpenDeleteModal && setIsOpenDeleteModal(true);
+    }
+  };
+  const onClickDeleteCancelModalHandler = () => {
+    {
+      isOpenDeleteModal && setIsOpenDeleteModal(false);
+    }
+  };
+  const onClickGoodDataDeleteHandler = async () => {
+    const instance: AxiosInstance = axiosInstance();
+    await instance.delete(`${SERVER_URL}/Good/2`);
+    navigate(`/`); // main Page로 이동
+
+    // 있던 모달창이 사라짐
+    {
+      isOpenDeleteModal && setIsOpenDeleteModal(false);
     }
   };
 
@@ -160,7 +182,17 @@ function OfferPage() {
 
           {/* <EditArea /> */}
           <S.EditContainer>
-            <Button>삭제하기</Button>
+            <Button onClickHandler={onClickDeleteConfirmModalHandler}>
+              삭제하기
+            </Button>
+            {isOpenDeleteModal && (
+              <Confirm
+                title={'정말로 삭제하시겠습니까?'}
+                message={'확인 버튼을 누르실 경우 해당 게시글이 삭제됩니다.'}
+                onConfirm={onClickGoodDataDeleteHandler}
+                onCancel={onClickDeleteCancelModalHandler}
+              />
+            )}
             <Button
               onClickHandler={() => {
                 navigate(`/edit/1`); // 차후 `/edit/${id}` 로 변경해야 됨
@@ -169,19 +201,21 @@ function OfferPage() {
               수정하기
             </Button>
             <Button
-              onClickHandler={onClickConfirmModalHandler}
+              onClickHandler={onClickSharingConfirmModalHandler}
               styleType={
                 showPosts?.status === '나눔 완료' ? 'disabled' : 'primary'
               }
             >
               나눔완료
             </Button>
-            {isOpenModal && (
+            {isOpenSharingModal && (
               <Confirm
-                title={'레알로 나눔완료합니까?'}
-                message={'나눔 중인데 찐으로 완료로 바꿉니까?'}
+                title={'나눔완료로 변경하시겠습니까?'}
+                message={
+                  '확인 버튼을 누르실 경우 나눔 중에서 나눔 완료로 변경되어 새로운 신청자를 받을 수 없습니다.'
+                }
                 onConfirm={onClickStatusHandler}
-                onCancel={onClickCancelModalHandler} // 재사용성을 위해
+                onCancel={onClickSharingCancelModalHandler} // 재사용성을 위해
               />
             )}
           </S.EditContainer>
