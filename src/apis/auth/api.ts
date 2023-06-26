@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { LoginPageProps } from '../../pages/LoginPage';
 
-const REFRESH_URL = 'http://localhost:3000/refresh-token';
+const REFRESH_URL = 'http://localhost:3000/token';
 
 export const instance = axios.create({
   baseURL: 'http://localhost:3000',
   headers: { 'Content-Type': 'application/json' },
-  //withCredentials: true,
+  withCredentials: true,
 });
 
 instance.interceptors.request.use((config) => {
@@ -60,5 +60,9 @@ instance.interceptors.response.use(
 );
 
 export function loginRequest(data: LoginPageProps) {
-  return instance.post('/login', data);
+  return axios.post('/login', data);
+}
+
+export function socialLoginRequest() {
+  return axios.post;
 }
