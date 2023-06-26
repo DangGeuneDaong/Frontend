@@ -2,21 +2,22 @@ import * as S from './styles';
 
 import React from 'react';
 
-interface MainTemplateProps {
+export interface MainTemplateProps {
   nickname?: string;
   location?: string;
-  status: string;
-  title: string;
-  firstCategory: string;
-  secondCategory: string;
-  createdTime: string;
-  productDetails: string;
+  status?: React.ReactNode;
+  title?: string;
+  firstCategory?: string;
+  secondCategory?: string;
+  createdTime?: string;
+  productDetails?: string;
 }
 
 function ImageCarousel({
   nickname,
   location,
   status,
+  changeStyle,
   title,
   firstCategory,
   secondCategory,
