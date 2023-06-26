@@ -17,7 +17,6 @@ function ImageCarousel({
   nickname,
   location,
   status,
-  changeStyle,
   title,
   firstCategory,
   secondCategory,
