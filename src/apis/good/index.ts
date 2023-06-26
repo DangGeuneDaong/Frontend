@@ -106,3 +106,16 @@ export const editPost = async (data: any) => {
     console.log('에러 발생', error);
   }
 };
+
+export const getPosts = async (requestURL: string) => {
+  const instance = axiosInstance();
+
+  try {
+    const response = await instance.get(requestURL);  
+    if (response.data === null)
+      throw new Error('데이터가 존재하지 않습니다.');
+    return response;
+  } catch(error) {
+    console.log('error : ', error);
+  }
+};

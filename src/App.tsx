@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 
-import MainPage from './pages/MainPage/MainPage';
+import MainPage from './pages/MainPage/index';
 import TakerPage from './pages/TakerPage';
 import OfferPage from './pages/OfferPage';
 import AddInfoPage from './pages/RedirectPage/AddInfoPage';
@@ -12,7 +12,7 @@ import JoinPage from './pages/JoinPage';
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
+      <Route path="/" element={<MainPage />}/>
       <Route path="/taker" element={<TakerPage />} />
       <Route path="/offer" element={<OfferPage />} />
       <Route path="/signin" element={<LoginPage />} />
