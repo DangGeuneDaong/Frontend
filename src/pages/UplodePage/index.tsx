@@ -128,6 +128,14 @@ function UplodePage() {
     }
   };
 
+  const onAlertMessage = (message: any) => {
+    setAlertMessage({
+      title: message.title,
+      message: message.message,
+    });
+    setShowAlert(true);
+  };
+
   return (
     <MainTemplate>
       <S.Container>
@@ -136,6 +144,7 @@ function UplodePage() {
             {/* 이미지 등록 컨테이너 */}
             <div style={{ marginBottom: '20px' }}>
               <MultiUploader
+                onAlertMessage={(message) => onAlertMessage(message)}
                 onSelectItem={(files) => setSelectedFiles(files)}
               />
             </div>
