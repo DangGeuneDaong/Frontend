@@ -6,7 +6,7 @@ import axios from 'axios';
 import MainTemplate from '../../../components/template/MainTemplate';
 import Input from '../../../components/Form/Input';
 import Loader from '../../../components/Loader';
-import SearchLocation from '../../../components/Join/SearchLocation';
+import SearchLocation from '../../../components/SearchLocation';
 
 import * as S from './styles';
 
