@@ -13,7 +13,12 @@ export const Container = styled.li`
   border-bottom: 1px solid rgba(0,0,0,0.1);
 
   &:hover {
-    background-color: rgba(242, 183, 5, 0.25);
+    /* background-color: rgba(242, 183, 5, 0.25); */
+    background-color: rgba(250, 86, 114, 0.25);
+  }
+
+  &:last-child {
+    border-bottom: none;
   }
 `;
 
@@ -21,6 +26,7 @@ export const ItemSection = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  cursor: pointer;
 `;
 
 export const ItemBasicInfo = styled.div`
@@ -38,12 +44,12 @@ export const ItemLocation = styled.span`
 `;
 
 export const ItemStatus = styled.span<ItemStatusCSSProps>`
-  /* margin: 12px 0px 0 0; */
   margin-bottom: 4px;
-  width: 40px;
+  width: 42px;
   font-size: 12px;
   font-weight: bold;
-  color: ${props => props.status === '나눔중' ? props.theme.color.primary : 'black'};
+  /* color: ${props => props.status === '나눔중' ? props.theme.color.primary : 'black'}; */
+  color: ${props => props.status === 'sharing' ? '#FA5672' : 'black'};
 `;
 
 export const ItemImages = styled.div`
