@@ -7,7 +7,8 @@ export const Container = styled.div`
   align-items: center;
   gap: 8px;
   padding: 12px 28px;
-  border: 1px solid ${props => props.theme.color.primary};
+  /* border: 1px solid ${props => props.theme.color.primary}; */
+  border: 1px solid #FA5672;
   border-radius: 24px;
   background-color: white;
 
@@ -34,7 +35,8 @@ export const Container = styled.div`
     width: 0;
     border-width: 7px 4px 0;
     border-style: solid;
-    border-color: ${props => props.theme.color.primary} transparent;
+    /* border-color: ${props => props.theme.color.primary} transparent; */
+    border-color: #FA5672 transparent;
   }
 `;
 
