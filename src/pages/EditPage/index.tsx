@@ -1,16 +1,22 @@
+import axios from 'axios';
+
 import { useEffect, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 
-// api
-import { addPost, uploadImage } from '../../apis/good';
+import {
+  addPost,
+  editPost,
+  fetchPost,
+  uploadImage,
+  useFetchPost,
+} from '../../apis/good';
 
-// components
 import MainTemplate from '../../components/template/MainTemplate';
 
-import * as S from './styles';
+import * as S from '../UplodePage/styles';
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button';
 import Textarea from '../../components/Form/Textarea';
@@ -18,13 +24,16 @@ import Dropdown from '../../components/Dropdown';
 import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
+import axiosInstance from '../../apis';
 
-export interface UplodePageCSSProps {
-  inputContainerDirection?: 'row' | 'column';
-}
-
-function UplodePage() {
+function EditPage() {
   const navigate = useNavigate();
+  //   const param = useParams();
+
+  // TODO : API 연동 시점에 param 값으로 post 데이터 가져오기
+  const param = '3';
+  const { post } = useFetchPost(param);
+  console.log('불러온 데이터', post);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -64,10 +73,54 @@ function UplodePage() {
     console.log('선택된 파일', selectedFiles);
   }, [selectedFiles]);
 
+  // 수정 페이지 진입 시점에서, post 데이터가 존재하면 폼에 데이터 정보 삽입
   useEffect(() => {
-    setValue('title', '제목');
-    setValue('description', '내용');
-  }, []);
+    if (post) {
+      console.log('post', post);
+
+      const createFileObjects = async (imageUrls: string[]) => {
+        try {
+          const imageFilesPromises = imageUrls.map(async (url: string) => {
+            const instance = axiosInstance();
+            const response = await instance.get(url, { responseType: 'blob' });
+            const data = response.data;
+            const filename = url.split('/').pop();
+            const metadata = { type: data.type };
+
+            return new File([data], filename!, metadata);
+          });
+
+          // 모든 이미지가 변환될 때까지 대기한 후 imageFiles에 할당
+          const imageFiles = await Promise.all(imageFilesPromises);
+
+          setSelectedFiles(imageFiles);
+        } catch (error) {
+          console.error('Failed to create file objects:', error);
+        }
+      };
+
+      setSelectedCategory(post.main_category);
+      setSelectedProduct(post.sub_category);
+      setValue('title', post.title);
+      setValue('description', post.description);
+
+      if (post.good_image_list) {
+        createFileObjects(post.good_image_list);
+      }
+    }
+  }, [post, setValue]);
+
+  // 하위 컴포넌트 MultiUploader에서 파일 길이 체크해서 alert 띄우기
+  const handleFileLengthCheck = (files: File[]) => {
+    if (files.length > 5) {
+      setError('files', {
+        type: 'validate',
+        message: '파일은 최대 5개까지 업로드 가능합니다.',
+      });
+    } else {
+      setSelectedFiles(files);
+    }
+  };
 
   // 엔터 입력 시 포커스가 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -79,27 +132,27 @@ function UplodePage() {
   // 폼 전송 취소
   const onClickCancel = () => {
     setConfirmMessage({
-      title: '나눔글 작성 취소',
-      message: '나눔글 작성을 취소하고 이전 페이지로 돌아가시겠습니까?',
+      title: '나눔글 수정 취소',
+      message: '나눔글 수정을 취소하고 메인 페이지로 돌아가시겠습니까?',
     });
     setShowConfirm(true);
   };
 
   // 폼 전송
   const { mutateAsync: uploadImagesMutation } = useMutation(uploadImage);
-  const { mutate: addPostMutation } = useMutation(addPost, {
+  const { mutate: editPostMutation } = useMutation(editPost, {
     onSuccess: () => {
       setAlertMessage({
-        title: '나눔글 등록',
-        message: '나눔글이 등록되었습니다.',
+        title: '나눔글 수정',
+        message: '나눔글이 수정이 완료되었습니다.',
       });
       setShowAlert(true);
       navigate('/');
     },
     onError: (error) => {
       setAlertMessage({
-        title: '나눔글 등록 실패',
-        message: '나눔글이 등록에 실패했습니다. 다시 시도해주세요.',
+        title: '나눔글 수정 실패',
+        message: '나눔글이 수정에 실패했습니다. 다시 시도해주세요.',
       });
       setShowAlert(true);
       console.log(error);
@@ -122,7 +175,7 @@ function UplodePage() {
         good_image_list: uploadedImages,
       };
 
-      addPostMutation(postData);
+      editPostMutation(postData);
     } catch (error) {
       console.log(error);
     }
@@ -144,6 +197,7 @@ function UplodePage() {
             {/* 이미지 등록 컨테이너 */}
             <div style={{ marginBottom: '20px' }}>
               <MultiUploader
+                storedImageList={selectedFiles}
                 onAlertMessage={(message) => onAlertMessage(message)}
                 onSelectItem={(files) => setSelectedFiles(files)}
               />
@@ -248,4 +302,4 @@ function UplodePage() {
   );
 }
 
-export default UplodePage;
+export default EditPage;

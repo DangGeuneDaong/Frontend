@@ -53,7 +53,7 @@ export const ThumbnailContainer = styled.div`
   position: relative;
   width: 188px;
   height: 188px;
-  background-color: ${(props) => props.theme.color.lightGray};
+  border: 1px solid ${(props) => props.theme.color.lightGray};
 
   img {
     width: 100%;
