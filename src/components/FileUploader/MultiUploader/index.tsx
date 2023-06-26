@@ -4,10 +4,16 @@ import * as S from './styles';
 import { AiFillCamera, AiOutlineClose } from 'react-icons/ai';
 
 interface MultiUploaderProps {
+  storedImageList?: File[];
+  onAlertMessage: (message: any) => void;
   onSelectItem: (files: File[]) => void;
 }
 
-function MultiUploader({ onSelectItem }: MultiUploaderProps) {
+function MultiUploader({
+  storedImageList,
+  onAlertMessage,
+  onSelectItem,
+}: MultiUploaderProps) {
   const MAX_REGISTER_IMAGE_COUNT = 7; //최대 이미지 등록 개수
   const [imageList, setImageList] = useState<File[]>([]); //이미지 리스트
 
@@ -16,26 +22,37 @@ function MultiUploader({ onSelectItem }: MultiUploaderProps) {
     onSelectItem(imageList);
   }, [imageList]);
 
+  // 수정 페이지에서는 기존에 등록된 이미지를 보여줘야 하기 때문에 props가 존재하면, 이미지 리스트에 추가
+  useEffect(() => {
+    if (storedImageList) {
+      setImageList(storedImageList);
+      onSelectItem(storedImageList);
+    }
+  }, [storedImageList, onSelectItem]);
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-
     const files = event.target.files;
 
-    if (files) {
-      // MAX_RESISTER_IMAGE_COUNT 개수를 초과하면, 이미지 등록 불가
-      if (files.length + imageList.length > MAX_REGISTER_IMAGE_COUNT) {
-        // TODO : 알럿 띄우고, 최대 처리 개수 안 넘는 애들만 등록하기
-        // TODO : alert()으로 처리하고 추후 모달로 대체
-        alert('최대 이미지 등록 개수를 초과하였습니다.');
-        return;
-      }
+    if (!files) return;
 
-      // 이미지 압축 라이브러리
-      // ...
-
-      // 여러 파일 올릴 때, 파일 정보를 imageList에 저장
-      setImageList([...imageList, ...files]);
+    // MAX_RESISTER_IMAGE_COUNT 개수를 초과하면, 이미지 등록 불가
+    if (files.length + imageList.length > MAX_REGISTER_IMAGE_COUNT) {
+      // TODO : 알럿 띄우고, 최대 처리 개수 안 넘는 애들만 등록하기
+      // TODO : alert()으로 처리하고 추후 모달로 대체
+      // alert('최대 이미지 등록 개수를 초과하였습니다.')
+      onAlertMessage({
+        title: '이미지 등록 개수 초과',
+        message: '최대 이미지 등록 개수를 초과하였습니다.',
+      });
+      return;
     }
+
+    // 이미지 압축 라이브러리
+    // ...
+
+    // 여러 파일 올릴 때, 파일 정보를 imageList에 저장
+    setImageList([...imageList, ...files]);
   };
 
   const onClickFileDelete = (file: File) => {

@@ -1,0 +1,93 @@
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
+import { useAuth } from '../../hooks/useAuth';
+
+import Loader from '../../components/Loader';
+import KakaoLogin from '../../components/Login/Kakao';
+import NaverLogin from '../../components/Login/Naver';
+import MainTemplate from '../../components/template/MainTemplate';
+import Input from '../../components/Form/Input';
+
+import * as S from './styles';
+
+export interface LoginPageProps {
+  userId: string;
+  password: string;
+}
+
+function LoginPage() {
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+  } = useForm<LoginPageProps>({ mode: 'onBlur' });
+
+  const { handleLogin, isLoading, error } = useAuth();
+
+  const handleLoginSubmit = (data: LoginPageProps) => {
+    handleLogin(data);
+  };
+  if (error) {
+    return <span>{error.message}</span>;
+  }
+
+  return (
+    <MainTemplate>
+      <S.Container>
+        <S.SubContainer>
+          <S.H1>로그인</S.H1>
+          <form onSubmit={handleSubmit(handleLoginSubmit)}>
+            <Input
+              label="아이디"
+              placeholder="아이디 입력"
+              {...register('userId', {
+                required: '아이디는 필수 입력입니다.',
+              })}
+              errors={errors}
+            />
+            <Input
+              type="password"
+              label="비밀번호"
+              placeholder="비밀번호 입력"
+              {...register('password', {
+                required: '비밀번호는 필수 입력입니다.',
+                pattern: {
+                  value: /^(?=.*?[A-Za-z])(?=.*?[0-9]).{6,}$/,
+                  message:
+                    '영문, 숫자를 포함한 6자 이상의 비밀번호를 입력해주세요.',
+                },
+              })}
+              errors={errors}
+            />
+            {isValid ? (
+              <S.ActiveLoginButton disabled={isLoading}>
+                {isLoading ? <Loader /> : '로그인'}
+              </S.ActiveLoginButton>
+            ) : (
+              <S.InactiveLoginButton disabled>로그인</S.InactiveLoginButton>
+            )}
+
+            <S.Hr />
+            <S.SocialLogin>
+              <KakaoLogin />
+              <NaverLogin />
+            </S.SocialLogin>
+          </form>
+
+          <S.Comment>
+            <span>아직 회원이 아니라면?</span>
+            <span>
+              <Link to="/register">
+                <S.Emphasis>회원가입 </S.Emphasis>
+              </Link>
+              하러가기
+            </span>
+          </S.Comment>
+        </S.SubContainer>
+      </S.Container>
+    </MainTemplate>
+  );
+}
+
+export default LoginPage;
