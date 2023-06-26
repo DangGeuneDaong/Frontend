@@ -5,8 +5,8 @@ import axios from 'axios';
 
 import MainTemplate from '../../components/template/MainTemplate';
 import Input from '../../components/Form/Input';
-import SearchLocation from '../../components/Join/SearchLocation';
-import Modal from '../../components/Modal';
+import SearchLocation from '../../components/SearchLocation';
+import AlertModal from '../../components/Modal/Alert';
 
 import * as S from './styles';
 
@@ -72,14 +72,6 @@ function JoinPage() {
 
   return (
     <MainTemplate>
-      {showModal && (
-        <Modal
-          onClose={closeAlert}
-          color={alertMessage === '회원가입이 완료되었습니다' ? 'blue' : 'red'}
-        >
-          <span>{alertMessage}</span>
-        </Modal>
-      )}
       <S.Container>
         <S.SubContainer>
           <S.H1>회원가입</S.H1>
