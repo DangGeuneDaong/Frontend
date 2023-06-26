@@ -1,7 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "react-query";
 
 import MapMarkerController from "../MapMarkerController";
 import { ItemType } from "../itemType";
+import { ItemFilterProps } from "../../ItemFilter";
+import { getPosts } from "../../../apis/good";
 
 import * as S from './styles';
 
@@ -9,50 +12,83 @@ interface KakaoMapProps {
   items: ItemType[];
   category: string;
   keyword: string;
+  condition: ItemFilterProps;
   updateItems: Dispatch<SetStateAction<ItemType[]>>;
+  currentPage: number;
+}
+type keyValueType = {
+  [key: string] : string | number | undefined;
 }
 
-const KakaoMap = ({ items, category, keyword, updateItems }: KakaoMapProps) => {
+const KakaoMap = ({ items, category, keyword, condition, updateItems, currentPage }: KakaoMapProps) => {
   const [map, setMap] = useState<kakao.maps.Map>();
+  const [mapBounds, setMapBounds] = useState<kakao.maps.LatLngBounds>();
+  
+  // API 분리
+  const queryParameters: keyValueType = {
+    page: currentPage,
+    swLat: mapBounds && mapBounds.getSouthWest().getLat(),
+    swLng: mapBounds && mapBounds.getSouthWest().getLng(),
+    neLat: mapBounds && mapBounds.getNorthEast().getLat(),
+    neLng: mapBounds && mapBounds.getNorthEast().getLng(),
+    mainCategory: condition.petType,
+    subCategory: category,
+    status: condition.status,
+    keyword: keyword,
+  }
+
+  let requestURL = '/good/taker/search/title?';
+
+  for (const parameterKey in queryParameters) {
+    if (queryParameters[parameterKey] && queryParameters[parameterKey] !== 'all')
+      requestURL += `${parameterKey}=${queryParameters[parameterKey]}&`;
+  }
+
+  requestURL = requestURL.substring(0,requestURL.length - 1);
+
+  const { isLoading, error, data } = useQuery(requestURL, async () => {
+    // 백엔드 연결 부분
+    // const { data } = await getPosts(requestURL);
+    // return data;
+  }, {
+    staleTime: 1000 * 60 * 3,
+    cacheTime: 1000 * 60 * 5
+  });
 
   const searchItems = (lat: number, lon: number, kakaoMap: kakao.maps.Map) => {
     // 처음 페이지 로딩시 현재 위치 기반 물품들 보여주는 함수
-    const searchItemByCurrentPosition = (pos: string) => {
-      if (kakaoMap){
-        const bounds = kakaoMap.getBounds();
-        const sw = bounds.getSouthWest();
-        const ne = bounds.getNorthEast();
-        
-        fetch('http://localhost:5000/good').then(items => {
-          const response = items.json();
-          response.then(itemList => {
-            updateItems(
-              itemList
-                .filter((_item: {category: string}) => 
-                  category === 'all' ? true : category === _item.category
-                )
-                .filter((_item: { latitude: number, longitude: number }) => 
-                  _item.latitude >= sw.getLat() && _item.latitude <= ne.getLat() 
-                  && _item.longitude >= sw.getLng() && _item.longitude <= ne.getLng()
-                )
-            );
-          })
-        });
-      }
+    const searchItemByCurrentPosition = () => {
+      const bounds = kakaoMap.getBounds();
+      const sw = bounds.getSouthWest();
+      const ne = bounds.getNorthEast();
+
+      setMapBounds(bounds);
+      
+      fetch('http://localhost:5000/good').then(items => {
+        const response = items.json();
+        response.then(itemList => {
+          updateItems(
+            itemList
+              .filter((_item: {main_category: string}) => 
+                condition.petType === 'all' ? true : condition.petType === _item.main_category
+              )
+              .filter((_item: {category: string}) => 
+                category === 'all' ? true : category === _item.category
+              )
+              .filter((_item: {status: string}) => 
+                condition.status === 'all' ? true : condition.status === _item.status
+              )
+              .filter((_item: { latitude: number, longitude: number }) => 
+                _item.latitude >= sw.getLat() && _item.latitude <= ne.getLat() 
+                && _item.longitude >= sw.getLng() && _item.longitude <= ne.getLng()
+              )
+          );
+        })
+      });
+
     };
 
-    const geocoder = new kakao.maps.services.Geocoder();
-    const coord = new kakao.maps.LatLng(lat, lon);
-
-    const getPosition = function(result: any, status: any) {
-      let pos = '';
-      if (status === kakao.maps.services.Status.OK) {
-        pos = result[0].address.region_2depth_name
-        searchItemByCurrentPosition(pos);
-      }
-    };
-
-    geocoder.coord2Address(coord.getLng(), coord.getLat(), getPosition);
+    searchItemByCurrentPosition();
   };
 
   // 현 지도 내 검색 버튼 누를 때 action
@@ -68,11 +104,17 @@ const KakaoMap = ({ items, category, keyword, updateItems }: KakaoMapProps) => {
         response.then(itemList => {
           updateItems(
             itemList
+              .filter((_item: {main_category: string}) => 
+                condition.petType === 'all' ? true : condition.petType === _item.main_category
+              )
               .filter((_item: {category: string}) => 
                 category === 'all' ? true : category === _item.category
               )
               .filter((_item: {title: string}) => 
                 keyword === '' ? true : _item.title.includes(keyword)
+              )
+              .filter((_item: {status: string}) => 
+                condition.status === 'all' ? true : condition.status === _item.status
               )
               .filter((_item: { latitude: number, longitude: number }) => 
                 _item.latitude >= sw.getLat() && _item.latitude <= ne.getLat() 
@@ -80,11 +122,11 @@ const KakaoMap = ({ items, category, keyword, updateItems }: KakaoMapProps) => {
               )
           );
         })
-      })
+      });
+
     }
   };
 
-  
   useEffect(() => {
     // 현재 위치 정보 가져오기
     if (navigator.geolocation) {
@@ -112,7 +154,7 @@ const KakaoMap = ({ items, category, keyword, updateItems }: KakaoMapProps) => {
 
   useEffect(() => {
     searchItemByCurrentBounds();
-  }, [category, keyword]);
+  }, [category, keyword, condition]);  
 
   return (
     <>
