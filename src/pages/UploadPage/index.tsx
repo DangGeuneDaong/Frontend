@@ -19,11 +19,11 @@ import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
 
-export interface UplodePageCSSProps {
+export interface UploadPageCSSProps {
   inputContainerDirection?: 'row' | 'column';
 }
 
-function UplodePage() {
+function UploadPage() {
   const navigate = useNavigate();
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -248,4 +248,4 @@ function UplodePage() {
   );
 }
 
-export default UplodePage;
+export default UploadPage;
