@@ -7,7 +7,7 @@ import ImageCarouselArea from '../../components/ImageCarouselArea';
 import PostArea from '../../components/PostArea';
 import CommentArea from '../../components/CommentArea';
 import MainTemplate from '../../components/template/MainTemplate';
-import axiosInstance from '../../api';
+import axiosInstance from '../../apis';
 
 interface PostsProps {
   id: number;
