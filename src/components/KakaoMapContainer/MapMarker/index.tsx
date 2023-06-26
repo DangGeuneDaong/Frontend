@@ -1,8 +1,10 @@
 import ReactDOM from 'react-dom';
 
-import { ItemType } from '../itemType';
+import { CategoryType, ItemType } from '../itemType';
 
-import markerImg from '../../../assets/imgs/dog.png';
+import dogMarkerImg from '../../../assets/imgs/dog.png';
+import catMarkerImg from '../../../assets/imgs/cat.png';
+
 import * as S from './styles';
 
 interface MapMarkerProps {
@@ -33,13 +35,15 @@ const MapMarker = ({ item, map }: MapMarkerProps) => {
   customOverlay.setMap(map!);
 
   return (
-    $markerContainer 
+    $markerContainer
       && ReactDOM.createPortal(
           <S.Container>
-            <S.MarkerImage src={markerImg} alt='강아지'/>
+            {item.main_category === 'dog' 
+              ? <S.MarkerImage src={dogMarkerImg} alt='강아지'/>
+              : <S.MarkerImage src={catMarkerImg} alt='고양이'/>}
             <S.ItemInfo>
               <S.Title>{item.title}</S.Title>
-              <S.Category>{item.category}</S.Category>
+              <S.Category>{CategoryType[item.category]}</S.Category>
             </S.ItemInfo>
           </S.Container>
         , $markerContainer)

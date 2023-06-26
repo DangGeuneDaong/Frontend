@@ -12,7 +12,7 @@ const MapMarkerController = ({items, map}: MapMarkerControllerProps) => {
     <>
       {
         items.map((item) => {
-          return <MapMarker key={item.id} item={item} map={map}/>
+          return <MapMarker key={item.id.toString()} item={item} map={map}/>
         })
       }
     </>
