@@ -64,7 +64,8 @@ function Header() {
           {isLogin ? (
             <PopLayer itemList={menuList}>
               {/* 팝 레이어 */}
-              {/* 유저 프로필 */}
+              {/* 팝 레이어 - 유저 프로필 */}
+              {/* TODO : 로그인 시 프로필 정보 연동 */}
               <S.UserProfileImage>
                 <img
                   src="https://via.placeholder.com/55"
@@ -77,7 +78,7 @@ function Header() {
               {/* 로그인 버튼  */}
               <button
                 style={{ fontWeight: '600' }}
-                onClick={() => routeChange('login')}
+                onClick={() => routeChange('signin')}
               >
                 로그인
               </button>
