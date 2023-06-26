@@ -1,42 +1,31 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import * as S from './styles'
 
-import { ItemType } from '../KakaoMapContainer/itemType';
-import * as S from './styles';
-
-interface PaginationProps {
-  items: ItemType[];
-  currentPage: number;
-  onMovePage: Dispatch<SetStateAction<number>>;
+interface OfferPageProps {
+  total: number,
+  limit: number,
+  page: number,
+  setPage: (setPage: number) => void,
 }
 
-const Pagination = ({items, currentPage, onMovePage} : PaginationProps) => {
-  const totalPage = 5;
-  const pageList = [];
-  // const [currentPage, setCurrentPage] = useState<number>(1);
 
-  console.log('items in Pagination : ', items, ', current page : ', currentPage);
+function Pagination({ total, limit, page, setPage }: OfferPageProps) {
+  const numPages = Math.ceil(total / limit);
 
-  const movePage = (pageNum: number) => {
-    if (pageNum > 0 && pageNum <= totalPage) {
-      onMovePage(pageNum);
-      // axios.get(해당 페이지의 물품들 가져오기); -> 그냥 setPage만 처리해주면 된다.
-
-    }
-  };
-
-  for (let i = 1; i <= totalPage; i++) {
-    pageList.push(
-      <S.PageNum key={i} onClick={() => movePage(i)} isCurrent={currentPage === i} >{i}</S.PageNum>
-    );
-  }
-  
   return (
     <S.Container>
-      <S.PrevPageButton onClick={() => movePage(currentPage - 1)} disabled={currentPage === 1}/>
-      {pageList}
-      <S.NextPageButton onClick={() => movePage(currentPage + 1)} disabled={currentPage === totalPage}/>
-    </S.Container>
-  );
-};
+      <button onClick={() => setPage(page - 1)} disabled={page === 1}>&lt;</button>
 
-export default Pagination;
+      {Array(numPages).fill(0).map((_, index) => (
+        <button
+          key={index + 1}
+          onClick={() => setPage(index + 1)}
+          aria-current={page === index + 1 ? 'page' : undefined}
+        >{index + 1}</button>
+      ))}
+
+      <button onClick={() => setPage(page + 1)} disabled={page === numPages}>&gt;</button>
+    </S.Container>
+  )
+}
+
+export default Pagination

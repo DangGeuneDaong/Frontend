@@ -1,66 +1,39 @@
-import styled from "styled-components";
-
-import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-
-interface PageMoveButtonCSSProps {
-  disabled: boolean;
-}
-
-interface PageNumCSSProps {
-  isCurrent: boolean;
-}
+import styled from 'styled-components';
 
 export const Container = styled.div`
+  width: 700px;
+  margin: 0 auto;
+  margin-bottom: 5px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2px;
-  font-size: 12px;
-  height: 42px;
-  color: rgba(0,0,0, 0.5);
-  border-bottom: 1px solid rgba(0,0,0, 0.1);
-`;
+  gap: 5px;
 
-// AiOutlineLeft
-export const PrevPageButton = styled(AiOutlineLeft)<PageMoveButtonCSSProps>`
-  display: block;
-  width: 22px;
-  height: 22px;
-  padding: 4px;
-  border-radius: 50%;
-  color: ${props => props.disabled && 'rgba(0,0,0, 0.1)'};
-  cursor: ${props => !props.disabled && 'pointer'};
+  > button {
+    padding-left: 8px;
+    padding-right: 8px;
 
-  &:hover {
-    background-color: ${props => !props.disabled && 'rgba(0,0,0, 0.1)'};
+    border: none;
+    border-radius: 10px;
+
+    background: ${(props) => props.theme.color.lightRed};
+
+    color: white;
   }
-`;
-
-export const PageNum = styled.button<PageNumCSSProps>`
-  width: 22px;
-  height: 22px;
-  padding: 4px;
-  border-radius: 50%;
-  color: ${props => props.isCurrent && '#FA5672'};
-  font-weight: ${props => props.isCurrent && 'bold'};
-  text-decoration: ${props => props.isCurrent && 'underline'};
-
-  &:hover {
-    background-color: rgba(0,0,0, 0.1);
+  > button:hover {
+    background: ${(props) => props.theme.color.red};
+    cursor: pointer;
+    transform: translateY(-2px);
   }
-`;
-
-// AiOutlineRight
-export const NextPageButton = styled(AiOutlineRight)<PageMoveButtonCSSProps>`
-  display: block;
-  width: 22px;
-  height: 22px;
-  padding: 4px;
-  border-radius: 50%;
-  color: ${props => props.disabled && 'rgba(0,0,0, 0.1)'};
-  cursor: ${props => !props.disabled && 'pointer'};
-  
-  &:hover {
-    background-color: ${props => !props.disabled && 'rgba(0,0,0, 0.1)'};
+  > button[disabled] {
+    background: ${(props) => props.theme.color.gray};
+    cursor: revert;
+    transform: revert;
+  }
+  > button[aria-current] {
+    background: ${(props) => props.theme.color.lightGray};
+    cursor: revert;
+    transform: revert;
   }
 `;
