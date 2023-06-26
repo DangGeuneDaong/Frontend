@@ -6,6 +6,7 @@ import MainPage from './pages/MainPage/MainPage';
 import AddInfoPage from './pages/RedirectPage/AddInfoPage';
 import RedirectKakaoPage from './pages/RedirectPage/Kakao';
 import RedirectNaverPage from './pages/RedirectPage/Naver';
+import JoinPage from './pages/JoinPage';
 
 export default function App() {
   return (
@@ -15,6 +16,8 @@ export default function App() {
       <Route path="/redirect-kakao" element={<RedirectKakaoPage />} />
       <Route path="/redirect-naver" element={<RedirectNaverPage />} />
       <Route path="/addInfo" element={<AddInfoPage />} />
+
+      <Route path="/register" element={<JoinPage />} />
     </Routes>
   );
 }
