@@ -48,7 +48,7 @@ function generateRandomNickname() {
 
   return `${randomAdjectiveValue} ${randomNicknameValue}`;
 }
-function AddInfoPage({ accessToken }: { accessToken: string | null }) {
+function AddInfoPage() {
   const initialNickname = generateRandomNickname();
   const [nicknameEdited, setNicknameEdited] = useState<boolean>(false);
   const [randomNickname, setRandomNickname] = useState<string>(initialNickname);
@@ -61,13 +61,13 @@ function AddInfoPage({ accessToken }: { accessToken: string | null }) {
     handleSubmit,
     setError,
     setValue,
-    trigger,
     watch,
   } = useForm<AddInfoProps>({
     mode: 'onBlur',
     defaultValues: {
       nickname: initialNickname,
       location: '',
+      //profile_url 받아오기
       profile_url: 'https://www.thechooeok.com/common/img/default_profile.png',
     },
   });
@@ -78,7 +78,6 @@ function AddInfoPage({ accessToken }: { accessToken: string | null }) {
       await axios.post('/guest', {
         ...data,
         profile_url: watchProfileUrl,
-        access_token: accessToken,
       });
     } catch (error) {
       setError('nickname', { message: '닉네임이 중복되었습니다.' });
