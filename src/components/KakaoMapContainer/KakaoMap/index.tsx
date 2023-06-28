@@ -64,7 +64,7 @@ const KakaoMap = ({ items, category, keyword, condition, updateItems, currentPag
 
       setMapBounds(bounds);
       
-      fetch('http://localhost:5000/good').then(items => {
+      fetch('http://localhost:5000/mainGood').then(items => {
         const response = items.json();
         response.then(itemList => {
           updateItems(
@@ -99,7 +99,7 @@ const KakaoMap = ({ items, category, keyword, condition, updateItems, currentPag
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
 
-      fetch('http://localhost:5000/good').then(items => {
+      fetch('http://localhost:5000/mainGood').then(items => {
         const response = items.json();
         response.then(itemList => {
           updateItems(

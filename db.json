@@ -75,9 +75,9 @@
       "user_id": 4
     }
   ],
-  "good": [
+  "mainGood": [
     {
-      "id": "1",
+      "id": 1,
       "title": "네추라 너리쉬 악어 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 성남대로43번길 10",
@@ -88,7 +88,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "2",
+      "id": 2,
       "title": "네추라 너리쉬 스테고 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 탄천상로151번길 20",
@@ -99,7 +99,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "3",
+      "id": 3,
       "title": "네추라 너리쉬 뼈다귀 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 성남대로 51",
@@ -110,7 +110,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "4",
+      "id": 4,
       "title": "네추라 너리쉬 유니콘 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 성남대로 45",
@@ -121,7 +121,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "5",
+      "id": 5,
       "title": "네추라 너리쉬 볼 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 성남대로 38",
@@ -132,7 +132,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "6",
+      "id": 6,
       "title": "네추라 너리쉬 티렉스 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 성남대로 32",
@@ -143,7 +143,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "7",
+      "id": 7,
       "title": "네추라 너리쉬 미니공룡 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 성남대로 30",
@@ -154,7 +154,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "8",
+      "id": 8,
       "title": "그래니스 독 터키츄 롱스틱 30g",
       "category": "snack",
       "location": "경기 성남시 분당구 구미로 8",
@@ -165,7 +165,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "9",
+      "id": 9,
       "title": "그래니스 독 칠면조가슴살 육포",
       "category": "snack",
       "location": "경기 성남시 분당구 성남대로43번길 11",
@@ -176,7 +176,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "10",
+      "id": 10,
       "title": "[펫프곳간] 미음펫 우리아이 보양식 황태국 100g",
       "category": "food",
       "location": "경기 성남시 분당구 구미로9번길 7",
@@ -187,7 +187,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "11",
+      "id": 11,
       "title": "[펫프곳간] THE 건강한 형제 독 수제간식 50g",
       "category": "food",
       "location": "경기 성남시 분당구 구미로9번길 25",
@@ -198,7 +198,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "12",
+      "id": 12,
       "title": "[펫프곳간] THE 건강한 형제 독 수제간식1 50g",
       "category": "food",
       "location": "경기 성남시 분당구 판교역로 166",
@@ -209,7 +209,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "13",
+      "id": 13,
       "title": "네추라 너리쉬 악어 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 분당내곡로 131",
@@ -220,7 +220,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "14",
+      "id": 14,
       "title": "[펫프곳간] THE 건강한 형제 독 수제간식3 50g",
       "category": "food",
       "location": "경기 성남시 분당구 판교역로 152",
@@ -231,7 +231,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "15",
+      "id": 15,
       "title": "네추라 너리쉬 유니콘 덴탈 장난감",
       "category": "supply",
       "location": "경기 성남시 분당구 분당내곡로 117",
@@ -242,7 +242,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "16",
+      "id": 16,
       "title": "[펫프곳간] THE 건강한 형제 독 수제간식5 50g",
       "category": "food",
       "location": "경기 성남시 분당구 대왕판교로606번길 31",
@@ -253,7 +253,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "17",
+      "id": 17,
       "title": "[펫프곳간] THE 건강한 형제 독 수제간식6 50g",
       "category": "food",
       "location": "경기 성남시 분당구 대왕판교로606번길 41",
@@ -264,7 +264,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "18",
+      "id": 18,
       "title": "[펫프곳간] THE 건강한 형제 독 수제간식7 50g",
       "category": "snack",
       "location": "경기 성남시 분당구 대왕판교로606번길 33",
@@ -275,7 +275,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "19",
+      "id": 19,
       "title": "[펫프곳간] THE 건강한 형제 독 수제간식8 50g",
       "category": "food",
       "location": "경기 성남시 분당구 대왕판교로606번길 58",
@@ -286,7 +286,7 @@
       "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
-      "id": "20",
+      "id": 20,
       "title": "[펫프곳간] THE 건강한 형제 독 수제간식9 50g",
       "category": "snack",
       "location": "경기 성남시 분당구 판교역로146번길 20",
