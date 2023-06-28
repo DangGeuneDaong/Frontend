@@ -15,7 +15,7 @@ const AlertModal = ({
   children,
   confirmType = 'confirm', //warning
   confirmText = '확인',
-  alignType = 'center',
+  alignType = 'top',
   onConfirm,
 }: AlertModalProps) => {
   return (
