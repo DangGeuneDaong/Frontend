@@ -13,7 +13,7 @@ const AlertModal = ({
   title,
   message,
   children,
-  confirmType = 'confirm',
+  confirmType = 'confirm', //warning
   confirmText = '확인',
   alignType = 'center',
   onConfirm,
