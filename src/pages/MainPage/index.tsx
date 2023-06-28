@@ -6,7 +6,7 @@ import ItemFilterButton from '../../components/ItemFilterButton';
 import ItemCategory from '../../components/ItemCategory';
 import ItemList from '../../components/ItemList';
 import KakaoMapContainer from '../../components/KakaoMapContainer';
-import PaginationMK from '../../components/PaginationMK';
+import ItemPagination from '../../components/ItemPagination';
 
 import { ItemType } from '../../components/KakaoMapContainer/itemType';
 import uploadPostImg from '../../assets/imgs/edit.png';
@@ -35,7 +35,7 @@ const MainPage = () => {
             <ItemCategory onSelectCategory={setCategory} setPage={setCurrentPage} />
           </S.ItemFilter>
           <ItemList items={itemList} />
-          <PaginationMK items={itemList} currentPage={currentPage} onMovePage={setCurrentPage}/>
+          <ItemPagination items={itemList} currentPage={currentPage} onMovePage={setCurrentPage}/>
         </S.ItemInfo>
         {isShowFilterModal && <ItemFilter onClose={setIsShowFilterModal} condition={filterCondition} onSelectFilter={setFilterCondition} setPage={setCurrentPage}/>}
         <S.UploadPost to='/upload'>

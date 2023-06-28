@@ -3,18 +3,18 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { ItemType } from '../KakaoMapContainer/itemType';
 import * as S from './styles';
 
-interface PaginationProps {
+interface ItemPaginationProps {
   items: ItemType[];
   currentPage: number;
   onMovePage: Dispatch<SetStateAction<number>>;
 }
 
-const Pagination = ({items, currentPage, onMovePage} : PaginationProps) => {
+const ItemPagination = ({items, currentPage, onMovePage} : ItemPaginationProps) => {
   const totalPage = 5;
   const pageList = [];
   // const [currentPage, setCurrentPage] = useState<number>(1);
 
-  console.log('items in Pagination : ', items, ', current page : ', currentPage);
+  console.log('items in ItemPagination : ', items, ', current page : ', currentPage);
 
   const movePage = (pageNum: number) => {
     if (pageNum > 0 && pageNum <= totalPage) {
@@ -39,4 +39,4 @@ const Pagination = ({items, currentPage, onMovePage} : PaginationProps) => {
   );
 };
 
-export default Pagination;
+export default ItemPagination;
