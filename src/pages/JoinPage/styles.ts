@@ -9,9 +9,9 @@ export const Container = styled.div`
 `;
 
 export const SubContainer = styled.div`
-  width: 30%;
+  width: 40%;
   height: 80%;
-  max-width: 600px;
+  min-width: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,11 +20,11 @@ export const SubContainer = styled.div`
   padding: 70px;
 
   @media screen and (min-width: 768px) {
-    width: 70%;
+    width: 50%;
   }
 
   @media screen and (min-width: 1024px) {
-    width: 50%;
+    width: 30%;
   }
 `;
 
@@ -33,6 +33,13 @@ export const H1 = styled.h1`
   align-items: center;
   justify-content: center;
   margin-bottom: 80px;
+`;
+
+export const LoacationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
 
 export const ActiveJoinButton = styled.button.attrs((props) => ({
