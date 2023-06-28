@@ -9,6 +9,7 @@ export const Container = styled.div`
   display: flex;
   position: relative;
   min-width: 690px;
+  height: calc(100vh - var(--header-height) - var(--footer-height));
 `;
 
 export const ItemInfo = styled.div<ItemInfoCSSProps>`
@@ -16,7 +17,8 @@ export const ItemInfo = styled.div<ItemInfoCSSProps>`
   flex-direction: column;
   min-width: 442px;
   max-width: 442px;
-  height: 700px;
+  /* height: 700px; */
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
   background-color: ${props => props.isOpenModal && 'rgba(0,0,0, 0.15)'};
 `;
 
