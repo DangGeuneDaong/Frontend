@@ -96,7 +96,7 @@ function LoginPage() {
               하러가기
             </span>
           </S.Comment>
-          {showModal && alertMessage === '서버에 연결할 수 없습니다.' ? (
+          {/* {showModal && alertMessage === '서버에 연결할 수 없습니다.' ? (
             <AlertModal
               title="로그인"
               message="로그인에 실패하였습니다. 다시 시도해주세요."
@@ -111,7 +111,7 @@ function LoginPage() {
               onCancel={() => navigate('/signin')}
               onConfirm={() => navigate('/signup')}
             />
-          )}
+          )} */}
         </S.SubContainer>
       </S.Container>
     </MainTemplate>
