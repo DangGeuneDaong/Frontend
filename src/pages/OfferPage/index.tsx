@@ -64,7 +64,7 @@ function OfferPage() {
   const offset = (page - 1) * LIMIT;
   const navigate = useNavigate();
 
-  const SERVER_URL = 'http://localhost:5000';
+  const SERVER_URL = 'http://13.209.220.63:8080/';
   const fetchData = async () => {
     const instance: AxiosInstance = axiosInstance();
     // 1. Good의 n번째 id로 선택된 데이터 get 요청

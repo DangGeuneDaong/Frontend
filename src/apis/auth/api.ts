@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { LoginPageProps } from '../../pages/LoginPage';
 
-const REFRESH_URL = 'http://localhost:3000/token';
+const REFRESH_URL = 'http://3.36.236.207:8080/token';
 
 export const instance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://3.36.236.207:8080',
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });

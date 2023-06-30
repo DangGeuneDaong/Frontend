@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
-const baseURL = 'http://localhost:3000';
+const baseURL = 'http://3.36.236.207';
 
 // 기준 URL에 따라 axios 인스턴스를 생성하는 함수
 export const axiosInstance = () => {
