@@ -141,7 +141,7 @@ function JoinPage() {
           </form>
         </S.SubContainer>
 
-        {showModal && alertMessage === '회원가입이 완료되었습니다.' ? (
+        {/* {showModal && alertMessage === '회원가입이 완료되었습니다.' ? (
           <AlertModal
             title="환영합니다🎉"
             message={'회원가입이 완료되었습니다.'}
@@ -153,7 +153,7 @@ function JoinPage() {
             message={'회원가입에 실패하였습니다. 다시 시도해주세요.'}
             onConfirm={() => navigate('/signup')}
           />
-        )}
+        )} */}
       </S.Container>
     </MainTemplate>
   );
