@@ -83,11 +83,11 @@ export function useAuth<T extends { [key: string]: any }>() {
               message: '비밀번호가 일치하지 않습니다.',
             });
             break;
-          default:
-            setAlertMessage(
-              '가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?'
-            );
-            setShowModal(true);
+          // default:
+          //   setAlertMessage(
+          //     '가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?'
+          //   );
+          //   setShowModal(true);
         }
       } else {
         setAlertMessage('서버에 연결할 수 없습니다.');
