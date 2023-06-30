@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import * as S from '../styles';
 import Loader from '../../../components/Loader';
+import AlertModal from '../../../components/Modal/Alert';
 
 function RedirectKakaoPage() {
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   useEffect(() => {
     const params = new URL(window.location.href).searchParams;
@@ -29,36 +31,41 @@ function RedirectKakaoPage() {
       .then((res) => {
         console.log(res);
         const { access_token: accessToken } = res.data;
+
+        if (!accessToken) {
+          setAlertMessage('로그인에 실패하였습니다.');
+        }
+
         //엑세스 토큰 G => addinfoPage
-        if (accessToken) {
-          const firstStr = accessToken[0];
-          if (firstStr === 'G') {
-            navigate('/addInfo');
-            //엑세스 토큰 U => mainPage
-          } else if (firstStr === 'U') {
-            navigate('/main');
-          }
+        if (accessToken && accessToken.startsWith('G')) {
+          localStorage.setItem('accessToken', accessToken.slice(1));
+          navigate('/addInfo');
+          //엑세스 토큰 U => mainPage
+        } else if (accessToken && accessToken.startsWith('U')) {
+          //앞글자 제거 후 로컬에 저장
+          localStorage.setItem('accessToken', accessToken.slice(1));
+          navigate('/');
         }
       })
       .catch((error) => {
-        if (error.response) {
-          //요청이 이루어졌으나 서버가 2xx 범위 이외로 응답한 경우
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          //요청이 이루어졌으나 응답을 받지 못한 경우
-          console.log(error.request);
-        } else {
-          //요청에 오류가 발생한 경우
-          console.log(error.message);
+        if (error) {
+          setAlertMessage('로그인에 실패하였습니다.');
         }
-        console.log(error.config);
+        console.error(error);
       });
   }, []);
   return (
     <S.Container>
       <Loader />
+      {alertMessage && (
+        <AlertModal
+          title={'로그인'}
+          message={'로그인에 실패하였습니다. 다시 시도해주세요.'}
+          confirmType="warning"
+          confirmText="확인"
+          onConfirm={() => navigate('/signin')}
+        />
+      )}
     </S.Container>
   );
 }

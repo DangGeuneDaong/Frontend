@@ -2,7 +2,7 @@ import * as S from './styles';
 
 import { useEffect, useState } from 'react';
 import { AxiosInstance } from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ImageCarouselArea from '../../components/ImageCarouselArea';
 import PostArea from '../../components/PostArea';
@@ -53,6 +53,8 @@ interface PostsProps {
 }
 
 function OfferPage() {
+  const param = useParams();
+
   const [showPosts, setShowPosts] = useState<PostsProps>(); // 1개를 받아오기 때문에 배열 사용 X
   const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
   const [selectedButtonId, setSelectedButtonId] = useState<number | null>(null); // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
@@ -195,7 +197,7 @@ function OfferPage() {
             )}
             <Button
               onClickHandler={() => {
-                navigate(`/edit/1`); // 차후 `/edit/${id}` 로 변경해야 됨
+                navigate(`/edit/${param}`);
               }}
             >
               수정하기

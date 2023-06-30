@@ -15,6 +15,7 @@ export const ListContainer = styled.ul<PopLayerCSSProps>`
   padding: 6px;
   background-color: #fff;
   border: 1px solid ${(props) => props.theme.color.primary};
+  z-index: 100;
 `;
 
 export const ListItem = styled.li`
