@@ -62,11 +62,11 @@ instance.interceptors.response.use(
 );
 //로그인 요청
 export function loginRequest(data: LoginPageProps) {
-  return axios.post('/user/signin', data);
+  return instance.post('/user/signin', data);
 }
 //회원가입 요청
 export function registerRequest(data: JoinPageProps) {
-  return axios.post('/user/signup', data);
+  return instance.post('/user/signup', data);
 }
 //로그아웃 요청
 export function logoutRequest() {
