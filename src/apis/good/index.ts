@@ -22,15 +22,18 @@ export const uploadImage = async (selectedFiles: File[]) => {
     }
 
     // S3에서 각각의 이미지에 대해 String 값으로 return
-    // const response = await instance.post('/api/img/upload', formData);
+    const response = await instance.post(
+      'http://13.209.220.63/img/upload',
+      formData
+    );
     // const response = await instance.post(
     //   'http://localhost:5000/image',
     //   formData
     // );
 
-    const response = selectedFiles.map((_, index) => {
-      return `https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample${index}`;
-    });
+    // const response = selectedFiles.map((_, index) => {
+    //   return `https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample${index}`;
+    // });
 
     return response;
   } catch (error) {
