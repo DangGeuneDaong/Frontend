@@ -60,7 +60,7 @@ const KakaoMap = ({
   }
 
   requestURL = requestURL.substring(0, requestURL.length - 1);
-  console.log('전체 데이터 requestURL: ', requestURL);
+  // console.log('전체 데이터 requestURL: ', requestURL);
 
   const { isLoading, error, data } = useQuery(
     requestURL,
@@ -179,6 +179,7 @@ const KakaoMap = ({
           searchItems(lat, lon, kakaoMap);
         },
         (error) => {
+          console.log('userInfo : ', userInfo);
           const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
           const kakaoMap = new kakao.maps.Map($mapContainer!, {
             // center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표 (현재 위치)

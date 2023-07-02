@@ -55,7 +55,7 @@ const ItemList = ({
   }
 
   requestURL = requestURL.substring(0, requestURL.length - 1);
-  console.log(`[현재 페이지 데이터] requestURL: ${requestURL}`);
+  // console.log(`[현재 페이지 데이터] requestURL: ${requestURL}`);
 
   const { isLoading, error, data } = useQuery(
     requestURL,
