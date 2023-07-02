@@ -172,22 +172,21 @@ const KakaoMap = ({
           searchItems(lat, lon, kakaoMap);
         },
         (error) => {
+          const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
+          const kakaoMap = new kakao.maps.Map($mapContainer!, {
+            // center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표 (현재 위치)
+            center: new kakao.maps.LatLng(37.3952969470752, 127.110449292622), // 지도의 중심좌표 (판교)
+            level: 4, // 지도의 확대 레벨
+          });
+          kakaoMap.setMinLevel(2);
+          setMap(kakaoMap);
+          searchItems(37.3952969470752, 127.110449292622, kakaoMap);
           console.log(error); // 에러 핸들링 필요
         },
         {
           enableHighAccuracy: false,
         }
       );
-    } else {
-      const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
-      const kakaoMap = new kakao.maps.Map($mapContainer!, {
-        // center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표 (현재 위치)
-        center: new kakao.maps.LatLng(37.3952969470752, 127.110449292622), // 지도의 중심좌표 (판교)
-        level: 4, // 지도의 확대 레벨
-      });
-      kakaoMap.setMinLevel(2);
-      setMap(kakaoMap);
-      searchItems(37.3952969470752, 127.110449292622, kakaoMap);
     }
   }, []);
 
