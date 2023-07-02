@@ -73,6 +73,100 @@
       "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!",
       "good_id": 1,
       "user_id": 4
+    },
+    {
+      "content": "",
+      "id": 5
+    },
+    {
+      "content": "",
+      "id": 6
+    },
+    {
+      "content": "",
+      "id": 7
+    }
+  ],
+  "chat/create": [
+    {
+      "roomId": 1,
+      "takerId": "삼성이",
+      "offerId": "슼케이"
+    },
+    {
+      "roomId": 2,
+      "takerId": "국민이",
+      "offerId": "현다이"
+    },
+    {
+      "roomId": 3,
+      "takerId": "삼성이",
+      "offerId": "현다이"
+    },
+    {
+      "roomId": 4,
+      "takerId": "국민이",
+      "offerId": "슼케이"
+    }
+  ],
+  "chat/enter": [
+    {
+      "roomId": 1,
+      "userId": "aiden"
+    }
+  ],
+  "chat/leave": [
+    {
+      "roomId": 1
+    },
+    {
+      "roomId": 2
+    },
+    {
+      "roomId": 3
+    },
+    {
+      "roomId": 4
+    }
+  ],
+  "websocket/pub/message": [
+    {
+      "userId": "aiden1",
+      "message": "hello world1",
+      "sendAt": "2022/10/30 hh:mm1",
+      "messageType": "ENTER"
+    },
+    {
+      "userId": "aiden2",
+      "message": "hello world2",
+      "sendAt": "2022/10/30 hh:mm2",
+      "messageType": "CHAT"
+    },
+    {
+      "userId": "aiden3",
+      "message": "hello world3",
+      "sendAt": "2022/10/30 hh:mm3",
+      "messageType": "LEAVE"
+    }
+  ],
+  "websocket/sub": [
+    {
+      "userId": "aiden1",
+      "message": "hello world1",
+      "sendAt": "2022/10/30 hh:mm1",
+      "messageType": "ENTER"
+    },
+    {
+      "userId": "aiden2",
+      "message": "hello world2",
+      "sendAt": "2022/10/30 hh:mm2",
+      "messageType": "CHAT"
+    },
+    {
+      "userId": "aiden3",
+      "message": "hello world3",
+      "sendAt": "2022/10/30 hh:mm3",
+      "messageType": "LEAVE"
     }
   ]
 }

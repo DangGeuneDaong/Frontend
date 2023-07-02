@@ -35,6 +35,7 @@
     "react-router-dom": "^6.11.2",
     "recoil": "^0.7.7",
     "socket.io": "^4.7.0",
+    "socket.io-client": "^4.7.1",
     "styled-components": "^5.3.10"
   },
   "devDependencies": {
@@ -46,6 +47,8 @@
     "@types/react": "^18.2.8",
     "@types/react-dom": "^18.2.4",
     "@types/react-router-dom": "^5.3.3",
+    "@types/socket.io-client": "^3.0.0",
+    "@types/sockjs-client": "^1.5.1",
     "@types/styled-components": "^5.1.26",
     "babel-loader": "^9.1.2",
     "clean-webpack-plugin": "^4.0.0",
