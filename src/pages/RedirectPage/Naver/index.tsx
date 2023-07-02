@@ -26,6 +26,9 @@ function RedirectNaverPage() {
           },
         }
       )
+      .then((res) =>
+        axios.post(`oauth/naverLogin?accessToken=${res.data.access_token}`)
+      )
       .then((res) => {
         console.log(res);
         const { accessToken: accessToken } = res.data;
