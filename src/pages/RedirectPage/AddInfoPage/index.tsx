@@ -48,16 +48,16 @@ function AddInfoPage() {
     },
   });
   const watchProfileUrl = watch('profile_url');
-  useEffect(() => {
-    getUserProfile()
-      .then((userData) => {
-        setUserProfile(userData.profile_url);
-        setValue('profile_url', userData.profile_url);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [setValue]);
+  // useEffect(() => {
+  //   getUserProfile()
+  //     .then((userData) => {
+  //       setUserProfile(userData.profile_url);
+  //       setValue('profile_url', userData.profile_url);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [setValue]);
 
   const handleInfoSubmit = async (data: AddInfoProps) => {
     try {
