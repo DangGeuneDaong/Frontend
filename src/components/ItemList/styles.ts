@@ -5,7 +5,7 @@ export const Container = styled.ul`
   flex-wrap: wrap;
   justify-content: center;
   align-content: flex-start;
-  height: 550px;
+  height: calc(100% - 202px);
   overflow-x: scroll;
   border-top: 1px solid rgba(0,0,0,0.1);
   border-bottom: 1px solid rgba(0,0,0,0.1);

@@ -1,43 +1,49 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 
 import MapMarkerController from '../MapMarkerController';
 import { ItemType } from '../itemType';
 import { ItemFilterProps } from '../../ItemFilter';
 import { getPosts } from '../../../apis/good';
+import uploadPostImg from '../../../assets/imgs/edit.png';
+
+import { useRecoilValue } from 'recoil';
+import { userInfoState } from '../../../states/userInfo';
 
 import * as S from './styles';
 
 interface KakaoMapProps {
-  items: ItemType[];
+  mapItems: ItemType[];
   category: string;
   keyword: string;
   condition: ItemFilterProps;
   updateItems: Dispatch<SetStateAction<ItemType[]>>;
-  currentPage: number;
+  currentPageItems: ItemType[];
+  setMapBoundsInfo: Dispatch<SetStateAction<kakao.maps.LatLngBounds | undefined>>;
 }
 type keyValueType = {
   [key: string]: string | number | undefined;
 };
 
 const KakaoMap = ({
-  items,
+  mapItems,
   category,
   keyword,
   condition,
   updateItems,
-  currentPage,
+  currentPageItems,
+  setMapBoundsInfo
 }: KakaoMapProps) => {
   const [map, setMap] = useState<kakao.maps.Map>();
-  const [mapBounds, setMapBounds] = useState<kakao.maps.LatLngBounds>();
+  const userInfo = useRecoilValue(userInfoState);
 
-  // API 분리
+  // Data Fetch (전체 데이터) + fetch후 updateItems(= setMapItemList)
+  // 전체 데이터 가져올 떄의 파라미터 (page는 필요없음, lat, lng필수 + 기타 파라미터)
   const queryParameters: keyValueType = {
-    page: currentPage,
-    swLat: mapBounds && mapBounds.getSouthWest().getLat(),
-    swLng: mapBounds && mapBounds.getSouthWest().getLng(),
-    neLat: mapBounds && mapBounds.getNorthEast().getLat(),
-    neLng: mapBounds && mapBounds.getNorthEast().getLng(),
+    minLat: map && map.getBounds().getSouthWest().getLat(),
+    minLng: map && map.getBounds().getSouthWest().getLng(),
+    maxLat: map && map.getBounds().getNorthEast().getLat(),
+    maxLng: map && map.getBounds().getNorthEast().getLng(),
     mainCategory: condition.petType,
     subCategory: category,
     status: condition.status,
@@ -45,7 +51,6 @@ const KakaoMap = ({
   };
 
   let requestURL = '/good/taker/search/title?';
-
   for (const parameterKey in queryParameters) {
     if (
       queryParameters[parameterKey] &&
@@ -55,12 +60,15 @@ const KakaoMap = ({
   }
 
   requestURL = requestURL.substring(0, requestURL.length - 1);
+  console.log('전체 데이터 requestURL: ', requestURL);
 
   const { isLoading, error, data } = useQuery(
     requestURL,
     async () => {
       // 백엔드 연결 부분
-      // const { data } = await getPosts(requestURL);
+      const requestURL2 = 'http://localhost:5000/mainGood';
+      const result = await getPosts(requestURL);
+      console.log('젼체 getPosts : ', result);
       // return data;
     },
     {
@@ -73,39 +81,38 @@ const KakaoMap = ({
     // 처음 페이지 로딩시 현재 위치 기반 물품들 보여주는 함수
     const searchItemByCurrentPosition = () => {
       const bounds = kakaoMap.getBounds();
+      setMapBoundsInfo(bounds);
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
 
-      setMapBounds(bounds);
-
-      fetch('http://13.209.220.63/good').then((items) => {
-        const response = items.json();
-        response.then((itemList) => {
-          updateItems(
-            itemList
-              .filter((_item: { main_category: string }) =>
-                condition.petType === 'all'
-                  ? true
-                  : condition.petType === _item.main_category
-              )
-              .filter((_item: { category: string }) =>
-                category === 'all' ? true : category === _item.category
-              )
-              .filter((_item: { status: string }) =>
-                condition.status === 'all'
-                  ? true
-                  : condition.status === _item.status
-              )
-              .filter(
-                (_item: { latitude: number; longitude: number }) =>
-                  _item.latitude >= sw.getLat() &&
-                  _item.latitude <= ne.getLat() &&
-                  _item.longitude >= sw.getLng() &&
-                  _item.longitude <= ne.getLng()
-              )
-          );
-        });
-      });
+      // fetch('http://localhost:5000/mainGood').then((items) => {
+      //   const response = items.json();
+      //   response.then((itemList) => {
+      //     updateItems(
+      //       itemList
+      //         .filter((_item: { main_category: string }) =>
+      //           condition.petType === 'all'
+      //             ? true
+      //             : condition.petType === _item.main_category
+      //         )
+      //         .filter((_item: { category: string }) =>
+      //           category === 'all' ? true : category === _item.category
+      //         )
+      //         .filter((_item: { status: string }) =>
+      //           condition.status === 'all'
+      //             ? true
+      //             : condition.status === _item.status
+      //         )
+      //         .filter(
+      //           (_item: { latitude: number; longitude: number }) =>
+      //             _item.latitude >= sw.getLat() &&
+      //             _item.latitude <= ne.getLat() &&
+      //             _item.longitude >= sw.getLng() &&
+      //             _item.longitude <= ne.getLng()
+      //         )
+      //     );
+      //   });
+      // });
     };
 
     searchItemByCurrentPosition();
@@ -115,41 +122,41 @@ const KakaoMap = ({
   const searchItemByCurrentBounds = () => {
     if (map) {
       const bounds = map.getBounds();
-
+      setMapBoundsInfo(bounds);
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
 
-      fetch('http://13.209.220.63/good').then((items) => {
-        const response = items.json();
-        response.then((itemList) => {
-          updateItems(
-            itemList
-              .filter((_item: { main_category: string }) =>
-                condition.petType === 'all'
-                  ? true
-                  : condition.petType === _item.main_category
-              )
-              .filter((_item: { category: string }) =>
-                category === 'all' ? true : category === _item.category
-              )
-              .filter((_item: { title: string }) =>
-                keyword === '' ? true : _item.title.includes(keyword)
-              )
-              .filter((_item: { status: string }) =>
-                condition.status === 'all'
-                  ? true
-                  : condition.status === _item.status
-              )
-              .filter(
-                (_item: { latitude: number; longitude: number }) =>
-                  _item.latitude >= sw.getLat() &&
-                  _item.latitude <= ne.getLat() &&
-                  _item.longitude >= sw.getLng() &&
-                  _item.longitude <= ne.getLng()
-              )
-          );
-        });
-      });
+      // fetch('http://localhost:5000/mainGood').then((items) => {
+      //   const response = items.json();
+      //   response.then((itemList) => {
+      //     updateItems(
+      //       itemList
+      //         .filter((_item: { main_category: string }) =>
+      //           condition.petType === 'all'
+      //             ? true
+      //             : condition.petType === _item.main_category
+      //         )
+      //         .filter((_item: { category: string }) =>
+      //           category === 'all' ? true : category === _item.category
+      //         )
+      //         .filter((_item: { title: string }) =>
+      //           keyword === '' ? true : _item.title.includes(keyword)
+      //         )
+      //         .filter((_item: { status: string }) =>
+      //           condition.status === 'all'
+      //             ? true
+      //             : condition.status === _item.status
+      //         )
+      //         .filter(
+      //           (_item: { latitude: number; longitude: number }) =>
+      //             _item.latitude >= sw.getLat() &&
+      //             _item.latitude <= ne.getLat() &&
+      //             _item.longitude >= sw.getLng() &&
+      //             _item.longitude <= ne.getLng()
+      //         )
+      //     );
+      //   });
+      // });
     }
   };
 
@@ -180,7 +187,7 @@ const KakaoMap = ({
           });
           kakaoMap.setMinLevel(2);
           setMap(kakaoMap);
-          searchItems(37.3952969470752, 127.110449292622, kakaoMap);
+          searchItems(userInfo.latitude, userInfo.longitude, kakaoMap);
           console.log(error); // 에러 핸들링 필요
         },
         {
@@ -197,11 +204,21 @@ const KakaoMap = ({
   return (
     <>
       <S.Container>
-        <MapMarkerController items={items} map={map} />
+        {map && <MapMarkerController mapItems={mapItems} currentPageItems={currentPageItems} map={map} />}
+
         {map && (
-          <S.SearchItemButton type="button" onClick={searchItemByCurrentBounds}>
-            현 지도에서 검색
-          </S.SearchItemButton>
+          <>
+            <S.UploadPost to="/upload">
+              <S.UploadPostImg src={uploadPostImg} alt="나눔 글 작성 버튼" />
+              나눔 글 작성
+            </S.UploadPost>
+            <S.SearchItemButton
+              type="button"
+              onClick={searchItemByCurrentBounds}
+            >
+              현 지도에서 검색
+            </S.SearchItemButton>
+          </>
         )}
       </S.Container>
     </>

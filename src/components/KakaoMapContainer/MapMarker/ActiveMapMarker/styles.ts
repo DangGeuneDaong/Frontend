@@ -1,8 +1,12 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface ContainerCSSProps {
+  isShow: boolean;
+}
+
+export const Container = styled.div<ContainerCSSProps>`
   position: relative;
-  display: flex;
+  display: ${props => props.isShow ? 'flex' : 'none'};
   justify-content: center;
   align-items: center;
   gap: 8px;
@@ -11,6 +15,10 @@ export const Container = styled.div`
   border: 1px solid #FA5672;
   border-radius: 24px;
   background-color: white;
+
+  &:hover {
+    color: #FA5672;
+  }
 
   &:after {
     content: '';
