@@ -1,20 +1,20 @@
 import axios from 'axios';
-import Button from '../Button'
-import * as S from './styles'
+import Button from '../Button';
+import * as S from './styles';
 import { useEffect, useState } from 'react';
 
-interface OfferPageProps {
-}
+interface OfferPageProps {}
 
 function EditArea() {
-  const [postStatus, setPostStatus] = useState<string>('')
+  const [postStatus, setPostStatus] = useState<string>('');
 
-  const SERVER_URL = 'http://localhost:5000'
+  const SERVER_URL = 'http://13.209.220.63';
+  // const SERVER_URL = 'http://localhost:5000';
   const fetchData = async () => {
     // const { data } = await axios.post(`${SERVER_URL}/Good`)
     // setPostStatus(data)
-  }
-  fetchData()
+  };
+  fetchData();
 
   return (
     <S.Container>
@@ -24,7 +24,7 @@ function EditArea() {
         <Button>나눔완료</Button>
       </form>
     </S.Container>
-  )
+  );
 }
 
-export default EditArea
+export default EditArea;

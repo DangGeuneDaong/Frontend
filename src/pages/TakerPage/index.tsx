@@ -30,7 +30,8 @@ function TakerPage() {
   const [showPosts, setShowPosts] = useState<PostsProps>();
 
   useEffect(() => {
-    const SERVER_URL = 'http://13.209.220.63:8080/';
+    const SERVER_URL = 'http://13.209.220.63';
+    // const SERVER_URL = 'http://localhost:5000';
     const fetchData = async () => {
       const instance: AxiosInstance = axiosInstance();
       const { data } = await instance.get(`${SERVER_URL}/Good/1`);

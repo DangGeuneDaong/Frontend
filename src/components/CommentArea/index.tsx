@@ -2,11 +2,13 @@ import Button from '../Button';
 import * as S from './styles';
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useTheme } from 'styled-components';
 
 import Textarea from '../Form/Textarea';
+import Chat from '../Chat/Chat';
+import axiosInstance from '../../apis';
 
 function CommentArea() {
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
@@ -14,6 +16,7 @@ function CommentArea() {
 
   const [changeButton, setChangeButton] = useState(false);
   const [postComment, setPostComment] = useState<string>(''); // 댓글 Post 요청하기
+  const [postTakerId, setPostTakerId] = useState<string>('');
   const [deleteComment, setDeleteComment] = useState<string>(''); // 댓글 Post 요청 취소하기
 
   // textarea 데이터를 '신청하기'버튼 클릭 시 submit
@@ -24,22 +27,26 @@ function CommentArea() {
     watch, // 실시간 값 감시 가능
   } = useForm();
 
-  const SERVER_URL = 'http://13.209.220.63:8080/';
-  const fetchData = async (content: any) => {
-    const result_comment = await axios.post(
+  const SERVER_URL = 'http://13.209.220.63';
+  // const SERVER_URL = 'http://localhost:5000';
+  const instance: AxiosInstance = axiosInstance();
+  const fetchData = async ({ content, takerId }: any) => {
+    const result_comment = await instance.post(
       `${SERVER_URL}/Sharing_Application`,
       content
     );
     setPostComment(result_comment.data.content);
+    // chat/create로 takerId post하기
+    await instance.post(`${SERVER_URL}/chat/create`, takerId);
   };
   const deleteData = async (content: any) => {
-    const result_comment = await axios.delete(
+    const result_comment = await instance.delete(
       `${SERVER_URL}/Sharing_Application`
     );
     setPostComment(result_comment.data.content);
   };
 
-  const getCommentInfo = () => {
+  const postCommentInfo = () => {
     // 0. '신청하기' || '신청취소' 버튼 변경 기능
     const newButton = changeButton === false ? true : false;
     setChangeButton(newButton);
@@ -76,7 +83,7 @@ function CommentArea() {
             width={'90px'}
             height={'90px'}
             borderRadius={'10px'}
-            onClickHandler={getCommentInfo}
+            onClickHandler={postCommentInfo}
             style={{
               lineHeight: '90px',
             }}
@@ -90,7 +97,7 @@ function CommentArea() {
           <Button
             height={'90px'}
             borderRadius={'10px'}
-            onClickHandler={getCommentInfo}
+            onClickHandler={postCommentInfo}
             style={{
               backgroundColor: 'white',
               borderColor: `${theme.color.red}`,
@@ -99,6 +106,7 @@ function CommentArea() {
           >
             신청취소
           </Button>
+          <Chat />
         </S.Form>
       )}
     </S.Container>

@@ -78,7 +78,7 @@ const KakaoMap = ({
 
       setMapBounds(bounds);
 
-      fetch('http://13.209.220.63:8080/good').then((items) => {
+      fetch('http://13.209.220.63/good').then((items) => {
         const response = items.json();
         response.then((itemList) => {
           updateItems(
@@ -119,7 +119,7 @@ const KakaoMap = ({
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
 
-      fetch('http://13.209.220.63:8080/good').then((items) => {
+      fetch('http://13.209.220.63/good').then((items) => {
         const response = items.json();
         response.then((itemList) => {
           updateItems(
