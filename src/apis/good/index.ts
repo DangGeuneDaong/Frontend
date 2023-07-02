@@ -80,8 +80,8 @@ export const addPost = async (data: any) => {
   try {
     const requestObject = {
       userId: data.userId,
-      main_category: data.selectedCategory,
-      sub_category: data.selectedProduct,
+      main_category: data.main_category,
+      sub_category: data.sub_category,
       title: data.title,
       description: data.description,
       status: data.status,
@@ -89,8 +89,8 @@ export const addPost = async (data: any) => {
 
     formData.append('request', JSON.stringify(requestObject));
 
-    for (let i = 0; i < data.selectedFiles.length; i++) {
-      formData.append(`files`, data.selectedFiles[i]);
+    for (let i = 0; i < data.files.length; i++) {
+      formData.append('files', data.files[i]);
     }
 
     const response = await instance.post(
