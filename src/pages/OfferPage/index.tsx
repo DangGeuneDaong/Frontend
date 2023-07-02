@@ -13,7 +13,7 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import axiosInstance from '../../apis';
 import Confirm from '../../components/Modal/Confirm';
-import Chat from '../../components/Chat/Chat';
+// import Chat from '../../components/Chat/Chat';
 
 // const config = [
 //   {
@@ -266,24 +266,17 @@ function OfferPage() {
               distance={selectedUserData.distance}
             />
           )} */}
-        {isOpenChat &&
-          showRoomlists.map(({ i, roomId, userId: { takerId, offerId } }) => (
-            <ChatRoomArea
-              onClose={() => {
-                setIsOpenChat(false);
-                setSelectedButtonId(null);
-              }}
-              nickname={selectedUserData.nickname}
-              distance={selectedUserData.distance}
-            >
-              <Chat
-                key={i}
-                roomId={roomId}
-                takerId={takerId}
-                offerId={offerId}
-              />
-            </ChatRoomArea>
-          ))}
+        {isOpenChat && (
+          // showRoomlists.map(({ i, roomId, userId: { takerId, offerId } }) => ())
+          <ChatRoomArea
+            onClose={() => {
+              setIsOpenChat(false);
+              setSelectedButtonId(null);
+            }}
+            nickname={selectedUserData.nickname}
+            distance={selectedUserData.distance}
+          />
+        )}
       </S.Container>
     </MainTemplate>
   );
