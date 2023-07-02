@@ -51,7 +51,8 @@ export const UploadPost = styled(Link)`
 
   z-index: 2;
   height: 40px;
-  background-color: #FA5672;
+  background-color: #0D85FF;
+  /* background-color: #FA5672; */
   /* border: 1px solid #FA5672; */
   /* background: linear-gradient(to left top, #FFCF5A, #7E3DD9 0%); */
 `;

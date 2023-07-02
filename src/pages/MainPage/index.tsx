@@ -6,16 +6,16 @@ import ItemFilterButton from '../../components/ItemFilterButton';
 import ItemCategory from '../../components/ItemCategory';
 import ItemList from '../../components/ItemList';
 import KakaoMapContainer from '../../components/KakaoMapContainer';
-import ItemPagination from '../../components/ItemPagination';
+import ItemListPagination from '../../components/ItemListPagination';
 
 import { ItemType } from '../../components/KakaoMapContainer/itemType';
-import uploadPostImg from '../../assets/imgs/edit.png';
 
 import * as S from './styles';
 import MainTemplate from '../../components/template/MainTemplate';
 
 const MainPage = () => {
-  const [itemList, setItemList] = useState<ItemType[]>([]);
+  const [mapItemList, setMapItemList] = useState<ItemType[]>([]);
+  const [currentPageItemList, setCurrentPageItemList] = useState<ItemType[]>([]);
   const [category, setCategory] = useState<string>('all');
   const [keyword, setKeyword] = useState<string>('');
   const [filterCondition, setFilterCondition] = useState<ItemFilterProps>({
@@ -24,6 +24,9 @@ const MainPage = () => {
   });
   const [isShowFilterModal, setIsShowFilterModal] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [mapBounds, setMapBounds] = useState<kakao.maps.LatLngBounds>();
+
+  const totalPage = Math.ceil(mapItemList.length / 10);
 
   return (
     <MainTemplate>
@@ -34,22 +37,27 @@ const MainPage = () => {
             <ItemFilterButton isActive={isShowFilterModal} onClick={setIsShowFilterModal} />
             <ItemCategory onSelectCategory={setCategory} setPage={setCurrentPage} />
           </S.ItemFilter>
-          <ItemList items={itemList} />
-          <ItemPagination items={itemList} currentPage={currentPage} onMovePage={setCurrentPage}/>
+          <ItemList 
+            pageItems={currentPageItemList} 
+            setPageItems={setCurrentPageItemList} 
+            category={category}
+            condition={filterCondition}
+            keyword={keyword} 
+            currentPage={currentPage} 
+            mapBoundsInfo={mapBounds}
+          />
+          <ItemListPagination totalPage={totalPage} currentPage={currentPage} onMovePage={setCurrentPage}/>
         </S.ItemInfo>
         {isShowFilterModal && <ItemFilter onClose={setIsShowFilterModal} condition={filterCondition} onSelectFilter={setFilterCondition} setPage={setCurrentPage}/>}
-        <S.UploadPost to='/upload'>
-          <S.UploadPostImg src={uploadPostImg} alt='나눔 글 작성 버튼' />
-          나눔 글 작성
-        </S.UploadPost>
 
         <KakaoMapContainer
-          items={itemList}
+          mapItems={mapItemList}
           category={category}
           condition={filterCondition}
-          keyword={keyword}
-          onSearchItems={setItemList}
-          currentPage={currentPage}
+          keyword={keyword} 
+          onSearchItems={setMapItemList}
+          currentPageItems={currentPageItemList}
+          setMapBoundsInfo={setMapBounds}
         />
       </S.Container>
     </MainTemplate>
