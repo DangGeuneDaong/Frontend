@@ -27,7 +27,9 @@ function RedirectNaverPage() {
         }
       )
       .then((res) =>
-        axios.post(`oauth/naverLogin?accessToken=${res.data.access_token}`)
+        axios.post(
+          `http://13.209.220.63/oauth/naverLogin?accessToken=${res.data.access_token}`
+        )
       )
       .then((res) => {
         console.log(res);

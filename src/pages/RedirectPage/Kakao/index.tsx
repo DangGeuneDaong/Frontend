@@ -29,7 +29,9 @@ function RedirectKakaoPage() {
         }
       )
       .then((res) =>
-        axios.post(`oauth/kakaoLogin?accessToken=${res.data.access_token}`)
+        axios.post(
+          `http://13.209.220.63/oauth/kakaoLogin?accessToken=${res.data.access_token}`
+        )
       )
       .then((res) => {
         console.log(res);
