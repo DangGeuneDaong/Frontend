@@ -25,14 +25,6 @@ export const uploadImage = async (selectedFiles: File[]) => {
       'http://13.209.220.63/img/upload',
       formData
     );
-    // const response = await instance.post(
-    //   'http://localhost:5000/image',
-    //   formData
-    // );
-
-    // const response = selectedFiles.map((_, index) => {
-    //   return `https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample${index}`;
-    // });
 
     return response;
   } catch (error) {
@@ -83,15 +75,28 @@ export const useFetchPost = (postId: string) => {
 
 // 글 등록
 export const addPost = async (data: any) => {
+  const formData = new FormData();
+
   try {
-    // const response = await instance.post('/good/offer/info', data);
+    const requestObject = {
+      userId: data.userId,
+      main_category: data.selectedCategory,
+      sub_category: data.selectedProduct,
+      title: data.title,
+      description: data.description,
+      status: data.status,
+    };
+
+    formData.append('request', JSON.stringify(requestObject));
+
+    for (let i = 0; i < data.selectedFiles.length; i++) {
+      formData.append(`files`, data.selectedFiles[i]);
+    }
+
     const response = await instance.post(
       'http://13.209.220.63/good/offer/info',
-      data
+      formData
     );
-
-    // 성공 로직
-    console.log('성공');
 
     return response;
   } catch (error: any) {
