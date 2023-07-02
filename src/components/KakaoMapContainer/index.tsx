@@ -8,32 +8,35 @@ import * as S from './styles';
 import { ItemFilterProps } from '../ItemFilter';
 
 interface KakaoMapContainerProps {
-  items: ItemType[];
+  mapItems: ItemType[];
   category: string;
   keyword: string;
   condition: ItemFilterProps;
   onSearchItems: Dispatch<SetStateAction<ItemType[]>>;
-  currentPage: number;
+  currentPageItems: ItemType[];
+  setMapBoundsInfo: Dispatch<SetStateAction<kakao.maps.LatLngBounds | undefined>>;
 }
 
 const KakaoMapContainer = ({
-  items,
+  mapItems,
   category,
   keyword,
   condition,
   onSearchItems,
-  currentPage
+  currentPageItems,
+  setMapBoundsInfo
 }: KakaoMapContainerProps) => {
   return (
     <S.Container id="mapContainer">
       <ScriptLoader>
         <KakaoMap
-          items={items}
+          mapItems={mapItems}
           category={category}
           keyword={keyword}
           condition={condition}
           updateItems={onSearchItems}
-          currentPage={currentPage}
+          currentPageItems={currentPageItems}
+          setMapBoundsInfo={setMapBoundsInfo}
         />
       </ScriptLoader>
     </S.Container>

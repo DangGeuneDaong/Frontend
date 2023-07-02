@@ -22,15 +22,18 @@ export const uploadImage = async (selectedFiles: File[]) => {
     }
 
     // S3에서 각각의 이미지에 대해 String 값으로 return
-    // const response = await instance.post('/api/img/upload', formData);
+    const response = await instance.post(
+      'http://13.209.220.63/img/upload',
+      formData
+    );
     // const response = await instance.post(
     //   'http://localhost:5000/image',
     //   formData
     // );
 
-    const response = selectedFiles.map((_, index) => {
-      return `https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample${index}`;
-    });
+    // const response = selectedFiles.map((_, index) => {
+    //   return `https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample${index}`;
+    // });
 
     return response;
   } catch (error) {
@@ -44,7 +47,7 @@ export const fetchPost = async (postId: string) => {
   try {
     console.log('개별글 조회 시작');
     const instance: AxiosInstance = axiosInstance();
-    const post = await instance.get(`http://localhost:5000/good/${postId}`);
+    const post = await instance.get(`http://13.209.220.63/good/${postId}`);
 
     return post.data;
   } catch (error: any) {
@@ -84,7 +87,7 @@ export const addPost = async (data: any) => {
   try {
     const instance: AxiosInstance = axiosInstance();
     // const response = await instance.post('/good/offer/info', data);
-    const response = await instance.post('http://localhost:5000/good', data);
+    const response = await instance.post('http://13.209.220.63/good', data);
 
     // 성공 로직
     console.log('성공');
@@ -99,7 +102,7 @@ export const addPost = async (data: any) => {
 export const editPost = async (data: any) => {
   try {
     const instance: AxiosInstance = axiosInstance();
-    const response = await instance.put(`http://localhost:5000/good/3`, data);
+    const response = await instance.put(`http://13.209.220.63/good/3`, data);
 
     return response;
   } catch (error: any) {
@@ -111,11 +114,10 @@ export const getPosts = async (requestURL: string) => {
   const instance = axiosInstance();
 
   try {
-    const response = await instance.get(requestURL);  
-    if (response.data === null)
-      throw new Error('데이터가 존재하지 않습니다.');
+    const response = await instance.get(requestURL);
+    if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
     return response;
-  } catch(error) {
+  } catch (error) {
     console.log('error : ', error);
   }
 };

@@ -1,6 +1,4 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import { AddInfoProps } from '../../pages/RedirectPage/AddInfoPage';
-import { LoginPageProps } from '../../pages/LoginPage';
 import * as S from './styles';
 
 interface PageProps {
@@ -9,15 +7,17 @@ interface PageProps {
 
 interface SearchLocationProps {
   setValue: (name: keyof PageProps, value: any) => void;
+  trigger: (name: keyof PageProps) => void;
 }
 
-function SearchLocation({ setValue }: SearchLocationProps) {
+function SearchLocation({ setValue, trigger }: SearchLocationProps) {
   const scriptUrl =
     'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
   const open = useDaumPostcodePopup(scriptUrl);
   const handleComplete = (data: any) => {
     const { address } = data;
     setValue('location', address);
+    trigger('location');
   };
   const handleClick = () => {
     open({

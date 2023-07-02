@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 import Loader from '../../components/Loader';
 import KakaoLogin from '../../components/Login/Kakao';
 import NaverLogin from '../../components/Login/Naver';
 import MainTemplate from '../../components/template/MainTemplate';
 import Input from '../../components/Form/Input';
+import AlertModal from '../../components/Modal/Alert';
+import ConfirmModal from '../../components/Modal/Confirm';
 
 import * as S from './styles';
+import { useEffect } from 'react';
 
 export interface LoginPageProps {
   userId: string;
@@ -17,14 +20,23 @@ export interface LoginPageProps {
 }
 
 function LoginPage() {
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors, isValid },
+    setError,
     handleSubmit,
   } = useForm<LoginPageProps>({ mode: 'onBlur' });
-
-  const { handleLogin, isLoading, error } = useAuth();
-
+  const { handleLogin, isLoading, error, alertMessage, showModal } =
+    useAuth<LoginPageProps>();
+  useEffect(() => {
+    if (error) {
+      setError(error.field, {
+        type: 'manual',
+        message: error.message,
+      });
+    }
+  });
   const handleLoginSubmit = (data: LoginPageProps) => {
     handleLogin(data);
   };
@@ -78,12 +90,31 @@ function LoginPage() {
           <S.Comment>
             <span>아직 회원이 아니라면?</span>
             <span>
-              <Link to="/register">
+              <Link to="/signup">
                 <S.Emphasis>회원가입 </S.Emphasis>
               </Link>
               하러가기
             </span>
           </S.Comment>
+          {showModal && alertMessage === '서버에 연결할 수 없습니다.' && (
+            <AlertModal
+              title="로그인"
+              message="로그인에 실패하였습니다. 다시 시도해주세요."
+              confirmType="warning"
+              onConfirm={() => navigate('/signin')}
+            />
+          )}
+          {showModal &&
+            alertMessage ===
+              '가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?' && (
+              <ConfirmModal
+                title="로그인"
+                message="가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?"
+                confirmType="confirm"
+                onCancel={() => navigate('/signin')}
+                onConfirm={() => navigate('/signup')}
+              />
+            )}
         </S.SubContainer>
       </S.Container>
     </MainTemplate>

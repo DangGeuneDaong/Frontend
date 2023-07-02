@@ -1,11 +1,13 @@
 import axios from 'axios';
+import { JoinPageProps } from '../../pages/JoinPage';
 import { LoginPageProps } from '../../pages/LoginPage';
 
-const REFRESH_URL = 'http://localhost:3000/token';
+const REFRESH_URL = `${process.env.REACT_APP_SERVER_URL}/user/token`;
 
 export const instance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: process.env.REACT_APP_SERVER_URL,
   headers: { 'Content-Type': 'application/json' },
+  //쿠키를 받기 위해서는 cretentials 옵션 필요함
   withCredentials: true,
 });
 
@@ -58,11 +60,19 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
+//로그인 요청
 export function loginRequest(data: LoginPageProps) {
-  return axios.post('/login', data);
+  return instance.post('/user/signin', data);
 }
-
-export function socialLoginRequest() {
-  return axios.post;
+//회원가입 요청
+export function registerRequest(data: JoinPageProps) {
+  return instance.post('/user/signup', data);
+}
+//로그아웃 요청
+export function logoutRequest() {
+  return instance.post('/user/logout');
+}
+//유저정보 요청
+export function userProfileRequest(userId: string) {
+  return instance.get(`/user/info?userId=${userId}`);
 }

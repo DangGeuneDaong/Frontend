@@ -9,14 +9,24 @@ export const Container = styled.div`
 `;
 
 export const SubContainer = styled.div`
-  width: 600px;
-  height: 800px;
+  width: 40%;
+  height: 80%;
+  min-width: 600px;
+  min-height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 27px;
   padding: 70px;
+
+  @media screen and (min-width: 768px) {
+    width: 50%;
+  }
+
+  @media screen and (min-width: 1024px) {
+    width: 30%;
+  }
 `;
 export const ActiveLoginButton = styled.button.attrs((props) => ({
   type: 'submit',
