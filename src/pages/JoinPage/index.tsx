@@ -12,7 +12,7 @@ import Loader from '../../components/Loader';
 import { useEffect } from 'react';
 
 export interface JoinPageProps {
-  nickname: string;
+  nickName: string;
   userId: string;
   password: string;
   pwConfirm?: string;
@@ -58,7 +58,7 @@ function JoinPage() {
             <Input
               label="닉네임"
               placeholder="닉네임 입력"
-              {...register('nickname', {
+              {...register('nickName', {
                 required: '닉네임을 입력해주세요.',
                 minLength: {
                   value: 2,

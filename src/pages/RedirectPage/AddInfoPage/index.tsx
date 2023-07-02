@@ -61,7 +61,7 @@ function AddInfoPage() {
 
   const handleInfoSubmit = async (data: AddInfoProps) => {
     try {
-      const response = await axios.post('/user/signup', {
+      const response = await axios.post('http://13.209.220.63/user/signup', {
         ...data,
         profile_url: watchProfileUrl,
       });

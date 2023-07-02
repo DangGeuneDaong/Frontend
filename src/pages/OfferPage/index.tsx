@@ -13,6 +13,7 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import axiosInstance from '../../apis';
 import Confirm from '../../components/Modal/Confirm';
+// import Chat from '../../components/Chat/Chat';
 
 // const config = [
 //   {
@@ -57,6 +58,7 @@ function OfferPage() {
 
   const [showPosts, setShowPosts] = useState<PostsProps>(); // 1개를 받아오기 때문에 배열 사용 X
   const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
+  const [showRoomlists, setShowRoomlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
   const [selectedButtonId, setSelectedButtonId] = useState<number | null>(null); // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
   const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
   const [isOpenSharingModal, setIsOpenSharingModal] = useState<boolean>(false);
@@ -66,7 +68,9 @@ function OfferPage() {
   const offset = (page - 1) * LIMIT;
   const navigate = useNavigate();
 
-  const SERVER_URL = 'http://localhost:5000';
+  const SERVER_URL = 'http://13.209.220.63';
+  // const SERVER_URL = 'http://localhost:5000';
+
   const fetchData = async () => {
     const instance: AxiosInstance = axiosInstance();
     // 1. Good의 n번째 id로 선택된 데이터 get 요청
@@ -78,6 +82,11 @@ function OfferPage() {
       `${SERVER_URL}/Sharing_Application`
     );
     setShowTakerlists(result_takerlists.data);
+
+    // 3. 채팅방 개설 및 입장
+    await instance.post(`${SERVER_URL}/chat/create`);
+    const result_roomlists = await instance.get(`${SERVER_URL}/chat/enter`);
+    setShowRoomlists(result_roomlists.data);
   };
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
@@ -246,7 +255,19 @@ function OfferPage() {
           />
         </S.OfferContainer>
 
+        {/* {isOpenChat &&
+          showRoomlists === roomId && ( // roomId에 따라 선택된 ChatRoomArea를 보여주기
+            <ChatRoomArea
+              onClose={() => {
+                setIsOpenChat(false);
+                setSelectedButtonId(null);
+              }}
+              nickname={selectedUserData.nickname}
+              distance={selectedUserData.distance}
+            />
+          )} */}
         {isOpenChat && (
+          // showRoomlists.map(({ i, roomId, userId: { takerId, offerId } }) => ())
           <ChatRoomArea
             onClose={() => {
               setIsOpenChat(false);
