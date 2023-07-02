@@ -90,28 +90,31 @@ function LoginPage() {
           <S.Comment>
             <span>아직 회원이 아니라면?</span>
             <span>
-              <Link to="/register">
+              <Link to="/signup">
                 <S.Emphasis>회원가입 </S.Emphasis>
               </Link>
               하러가기
             </span>
           </S.Comment>
-          {showModal && alertMessage === '서버에 연결할 수 없습니다.' ? (
+          {showModal && alertMessage === '서버에 연결할 수 없습니다.' && (
             <AlertModal
               title="로그인"
               message="로그인에 실패하였습니다. 다시 시도해주세요."
               confirmType="warning"
               onConfirm={() => navigate('/signin')}
             />
-          ) : (
-            <ConfirmModal
-              title="로그인"
-              message="가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?"
-              confirmType="confirm"
-              onCancel={() => navigate('/signin')}
-              onConfirm={() => navigate('/signup')}
-            />
           )}
+          {showModal &&
+            alertMessage ===
+              '가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?' && (
+              <ConfirmModal
+                title="로그인"
+                message="가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?"
+                confirmType="confirm"
+                onCancel={() => navigate('/signin')}
+                onConfirm={() => navigate('/signup')}
+              />
+            )}
         </S.SubContainer>
       </S.Container>
     </MainTemplate>
