@@ -74,5 +74,5 @@ export function logoutRequest() {
 }
 //유저정보 요청
 export function userProfileRequest() {
-  return instance.get('/user');
+  return instance.get('/user/info');
 }
