@@ -183,7 +183,7 @@ const KakaoMap = ({
           const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
           const kakaoMap = new kakao.maps.Map($mapContainer!, {
             // center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표 (현재 위치)
-            center: new kakao.maps.LatLng(userInfo.latitude, userInfo.longitude), // 지도의 중심좌표 (판교)
+            center: new kakao.maps.LatLng(userInfo.longitude, userInfo.latitude), // 지도의 중심좌표 (판교)
             level: 4, // 지도의 확대 레벨
           });
           kakaoMap.setMinLevel(2);
