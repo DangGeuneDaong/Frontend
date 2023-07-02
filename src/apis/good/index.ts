@@ -22,7 +22,14 @@ export const uploadImage = async (selectedFiles: File[]) => {
     }
 
     // S3에서 각각의 이미지에 대해 String 값으로 return
-    const response = await instance.post('/img/upload', formData);
+    const response = await instance.post(
+      'http://13.209.220.63/img/upload',
+      formData
+    );
+    // const response = await instance.post(
+    //   'http://localhost:5000/image',
+    //   formData
+    // );
 
     // const response = selectedFiles.map((_, index) => {
     //   return `https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample${index}`;
@@ -38,12 +45,13 @@ export const uploadImage = async (selectedFiles: File[]) => {
 // 개별글 조회
 export const fetchPost = async (postId: string) => {
   try {
+    console.log('개별글 조회 시작');
     const instance: AxiosInstance = axiosInstance();
-    const post = await instance.get(`/good/offer/info?goodId=${postId}`);
+    const post = await instance.get(`http://13.209.220.63/good/${postId}`);
 
     return post.data;
   } catch (error: any) {
-    console.log('error : ', error);
+    console.log('에러 발생', error);
     return error;
   }
 };
@@ -57,8 +65,6 @@ export const useFetchPost = (postId: string) => {
   // refecthOnWindowFocus: 창이 포커스 될 때 데이터를 다시 가져오지 않음
   const query = useQuery(['post', postId], () => fetchPost(postId), {
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 3,
-    cacheTime: 1000 * 60 * 5,
   });
 
   // 데이터를 조회해서 recoil atoms에 저장
@@ -80,8 +86,8 @@ export const useFetchPost = (postId: string) => {
 export const addPost = async (data: any) => {
   try {
     const instance: AxiosInstance = axiosInstance();
-    const response = await instance.post('/good/offer/info', data);
-    // const response = await instance.post('http://localhost:5000/good', data);
+    // const response = await instance.post('/good/offer/info', data);
+    const response = await instance.post('http://13.209.220.63/good', data);
 
     // 성공 로직
     console.log('성공');
@@ -96,11 +102,11 @@ export const addPost = async (data: any) => {
 export const editPost = async (data: any) => {
   try {
     const instance: AxiosInstance = axiosInstance();
-    const response = await instance.put(`/good/offer/info`, data);
+    const response = await instance.put(`http://13.209.220.63/good/3`, data);
 
     return response;
   } catch (error: any) {
-    console.log('error : ', error);
+    console.log('에러 발생', error);
   }
 };
 
