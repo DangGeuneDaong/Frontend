@@ -70,7 +70,7 @@ export function useAuth<T extends { [key: string]: any }>() {
       const response = await loginRequest(data);
 
       //유저 정보 가져와 상태로 관리
-      const userInfo = await getUserProfile();
+      const userInfo = await getUserProfile(data.userId);
       setUser(userInfo);
       await navigate('/');
     } catch (error: any) {
@@ -98,8 +98,8 @@ export function useAuth<T extends { [key: string]: any }>() {
     }
   };
 
-  const getUserProfile = async () => {
-    const response = await userProfileRequest();
+  const getUserProfile = async (userId: string) => {
+    const response = await userProfileRequest(userId);
     return response.data;
   };
 

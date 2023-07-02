@@ -73,6 +73,6 @@ export function logoutRequest() {
   return axios.post('/user/logout');
 }
 //유저정보 요청
-export function userProfileRequest() {
-  return instance.get('/user/info');
+export function userProfileRequest(userId: string) {
+  return instance.get(`/user/info/${userId}`);
 }
