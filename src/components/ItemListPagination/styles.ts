@@ -36,6 +36,10 @@ export const PrevPageButton = styled(AiOutlineLeft)<PageMoveButtonCSSProps>`
   }
 `;
 
+export const PagesContainer = styled.div`
+  max-width: 200px;
+`;
+
 export const PageNum = styled.button<PageNumCSSProps>`
   width: 22px;
   height: 22px;

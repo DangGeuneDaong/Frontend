@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
-import MyPage from './pages/MyPage';
 // 메인 페이지
-import MainPage from './pages/MainPage/index';
+import MainPage from './pages/MainPage';
+import MyPage from './pages/MyPage';
 
 // 로그인 & 회원가입 페이지
 import LoginPage from './pages/LoginPage';
@@ -29,7 +29,6 @@ export default function App() {
       <Route path="/offer" element={<OfferPage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/signin" element={<LoginPage />} />
-      <Route path="/register" element={<JoinPage />} />
       <Route path="/redirect-kakao" element={<RedirectKakaoPage />} />
       <Route path="/redirect-naver" element={<RedirectNaverPage />} />
       <Route path="/taker" element={<TakerPage />} />
