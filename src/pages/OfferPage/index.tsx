@@ -255,7 +255,7 @@ function OfferPage() {
           />
         </S.OfferContainer>
 
-        {isOpenChat &&
+        {/* {isOpenChat &&
           showRoomlists === roomId && ( // roomId에 따라 선택된 ChatRoomArea를 보여주기
             <ChatRoomArea
               onClose={() => {
@@ -265,7 +265,7 @@ function OfferPage() {
               nickname={selectedUserData.nickname}
               distance={selectedUserData.distance}
             />
-          )}
+          )} */}
         {isOpenChat &&
           showRoomlists.map(({ i, roomId, userId: { takerId, offerId } }) => (
             <ChatRoomArea
