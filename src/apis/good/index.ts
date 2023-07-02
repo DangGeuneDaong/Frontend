@@ -95,12 +95,12 @@ export const addPost = async (data: any) => {
 
     const response = await instance.post(
       'http://13.209.220.63/good/offer/info',
-      formData
-      // {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // }
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
     );
 
     return response;
