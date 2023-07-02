@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 // api
 import { addPost, uploadImage } from '../../apis/good';
+import { userInfoState } from '../../states/userInfo';
 
 // components
 import MainTemplate from '../../components/template/MainTemplate';
@@ -25,6 +26,8 @@ export interface UploadPageCSSProps {
 
 function UploadPage() {
   const navigate = useNavigate();
+
+  const [userInfo, setUserInfo] = useState<any>(userInfoState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -113,7 +116,7 @@ function UploadPage() {
       const uploadedImages = await uploadImagesMutation(selectedFiles);
 
       const postData = {
-        // userId : userID 로그인 시 recoil state에서 가져오기
+        userId: userInfo.userId,
         main_category: selectedCategory,
         sub_category: selectedProduct,
         title: data.title,
