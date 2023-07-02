@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom';
 
 // 메인 페이지
 import MainPage from './pages/MainPage';
-import MyPage from './pages/MyPage';
 
 // 로그인 & 회원가입 페이지
 import LoginPage from './pages/LoginPage';
