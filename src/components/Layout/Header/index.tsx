@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { userInfoState } from '../../../states/userInfo';
+import { useRecoilState } from 'recoil';
+import { useAuth } from '../../../hooks/useAuth';
 import PopLayer from '../../PopLayer';
 
 import * as S from './styles';
@@ -10,22 +13,10 @@ function Header() {
   // 로그인 및 비로그인 상태에 따라 다른 컴포넌트 렌더링
   // NOTE: UI 구현 시 상태토글을 위해 임의로 로그인 및 로그아웃 상태를 localStorage로 구현
   const [isAuthUser, setIsAuthUser] = useState<boolean>(
-    !!localStorage.getItem('authUser')
+    !!localStorage.getItem('accessToken')
   );
-  const [isLogin, setIsLogin] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isAuthUser) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  }, [isAuthUser]);
-
-  // UI 구현 시 필요한 useEffect
-  useEffect(() => {
-    localStorage.setItem('authUser', 'dDKWKdkjwkqoUDUW2');
-  }, []);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const { handleLogout } = useAuth();
 
   // 경로 변경 함수
   const routeChange = (routePath: string) => {
@@ -49,9 +40,8 @@ function Header() {
       onClickHandler: () => {
         // TODO : Confirm 모달로 변경
         if (window.confirm('로그아웃 하시겠습니까?')) {
-          localStorage.removeItem('authUser');
+          handleLogout();
         }
-        setIsAuthUser(false); // localStorage 값 변경 시 state update
       },
       itemStyle: { color: 'red' },
     },
@@ -61,16 +51,13 @@ function Header() {
     <S.HeaderContainer>
       <S.HeaderInner>
         <S.HeaderRightMenu>
-          {isLogin ? (
+          {isAuthUser ? (
             <PopLayer itemList={menuList}>
               {/* 팝 레이어 */}
               {/* 팝 레이어 - 유저 프로필 */}
               {/* TODO : 로그인 시 프로필 정보 연동 */}
               <S.UserProfileImage>
-                <img
-                  src="https://via.placeholder.com/55"
-                  alt="유저 프로필 이미지"
-                />
+                <img src={userInfo.profile_url} alt="유저 프로필 이미지" />
               </S.UserProfileImage>
             </PopLayer>
           ) : (
@@ -88,7 +75,7 @@ function Header() {
               {/* 회원가입 버튼  */}
               <button
                 style={{ fontWeight: '600' }}
-                onClick={() => routeChange('register')}
+                onClick={() => routeChange('signup')}
               >
                 회원가입
               </button>
