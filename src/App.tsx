@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 
-import MyPage from './pages/MyPage';
 // 메인 페이지
 import MainPage from './pages/MainPage/index';
 
@@ -20,6 +19,9 @@ import EditPage from './pages/EditPage';
 
 // 정보 추가 페이지
 import AddInfoPage from './pages/RedirectPage/AddInfoPage';
+
+//마이 페이지
+import MyPage from './pages/MyPage';
 
 export default function App() {
   return (
