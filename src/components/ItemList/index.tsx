@@ -55,14 +55,14 @@ const ItemList = ({
   }
 
   requestURL = requestURL.substring(0, requestURL.length - 1);
-  console.log(`[현재 페이지 데이터] requestURL: ${requestURL}`);
+  // console.log(`[현재 페이지 데이터] requestURL: ${requestURL}`);
 
   const { isLoading, error, data } = useQuery(
     requestURL,
     async () => {
       // 백엔드 연결 부분
       const result = await getPosts(requestURL);
-      console.log('현재 페이지 getPosts : ', result);
+      // console.log('현재 페이지 getPosts : ', result);
       // return result;
     },
     {
@@ -74,36 +74,36 @@ const ItemList = ({
   useEffect(() => {
     // mockData 사용 부분
     if (mapBoundsInfo) {
-      const response = axios.get('http://localhost:5000/mainGood');
-      response.then((itemList) => {
-        setPageItems(
-          itemList.data
-            .filter((_item: { main_category: string }) =>
-              condition.petType === 'all'
-                ? true
-                : condition.petType === _item.main_category
-            )
-            .filter((_item: { category: string }) =>
-              category === 'all' ? true : category === _item.category
-            )
-            .filter((_item: { title: string }) =>
-              keyword === '' ? true : _item.title.includes(keyword)
-            )
-            .filter((_item: { status: string }) =>
-              condition.status === 'all'
-                ? true
-                : condition.status === _item.status
-            )
-            .filter(
-              (_item: { latitude: number; longitude: number }) =>
-                _item.latitude >= mapBoundsInfo.getSouthWest().getLat() &&
-                _item.latitude <= mapBoundsInfo.getNorthEast().getLat() &&
-                _item.longitude >= mapBoundsInfo.getSouthWest().getLng() &&
-                _item.longitude <= mapBoundsInfo.getNorthEast().getLng()
-            )
-            .slice((currentPage - 1) * 10, currentPage * 10)
-        );
-      });
+      // const response = axios.get('http://localhost:5000/mainGood');
+      // response.then((itemList) => {
+      //   setPageItems(
+      //     itemList.data
+      //       .filter((_item: { main_category: string }) =>
+      //         condition.petType === 'all'
+      //           ? true
+      //           : condition.petType === _item.main_category
+      //       )
+      //       .filter((_item: { category: string }) =>
+      //         category === 'all' ? true : category === _item.category
+      //       )
+      //       .filter((_item: { title: string }) =>
+      //         keyword === '' ? true : _item.title.includes(keyword)
+      //       )
+      //       .filter((_item: { status: string }) =>
+      //         condition.status === 'all'
+      //           ? true
+      //           : condition.status === _item.status
+      //       )
+      //       .filter(
+      //         (_item: { latitude: number; longitude: number }) =>
+      //           _item.latitude >= mapBoundsInfo.getSouthWest().getLat() &&
+      //           _item.latitude <= mapBoundsInfo.getNorthEast().getLat() &&
+      //           _item.longitude >= mapBoundsInfo.getSouthWest().getLng() &&
+      //           _item.longitude <= mapBoundsInfo.getNorthEast().getLng()
+      //       )
+      //       .slice((currentPage - 1) * 10, currentPage * 10)
+      //   );
+      // });
     }
   }, [currentPage, mapBoundsInfo]);
 
