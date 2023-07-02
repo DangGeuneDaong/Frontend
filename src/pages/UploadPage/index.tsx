@@ -5,7 +5,8 @@ import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
 
 // api
-import { addPost, uploadImage } from '../../apis/good';
+import { addPost } from '../../apis/good';
+import { userInfoState } from '../../states/userInfo';
 
 // components
 import MainTemplate from '../../components/template/MainTemplate';
@@ -86,7 +87,6 @@ function UploadPage() {
   };
 
   // 폼 전송
-  const { mutateAsync: uploadImagesMutation } = useMutation(uploadImage);
   const { mutate: addPostMutation } = useMutation(addPost, {
     onSuccess: () => {
       setAlertMessage({
@@ -108,10 +108,6 @@ function UploadPage() {
 
   const onSubmit = async (data: any) => {
     try {
-      // NOTE : 이미지 업로드 순서 보장을 위해 mutateAsync 사용
-      // muatate는 반환값이 없지만, mutateAsync는 return 값을 Promise로 반환
-      const uploadedImages = await uploadImagesMutation(selectedFiles);
-
       const postData = {
         // userId : userID 로그인 시 recoil state에서 가져오기
         main_category: selectedCategory,
@@ -119,7 +115,7 @@ function UploadPage() {
         title: data.title,
         description: data.description,
         status: 'SHARING',
-        files: uploadedImages,
+        files: selectedFiles,
       };
 
       addPostMutation(postData);
