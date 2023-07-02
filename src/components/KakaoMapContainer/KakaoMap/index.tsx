@@ -7,6 +7,9 @@ import { ItemFilterProps } from '../../ItemFilter';
 import { getPosts } from '../../../apis/good';
 import uploadPostImg from '../../../assets/imgs/edit.png';
 
+import { useRecoilValue } from 'recoil';
+import { userInfoState } from '../../../states/userInfo';
+
 import * as S from './styles';
 
 interface KakaoMapProps {
@@ -32,7 +35,7 @@ const KakaoMap = ({
   setMapBoundsInfo
 }: KakaoMapProps) => {
   const [map, setMap] = useState<kakao.maps.Map>();
-  // const [mapBounds, setMapBounds] = useState<kakao.maps.LatLngBounds>();
+  const userInfo = useRecoilValue(userInfoState);
 
   // Data Fetch (전체 데이터) + fetch후 updateItems(= setMapItemList)
   // 전체 데이터 가져올 떄의 파라미터 (page는 필요없음, lat, lng필수 + 기타 파라미터)
@@ -176,6 +179,15 @@ const KakaoMap = ({
           searchItems(lat, lon, kakaoMap);
         },
         (error) => {
+          const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
+          const kakaoMap = new kakao.maps.Map($mapContainer!, {
+            // center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표 (현재 위치)
+            center: new kakao.maps.LatLng(37.3952969470752, 127.110449292622), // 지도의 중심좌표 (판교)
+            level: 4, // 지도의 확대 레벨
+          });
+          kakaoMap.setMinLevel(2);
+          setMap(kakaoMap);
+          searchItems(userInfo.latitude, userInfo.longitude, kakaoMap);
           console.log(error); // 에러 핸들링 필요
         },
         {
