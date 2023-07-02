@@ -87,7 +87,10 @@ export const addPost = async (data: any) => {
   try {
     const instance: AxiosInstance = axiosInstance();
     // const response = await instance.post('/good/offer/info', data);
-    const response = await instance.post('http://13.209.220.63/good', data);
+    const response = await instance.post(
+      'http://13.209.220.63/good/offer/info',
+      data
+    );
 
     // 성공 로직
     console.log('성공');
