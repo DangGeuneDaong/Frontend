@@ -26,6 +26,9 @@ function RedirectKakaoPage() {
           },
         }
       )
+      .then((res) =>
+        axios.post(`oauth/kakaoLogin?accessToken=${res.data.access_token}`)
+      )
       .then((res) => {
         console.log(res);
         const { access_token: accessToken } = res.data;

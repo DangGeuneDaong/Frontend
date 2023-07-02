@@ -59,7 +59,7 @@ export const ListContainer = styled.div`
 `;
 
 export const Breadcrumb = styled.div`
-  margin-left: 3rem;
+  margin-left: 3.5rem;
   align-self: flex-start;
 `;
 
