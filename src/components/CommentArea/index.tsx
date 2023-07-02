@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useTheme } from 'styled-components';
 
 import Textarea from '../Form/Textarea';
-import Chat from '../Chat/Chat';
+// import Chat from '../Chat/Chat';
 import axiosInstance from '../../apis';
 
 function CommentArea() {
@@ -106,7 +106,7 @@ function CommentArea() {
           >
             신청취소
           </Button>
-          <Chat />
+          {/* <Chat /> */}
         </S.Form>
       )}
     </S.Container>
