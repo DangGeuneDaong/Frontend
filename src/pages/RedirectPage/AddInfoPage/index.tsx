@@ -1,10 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useState, useRef, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { userInfoState } from '../../../states/userInfo';
 import { useAuth } from '../../../hooks/useAuth';
 import { useRandom } from '../../../hooks/useRandom';
-import axios from 'axios';
 
 import MainTemplate from '../../../components/template/MainTemplate';
 import Input from '../../../components/Form/Input';
