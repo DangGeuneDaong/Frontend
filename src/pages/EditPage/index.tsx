@@ -16,7 +16,7 @@ import {
 
 import MainTemplate from '../../components/template/MainTemplate';
 
-import * as S from '../UplodePage/styles';
+import * as S from '../UploadPage/styles';
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button';
 import Textarea from '../../components/Form/Textarea';
@@ -104,8 +104,8 @@ function EditPage() {
       setValue('title', post.title);
       setValue('description', post.description);
 
-      if (post.good_image_list) {
-        createFileObjects(post.good_image_list);
+      if (post.files) {
+        createFileObjects(post.files);
       }
     }
   }, [post, setValue]);
@@ -166,13 +166,13 @@ function EditPage() {
       const uploadedImages = await uploadImagesMutation(selectedFiles);
 
       const postData = {
-        // user_id : userID 로그인 시 recoil state에서 가져오기
+        // userId : userID 로그인 시 recoil state에서 가져오기
         main_category: selectedCategory,
         sub_category: selectedProduct,
         title: data.title,
         description: data.description,
-        status: '판매중',
-        good_image_list: uploadedImages,
+        status: 'SHARING',
+        files: uploadedImages,
       };
 
       editPostMutation(postData);

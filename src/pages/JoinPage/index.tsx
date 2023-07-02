@@ -1,7 +1,6 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import axios from 'axios';
+import { useAuth } from '../../hooks/useAuth';
 
 import MainTemplate from '../../components/template/MainTemplate';
 import Input from '../../components/Form/Input';
@@ -9,12 +8,14 @@ import SearchLocation from '../../components/SearchLocation';
 import AlertModal from '../../components/Modal/Alert';
 
 import * as S from './styles';
+import Loader from '../../components/Loader';
+import { useEffect } from 'react';
 
 export interface JoinPageProps {
-  nickname: string;
+  nickName: string;
   userId: string;
   password: string;
-  pwConfirm: string;
+  pwConfirm?: string;
   location: string;
   extraError?: string;
 }
@@ -28,46 +29,24 @@ function JoinPage() {
     handleSubmit,
     setError,
     setValue,
+    trigger,
     watch,
   } = useForm<JoinPageProps>({ mode: 'onBlur' });
   const password = watch('password');
-  const [alertMessage, setAlertMessage] = useState<string | undefined>(
-    undefined
-  );
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const { handleRegister, isLoading, error, alertMessage, showModal } =
+    useAuth<JoinPageProps>();
 
-  const onValid = async (data: JoinPageProps) => {
-    //비밀번호 확인은 제거
-    const { pwConfirm, ...postData } = data;
-    try {
-      const response = await axios.post('/register', postData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+  useEffect(() => {
+    if (error) {
+      setError(error.field, {
+        type: 'manual',
+        message: error.message,
       });
-
-      if (response.status === 200) {
-        setAlertMessage('회원가입이 완료되었습니다.');
-        setShowModal(true);
-      } else {
-        throw new Error();
-      }
-    } catch (error: any) {
-      setAlertMessage(
-        error.response
-          ? error.response.data.message || '회원가입에 실패했습니다.'
-          : '서버에 연결할 수 없습니다.'
-      );
-      setShowModal(true);
     }
-  };
-
-  const closeAlert = () => {
-    setAlertMessage(undefined);
-    setShowModal(false);
-    if (alertMessage === '회원가입이 완료되었습니다.') {
-      navigate('/signin');
-    }
+  }, [error, setError]);
+  const onValid = async (data: JoinPageProps) => {
+    //비밀번호 확인은 따로 보내진않음.
+    handleRegister(data);
   };
 
   return (
@@ -79,15 +58,15 @@ function JoinPage() {
             <Input
               label="닉네임"
               placeholder="닉네임 입력"
-              {...register('nickname', {
+              {...register('nickName', {
                 required: '닉네임을 입력해주세요.',
                 minLength: {
                   value: 2,
                   message: '닉네임은 2글자 이상 입력해주세요.',
                 },
                 maxLength: {
-                  value: 10,
-                  message: '닉네임은 10글자 이하로 입력해주세요.',
+                  value: 12,
+                  message: '닉네임은 12글자 이하로 입력해주세요.',
                 },
               })}
               errors={errors}
@@ -132,31 +111,49 @@ function JoinPage() {
               })}
               errors={errors}
             />
+            <S.LoacationContainer>
+              <Controller
+                control={control}
+                name="location"
+                defaultValue=""
+                rules={{ required: '주소를 입력해주세요.' }}
+                render={({ field }) => (
+                  <Input
+                    label="주소정보 입력"
+                    placeholder="주소 입력"
+                    {...field}
+                    readOnly
+                  />
+                )}
+              />
+              <SearchLocation setValue={setValue} trigger={trigger} />
+            </S.LoacationContainer>
 
-            <Controller
-              control={control}
-              name="location"
-              defaultValue=""
-              rules={{ required: '주소를 입력해주세요.' }}
-              render={({ field }) => (
-                <Input
-                  label="주소정보 입력"
-                  placeholder="주소 입력"
-                  {...field}
-                  readOnly
-                />
-              )}
-            />
-            <SearchLocation setValue={setValue} />
             {errors.extraError && <span>{errors.extraError.message}</span>}
 
             {isValid ? (
-              <S.ActiveJoinButton>회원가입</S.ActiveJoinButton>
+              <S.ActiveJoinButton>
+                {isLoading ? <Loader /> : '회원가입'}
+              </S.ActiveJoinButton>
             ) : (
               <S.InactiveJoinButton disabled>회원가입</S.InactiveJoinButton>
             )}
           </form>
         </S.SubContainer>
+
+        {/* {showModal && alertMessage === '회원가입이 완료되었습니다.' ? (
+          <AlertModal
+            title="환영합니다🎉"
+            message={'회원가입이 완료되었습니다.'}
+            onConfirm={() => navigate('/signin')}
+          />
+        ) : (
+          <AlertModal
+            title="회원가입"
+            message={'회원가입에 실패하였습니다. 다시 시도해주세요.'}
+            onConfirm={() => navigate('/signup')}
+          />
+        )} */}
       </S.Container>
     </MainTemplate>
   );

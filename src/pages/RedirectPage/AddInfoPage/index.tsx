@@ -1,6 +1,9 @@
 import { useForm, Controller } from 'react-hook-form';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { useRecoilState } from 'recoil';
+import { useAuth } from '../../../hooks/useAuth';
+import { useRandom } from '../../../hooks/useRandom';
 import axios from 'axios';
 
 import MainTemplate from '../../../components/template/MainTemplate';
@@ -9,76 +12,61 @@ import Loader from '../../../components/Loader';
 import SearchLocation from '../../../components/SearchLocation';
 
 import * as S from './styles';
+import { userInfoState } from '../../../states/userInfo';
 
 export interface AddInfoProps {
   nickname: string;
   location: string;
   profile_url: string;
 }
-const DEFAULT_PROFILE_URL =
-  'https://www.thechooeok.com/common/img/default_profile.png';
-const randomAdjective = [
-  '멍때리는',
-  '건방진',
-  '잠자는',
-  '신난',
-  '드러누운',
-  '밥먹는',
-  '코딩하는',
-  '삐진',
-  '귀여운',
-];
-const randomNicknames = [
-  '프로도',
-  '라이언',
-  '어피치',
-  '네오',
-  '춘식',
-  '튜브',
-  '콘',
-  '무지',
-  '제이지',
-];
-//랜덤닉네임 함수
-function generateRandomNickname() {
-  const randomAdjectiveValue =
-    randomAdjective[Math.floor(Math.random() * randomAdjective.length)];
-  const randomNicknameValue =
-    randomNicknames[Math.floor(Math.random() * randomNicknames.length)];
 
-  return `${randomAdjectiveValue} ${randomNicknameValue}`;
-}
 function AddInfoPage() {
-  const initialNickname = generateRandomNickname();
+  const [userData, setUserData] = useRecoilState(userInfoState);
+  const { getUserProfile } = useAuth();
+  const { loginType, generateRandomNicknameK, generateRandomNicknameN } =
+    useRandom();
+  const initialNickname =
+    loginType === 'K' ? generateRandomNicknameK() : generateRandomNicknameN();
   const [nicknameEdited, setNicknameEdited] = useState<boolean>(false);
   const [randomNickname, setRandomNickname] = useState<string>(initialNickname);
+  const [userProfile, setUserProfile] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const {
-    register,
     control,
     formState: { errors, isValid },
     handleSubmit,
     setError,
     setValue,
+    trigger,
     watch,
   } = useForm<AddInfoProps>({
     mode: 'onBlur',
     defaultValues: {
       nickname: initialNickname,
       location: '',
-      //profile_url 받아오기
-      profile_url: 'https://www.thechooeok.com/common/img/default_profile.png',
     },
   });
   const watchProfileUrl = watch('profile_url');
+  // useEffect(() => {
+  //   getUserProfile()
+  //     .then((userData) => {
+  //       setUserProfile(userData.profile_url);
+  //       setValue('profile_url', userData.profile_url);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [setValue]);
 
   const handleInfoSubmit = async (data: AddInfoProps) => {
     try {
-      await axios.post('/guest', {
+      const response = await axios.post('http://13.209.220.63/user/signup', {
         ...data,
         profile_url: watchProfileUrl,
       });
+
+      setUserData(response.data.user);
     } catch (error) {
       setError('nickname', { message: '닉네임이 중복되었습니다.' });
     }
@@ -114,16 +102,19 @@ function AddInfoPage() {
   //랜덤 닉네임
   const handleRefreshNickname = async () => {
     if (!nicknameEdited) {
-      const newRandomNickname = await generateRandomNickname();
+      const newRandomNickname =
+        loginType === 'K'
+          ? generateRandomNicknameK()
+          : generateRandomNicknameN();
       setRandomNickname(newRandomNickname);
       setValue('nickname', newRandomNickname);
+      setError('nickname', { message: '' });
     }
   };
   const handleUploadImg = () => {
     fileInput.current?.click();
   };
   const resetImg = () => {
-    setValue('profile_url', DEFAULT_PROFILE_URL);
     fileInput.current?.value && (fileInput.current.value = '');
   };
   return (
@@ -133,7 +124,7 @@ function AddInfoPage() {
           <S.H1>추가 정보 입력</S.H1>
           <S.Form onSubmit={handleSubmit(handleInfoSubmit)}>
             <S.ProfileImg src={watchProfileUrl} />
-            {watchProfileUrl !== DEFAULT_PROFILE_URL ? (
+            {watchProfileUrl !== userProfile ? (
               <S.CancelButton onClick={resetImg}>
                 프로필 이미지 변경 취소
               </S.CancelButton>
@@ -164,6 +155,7 @@ function AddInfoPage() {
                       setNicknameEdited(true);
                     }}
                     readOnly={false}
+                    errors={errors}
                   />
                 )}
               />
@@ -186,7 +178,7 @@ function AddInfoPage() {
                   />
                 )}
               />
-              <SearchLocation setValue={setValue} />
+              <SearchLocation setValue={setValue} trigger={trigger} />
             </S.NicknameContainer>
             {isValid ? (
               <S.ActiveSaveButton disabled={isLoading}>

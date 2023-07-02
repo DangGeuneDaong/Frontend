@@ -19,11 +19,11 @@ import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
 
-export interface UplodePageCSSProps {
+export interface UploadPageCSSProps {
   inputContainerDirection?: 'row' | 'column';
 }
 
-function UplodePage() {
+function UploadPage() {
   const navigate = useNavigate();
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -52,22 +52,22 @@ function UplodePage() {
   } = useForm({ mode: 'onBlur' });
 
   // 디버깅용 코드
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) =>
+  //     console.log(value, name, type)
+  //   );
 
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
 
-  useEffect(() => {
-    console.log('선택된 파일', selectedFiles);
-  }, [selectedFiles]);
+  // useEffect(() => {
+  //   console.log('선택된 파일', selectedFiles);
+  // }, [selectedFiles]);
 
-  useEffect(() => {
-    setValue('title', '제목');
-    setValue('description', '내용');
-  }, []);
+  // useEffect(() => {
+  //   setValue('title', '제목');
+  //   setValue('description', '내용');
+  // }, []);
 
   // 엔터 입력 시 포커스가 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -113,13 +113,13 @@ function UplodePage() {
       const uploadedImages = await uploadImagesMutation(selectedFiles);
 
       const postData = {
-        // user_id : userID 로그인 시 recoil state에서 가져오기
+        // userId : userID 로그인 시 recoil state에서 가져오기
         main_category: selectedCategory,
         sub_category: selectedProduct,
         title: data.title,
         description: data.description,
-        status: '판매중',
-        good_image_list: uploadedImages,
+        status: 'SHARING',
+        files: uploadedImages,
       };
 
       addPostMutation(postData);
@@ -248,4 +248,4 @@ function UplodePage() {
   );
 }
 
-export default UplodePage;
+export default UploadPage;

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { UplodePageCSSProps } from '.';
+import { UploadPageCSSProps } from '.';
 
 export const Container = styled.div`
   width: 100%;
@@ -26,7 +26,7 @@ export const DropdownContainer = styled.div`
   }
 `;
 
-export const InputContainer = styled.div<UplodePageCSSProps>`
+export const InputContainer = styled.div<UploadPageCSSProps>`
   display: flex;
   align-items: ${(props) =>
     props.inputContainerDirection === 'row' ? 'center' : 'flex-start'};

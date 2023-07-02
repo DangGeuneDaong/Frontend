@@ -18,7 +18,7 @@ const ConfirmModal = ({
   confirmType = 'confirm',
   confirmText = '확인',
   cancelText = '취소',
-  alignType = 'center',
+  alignType = 'top',
   onCancel,
   onConfirm,
 }: AlertModalProps) => {
