@@ -15,7 +15,7 @@ import * as S from './styles';
 import { userInfoState } from '../../../states/userInfo';
 
 export interface AddInfoProps {
-  nickname: string;
+  nickName: string;
   location: string;
   profile_url: string;
 }
@@ -43,13 +43,13 @@ function AddInfoPage() {
   } = useForm<AddInfoProps>({
     mode: 'onBlur',
     defaultValues: {
-      nickname: initialNickname,
+      nickName: initialNickname,
       location: '',
     },
   });
   const watchProfileUrl = watch('profile_url');
   // useEffect(() => {
-  //   getUserProfile()
+  //   getUserProfile(userId)
   //     .then((userData) => {
   //       setUserProfile(userData.profile_url);
   //       setValue('profile_url', userData.profile_url);
@@ -68,7 +68,7 @@ function AddInfoPage() {
 
       setUserData(response.data.user);
     } catch (error) {
-      setError('nickname', { message: '닉네임이 중복되었습니다.' });
+      setError('nickName', { message: '닉네임이 중복되었습니다.' });
     }
   };
 
@@ -107,8 +107,8 @@ function AddInfoPage() {
           ? generateRandomNicknameK()
           : generateRandomNicknameN();
       setRandomNickname(newRandomNickname);
-      setValue('nickname', newRandomNickname);
-      setError('nickname', { message: '' });
+      setValue('nickName', newRandomNickname);
+      setError('nickName', { message: '' });
     }
   };
   const handleUploadImg = () => {
@@ -142,7 +142,7 @@ function AddInfoPage() {
             <S.NicknameContainer>
               <Controller
                 control={control}
-                name="nickname"
+                name="nickName"
                 defaultValue=""
                 rules={{ required: '닉네임은 필수 입력입니다.' }}
                 render={({ field }) => (

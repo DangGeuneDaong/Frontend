@@ -103,6 +103,7 @@ export function useAuth<T extends { [key: string]: any }>() {
     return response.data;
   };
 
+  //로그아웃 함수
   const handleLogout = async () => {
     try {
       const response = await logoutRequest();
