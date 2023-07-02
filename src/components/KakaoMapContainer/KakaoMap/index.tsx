@@ -68,7 +68,7 @@ const KakaoMap = ({
       // 백엔드 연결 부분
       const requestURL2 = 'http://localhost:5000/mainGood';
       const result = await getPosts(requestURL);
-      console.log('젼체 getPosts : ', result);
+      // console.log('젼체 getPosts : ', result);
       // return data;
     },
     {
