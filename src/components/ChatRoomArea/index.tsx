@@ -20,7 +20,7 @@ interface OfferPageProps {
   id?: number;
   nickname?: string;
   distance?: string;
-  onClose: () => void;
+  onClose?: () => void;
   children?: React.ReactNode;
 }
 
