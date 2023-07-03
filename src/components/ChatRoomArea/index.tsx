@@ -13,29 +13,27 @@ import axios from 'axios';
 
 import Input from '../Form/Input';
 import Button from '../Button';
+// import Chat from '../Chat/Chat';
 
 interface OfferPageProps {
   // getBack: () => void;
   id?: number;
   nickname?: string;
   distance?: string;
-  onClose: () => void;
+  onClose?: () => void;
+  children?: React.ReactNode;
 }
 
-function ChatRoomArea({ id, nickname, distance, onClose }: OfferPageProps) {
+function ChatRoomArea({
+  id,
+  nickname,
+  distance,
+  onClose,
+  children,
+}: OfferPageProps) {
   const [showTakerlists, setShowTakerlists] = useState([]);
 
   const theme = useTheme();
-
-  // useEffect(() => {
-  //   const SERVER_URL = 'http://localhost:5000'
-  //   const fetchData = async () => {
-  //     const result_takerlists = await axios.get(`${SERVER_URL}/Sharing_Application`)
-  //     setShowTakerlists(result_takerlists.data)
-  //     console.log('result_takerlists.data :', result_takerlists.data)
-  //   }
-  //   fetchData()
-  // }, [])
 
   return (
     <S.Container>
@@ -56,7 +54,7 @@ function ChatRoomArea({ id, nickname, distance, onClose }: OfferPageProps) {
         </button>
       </S.ChatHeaderContainer>
       <S.ChatBodyContainer>
-        <S.OfferContainer>
+        {/* <S.OfferContainer>
           <S.ChatContent>
             안녕하세요!! OOO은 들어있지 않습니다!!! 알러지는 안심하셔도 될 것
             같아요
@@ -70,9 +68,10 @@ function ChatRoomArea({ id, nickname, distance, onClose }: OfferPageProps) {
             꼭 부탁드리겠습니다!!!
           </S.ChatContent>
           <div>17:30</div>
-        </S.TakerContainer>
+        </S.TakerContainer> */}
+        {children}
       </S.ChatBodyContainer>
-      <S.ChatFooterContainer>
+      {/* <S.ChatFooterContainer>
         <button>
           <AiOutlinePlus />
         </button>
@@ -82,7 +81,7 @@ function ChatRoomArea({ id, nickname, distance, onClose }: OfferPageProps) {
         <button>
           <BsSend />
         </button>
-      </S.ChatFooterContainer>
+      </S.ChatFooterContainer> */}
     </S.Container>
   );
 }

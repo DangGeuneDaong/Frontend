@@ -13,22 +13,7 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import axiosInstance from '../../apis';
 import Confirm from '../../components/Modal/Confirm';
-// import Chat from '../../components/Chat/Chat';
-
-// const config = [
-//   {
-//     image:
-//       'https://images.unsplash.com/photo-1472552944129-b035e9ea3744?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-//   },
-//   {
-//     image:
-//       'https://images.unsplash.com/photo-1597843786186-826cc3489f56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80',
-//   },
-//   {
-//     image:
-//       'https://images.unsplash.com/photo-1616668983570-a971956d8928?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80',
-//   },
-// ];
+import Chat from '../../components/Chat/Chat';
 
 interface DataProps {
   id?: number;
@@ -59,6 +44,7 @@ function OfferPage() {
   const [showPosts, setShowPosts] = useState<PostsProps>(); // 1개를 받아오기 때문에 배열 사용 X
   const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
   const [showRoomlists, setShowRoomlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
+  const [showRoomId, setShowRoomId] = useState(); // 여러 개를 받아오기 때문에 배열 사용 O
   const [selectedButtonId, setSelectedButtonId] = useState<number | null>(null); // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
   const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
   const [isOpenSharingModal, setIsOpenSharingModal] = useState<boolean>(false);
@@ -74,7 +60,7 @@ function OfferPage() {
   const fetchData = async () => {
     const instance: AxiosInstance = axiosInstance();
     // 1. Good의 n번째 id로 선택된 데이터 get 요청
-    const { data } = await instance.get(`${SERVER_URL}/Good/1`);
+    const { data } = await instance.get(`${SERVER_URL}/Good/${id}`);
     setShowPosts(data);
 
     // 2. Sharing_Application 데이터 get 요청
@@ -88,6 +74,10 @@ function OfferPage() {
     const result_roomlists = await instance.get(`${SERVER_URL}/chat/enter`);
     setShowRoomlists(result_roomlists.data);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
     id: -1,
@@ -165,10 +155,6 @@ function OfferPage() {
       isOpenDeleteModal && setIsOpenDeleteModal(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <MainTemplate>
@@ -255,19 +241,7 @@ function OfferPage() {
           />
         </S.OfferContainer>
 
-        {/* {isOpenChat &&
-          showRoomlists === roomId && ( // roomId에 따라 선택된 ChatRoomArea를 보여주기
-            <ChatRoomArea
-              onClose={() => {
-                setIsOpenChat(false);
-                setSelectedButtonId(null);
-              }}
-              nickname={selectedUserData.nickname}
-              distance={selectedUserData.distance}
-            />
-          )} */}
         {isOpenChat && (
-          // showRoomlists.map(({ i, roomId, userId: { takerId, offerId } }) => ())
           <ChatRoomArea
             onClose={() => {
               setIsOpenChat(false);
@@ -275,7 +249,9 @@ function OfferPage() {
             }}
             nickname={selectedUserData.nickname}
             distance={selectedUserData.distance}
-          />
+          >
+            <Chat roomId={showRoomId} />
+          </ChatRoomArea>
         )}
       </S.Container>
     </MainTemplate>

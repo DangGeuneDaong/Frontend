@@ -21,6 +21,7 @@ function AddInfoPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const loginType = params.get('loginType');
+  console.log('loginType : ', loginType);
   const { getSocialUserProfile } = useAuth();
   const { generateRandomNicknameK, generateRandomNicknameN } = useRandom();
   const initialNickname =

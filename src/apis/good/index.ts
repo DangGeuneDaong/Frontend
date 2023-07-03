@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { instance } from '../auth/api';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { PostModel, postState, postStateLoading } from '../../states/goodState';
@@ -80,18 +81,22 @@ export const addPost = async (data: any) => {
   try {
     const requestObject = {
       userId: data.userId,
-      main_category: data.main_category,
-      sub_category: data.sub_category,
+      mainCategory: data.mainCategory,
+      subCategory: data.subCategory,
       title: data.title,
       description: data.description,
       status: data.status,
     };
 
-    formData.append('request', JSON.stringify(requestObject));
+    const requestBlob = new Blob([JSON.stringify(requestObject)], {
+      type: 'application/json',
+    });
 
-    for (let i = 0; i < data.files.length; i++) {
-      formData.append('files', data.files[i]);
-    }
+    formData.append('request', requestBlob);
+
+    data.files.forEach((file: any) => {
+      formData.append('files', file);
+    });
 
     const response = await instance.post(
       'http://13.209.220.63/good/offer/info',

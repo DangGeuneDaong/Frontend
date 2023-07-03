@@ -1,67 +1,65 @@
-// // 230702 (4)
-// import React from 'react';
-// import SockJS from 'sockjs-client';
-// import webstomp from 'webstomp-client';
+// 230702 (4)
+import React from 'react';
+import SockJS from 'sockjs-client';
+import webstomp from 'webstomp-client';
 
-// import { AxiosInstance } from 'axios';
-// import axiosInstance from '../../apis';
+import { AxiosInstance } from 'axios';
+import axiosInstance from '../../apis';
 
-// interface OfferPageProps {
-//   roomId?: number;
-//   takerId?: string;
-//   offerId?: string;
-// }
+interface OfferPageProps {
+  roomId?: any;
+}
 
-// function Chat({ roomId, takerId, offerId }: OfferPageProps) {
-//   let stomp: any;
+function Chat({ roomId }: OfferPageProps) {
+  let stomp: any;
 
-//   const SERVER_URL = 'http://13.209.220.63';
-//   // const SERVER_URL = 'http://localhost:5000';
+  const SERVER_URL = 'http://13.209.220.63';
+  // const SERVER_URL = 'http://localhost:5000';
 
-//   document.addEventListener('DOMContentLoaded', function () {
-//     // ["websocket", "xhr-streaming", "xhr-polling"]
-//     const sock = new SockJS(`${SERVER_URL}`, null, {
-//       transports: ['xhr-polling'],
-//     });
-//     stomp = webstomp.over(sock);
-//     //
-//     stomp.connect('/websocket', function (frame: any) {
-//       console.log('Connected!!');
+  document.addEventListener('DOMContentLoaded', function () {
+    // ["websocket", "xhr-streaming", "xhr-polling"]
+    const sock = new SockJS(`${SERVER_URL}`, null, {
+      transports: ['xhr-polling'],
+    });
+    stomp = webstomp.over(sock);
+    //
+    stomp.connect('/websocket', function (frame: any) {
+      console.log('Connected!!');
 
-//       // subscribe로 메시지 받기
-//       stomp.subscribe(`/websocket/sub/${roomId}`, function (frame: any) {
-//         // `/websocket/sub/${roomId}` 차후 변경
-//         const messages = document.querySelector('#messages') as HTMLDivElement;
-//         const message = document.createElement('li');
-//         message.innerText = frame.body;
-//         messages.appendChild(message);
-//       });
-//     });
-//   });
+      // subscribe로 메시지 받기
+      stomp.subscribe(`/websocket/sub/${roomId}`, function (frame: any) {
+        // `/websocket/sub/${roomId}` 차후 변경
+        const messages = document.querySelector('#messages') as HTMLDivElement;
+        const message = document.createElement('li');
+        message.innerText = frame.body;
+        messages.appendChild(message);
+      });
+    });
+  });
 
-//   const sendHandler = () => {
-//     const message = document.querySelector('.message') as HTMLInputElement;
-//     // send로 메시지 보내기
-//     stomp.send(`/websocket/pub/message/${roomId}`, message.value); // `/websocket/pub/message/${roomId}`
-//     message.value = '';
-//   };
+  const sendHandler = () => {
+    const message = document.querySelector('.message') as HTMLInputElement;
+    // send로 메시지 보내기
+    stomp.send(`/websocket/pub/message/${roomId}`, message.value); // `/websocket/pub/message/${roomId}`
+    message.value = '';
+  };
 
-//   return (
-//     <>
-//       <div className="messages">
-//         <ul id="messages"></ul>
-//       </div>
-//       <div>
-//         <input type="text" className="message" />
-//         <button onClick={sendHandler} className="send-btn">
-//           보내기
-//         </button>
-//       </div>
-//     </>
-//   );
-// }
+  return (
+    <>
+      <div className="messages">
+        <ul id="messages"></ul>
+      </div>
+      <div>
+        <input type="text" className="message" />
+        <button onClick={sendHandler} className="send-btn">
+          보내기
+        </button>
+      </div>
+    </>
+  );
+}
 
-// export default Chat;
+export default Chat;
 
 // 230701 (3)
 // import { useEffect, useState } from 'react';

@@ -9,8 +9,14 @@ import { useTheme } from 'styled-components';
 import Textarea from '../Form/Textarea';
 // import Chat from '../Chat/Chat';
 import axiosInstance from '../../apis';
+import ChatRoomArea from '../ChatRoomArea';
+import Chat from '../Chat/Chat';
 
-function CommentArea() {
+interface TakerPageProps {
+  userId?: string;
+}
+
+function CommentArea({ userId }: TakerPageProps) {
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
@@ -41,7 +47,7 @@ function CommentArea() {
   };
   const deleteData = async (content: any) => {
     const result_comment = await instance.delete(
-      `${SERVER_URL}/Sharing_Application`
+      `${SERVER_URL}/sharing/application?sharingApplicationId=1` // 차후, sharing/application?sharingApplicationId=1로 변경
     );
     setPostComment(result_comment.data.content);
   };
@@ -62,6 +68,23 @@ function CommentArea() {
       deleteData(data);
     }
   };
+
+  const [checkRoomId, setCheckRoomId] = useState([]);
+  const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
+  const userData = instance.get(`${SERVER_URL}/user`);
+  useEffect(() => {
+    const checkChatStatus = async () => {
+      const { data } = await instance.get(`${SERVER_URL}/chat/enter`);
+      setCheckChatStatus(data.isOpened);
+    };
+
+    // <Chat />에 roomId 적용하여
+    if (changeButton === true && checkChatStatus.takerId === userData.userId) {
+      // taker의 nickname을 알 수 있는 방법
+      setCheckRoomId(checkChatStatus.roomId);
+      checkChatStatus();
+    }
+  }, []);
 
   console.log(watch('postComment'));
 
@@ -106,8 +129,12 @@ function CommentArea() {
           >
             신청취소
           </Button>
-          {/* <Chat /> */}
         </S.Form>
+      )}
+      {changeButton && checkChatStatus && (
+        <ChatRoomArea>
+          <Chat roomId={checkRoomId} />
+        </ChatRoomArea>
       )}
     </S.Container>
   );
