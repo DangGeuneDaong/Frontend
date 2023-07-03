@@ -26,7 +26,7 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [mapBounds, setMapBounds] = useState<kakao.maps.LatLngBounds>();
 
-  const totalPage = Math.ceil(mapItemList.length / 10);
+  const totalPage = mapItemList && Math.ceil(mapItemList.length / 10);
 
   return (
     <MainTemplate>
