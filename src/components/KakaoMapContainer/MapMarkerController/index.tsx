@@ -16,7 +16,7 @@ const MapMarkerController = ({mapItems, map, currentPageItems}: MapMarkerControl
   });
 
   // currentPageItems(현재 페이지 데이터) -> 활성화 마커
-  const pageMapMarkers = currentPageItems.map((item) => {
+  const pageMapMarkers = currentPageItems && currentPageItems.map((item) => {
     return <PageMapMarker key={item.id.toString()} item={item} map={map}/>
   });
 
