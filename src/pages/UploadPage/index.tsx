@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
@@ -27,7 +27,7 @@ export interface UploadPageCSSProps {
 function UploadPage() {
   const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useState<any>(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState<any>(userInfoState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
