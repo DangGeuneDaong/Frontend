@@ -27,14 +27,12 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
-      <Route path="/taker" element={<TakerPage />} />
-      <Route path="/offer" element={<OfferPage />} />
+      <Route path="/taker/:id" element={<TakerPage />} />
+      <Route path="/offer/:id" element={<OfferPage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/signin" element={<LoginPage />} />
       <Route path="/redirect-kakao" element={<RedirectKakaoPage />} />
       <Route path="/redirect-naver" element={<RedirectNaverPage />} />
-      <Route path="/taker" element={<TakerPage />} />
-      <Route path="/offer" element={<OfferPage />} />
       <Route path="/upload" element={<UploadPage />} />
       <Route path="/edit/:id" element={<EditPage />} />
       <Route path="/addInfo" element={<AddInfoPage />} />
