@@ -20,7 +20,7 @@ const MainPage = () => {
   const [keyword, setKeyword] = useState<string>('');
   const [filterCondition, setFilterCondition] = useState<ItemFilterProps>({
     petType: 'all',
-    status: 'sharing'
+    status: 'SHARING'
   });
   const [isShowFilterModal, setIsShowFilterModal] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);

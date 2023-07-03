@@ -2,12 +2,13 @@ import { useForm, Controller } from 'react-hook-form';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useRandom } from '../../../hooks/useRandom';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import MainTemplate from '../../../components/template/MainTemplate';
 import Input from '../../../components/Form/Input';
 import Loader from '../../../components/Loader';
 import SearchLocation from '../../../components/SearchLocation';
+import AlertModal from '../../../components/Modal/Alert';
 
 import * as S from './styles';
 
@@ -18,6 +19,7 @@ export interface AddInfoProps {
 }
 
 function AddInfoPage() {
+  const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const loginType = params.get('loginType');
@@ -30,7 +32,7 @@ function AddInfoPage() {
       : generateRandomNicknameN();
   const [nicknameEdited, setNicknameEdited] = useState<boolean>(false);
   const [randomNickname, setRandomNickname] = useState<string>(initialNickname);
-  const [userProfile, setUserProfile] = useState<string | null>(null);
+  const [initialProfile, setInitialProfile] = useState<string>('');
   const fileInput = useRef<HTMLInputElement>(null);
   const { handleInfoSubmit, isLoading, error, alertMessage, showModal } =
     useAuth();
@@ -55,10 +57,10 @@ function AddInfoPage() {
     if (accessToken) {
       getSocialUserProfile(accessToken)
         .then((socialUserData) => {
-          setUserProfile(socialUserData.profile_url);
+          setInitialProfile(socialUserData.profile_url);
           setValue('profile_url', socialUserData.profile_url);
         })
-        .catch((error) => console.error(error));
+        .catch((error) => console.error('콘솔에러', error));
     }
   }, [setValue]);
 
@@ -93,7 +95,10 @@ function AddInfoPage() {
     fileInput.current?.click();
   };
   const resetImg = () => {
-    fileInput.current?.value && (fileInput.current.value = '');
+    if (fileInput.current) {
+      fileInput.current.value = '';
+    }
+    setValue('profile_url', initialProfile);
   };
   return (
     <MainTemplate>
@@ -106,7 +111,7 @@ function AddInfoPage() {
             )}
           >
             <S.ProfileImg src={watchProfileUrl} />
-            {watchProfileUrl !== userProfile ? (
+            {watchProfileUrl ? (
               <S.CancelButton onClick={resetImg}>
                 프로필 이미지 변경 취소
               </S.CancelButton>
@@ -170,6 +175,15 @@ function AddInfoPage() {
               <S.InactiveSaveButton disabled>저장하기</S.InactiveSaveButton>
             )}
           </S.Form>
+
+          {showModal && alertMessage && (
+            <AlertModal
+              title="추가정보 오류"
+              confirmType="warning"
+              message={alertMessage}
+              onConfirm={() => navigate('/signin')}
+            />
+          )}
         </S.SubContainer>
       </S.Container>
     </MainTemplate>

@@ -160,7 +160,7 @@ export function useAuth<T extends { [key: string]: any }>() {
             setShowModal(true);
         }
       } else {
-        setAlertMessage('서버에 연결할 수 없습니다.');
+        setAlertMessage('서버에 연결할 수 없습니다. 다시 시도해주세요.');
         setShowModal(true);
       }
     } finally {

@@ -185,13 +185,7 @@
       "longitude": 127.10781452584,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 2,
@@ -202,13 +196,7 @@
       "longitude": 127.106819052222,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 3,
@@ -219,13 +207,7 @@
       "longitude": 127.10809135176,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 4,
@@ -236,13 +218,7 @@
       "longitude": 127.108397541913,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 5,
@@ -253,13 +229,7 @@
       "longitude": 127.109392242827,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 6,
@@ -270,13 +240,7 @@
       "longitude": 127.109346727217,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 7,
@@ -287,13 +251,7 @@
       "longitude": 127.109447329444,
       "status": "shared",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 8,
@@ -304,13 +262,7 @@
       "longitude": 127.109744862813,
       "status": "shared",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 9,
@@ -321,13 +273,7 @@
       "longitude": 127.106677024605,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 10,
@@ -338,13 +284,7 @@
       "longitude": 127.110086097675,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 11,
@@ -355,30 +295,18 @@
       "longitude": 127.109940329938,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 12,
-      "title": "[펫프곳간] THE 건강한 형제 독 수제간식1 50g",
+      "title": "닥터소프트 독 치킨 시니어 3kg",
       "category": "food",
       "location": "경기 성남시 분당구 판교역로 166",
       "latitude": 37.3952969470752,
       "longitude": 127.110449292622,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 13,
@@ -389,30 +317,18 @@
       "longitude": 127.112113596734,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 14,
-      "title": "[펫프곳간] THE 건강한 형제 독 수제간식3 50g",
+      "title": "네츄럴코어 독 에코 연어&고구마 시니어 6kg",
       "category": "food",
       "location": "경기 성남시 분당구 판교역로 152",
       "latitude": 37.394245407468,
       "longitude": 127.110306812433,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 15,
@@ -423,47 +339,29 @@
       "longitude": 127.112200514447,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 16,
-      "title": "[펫프곳간] THE 건강한 형제 독 수제간식5 50g",
+      "title": "퓨리나 캣 팬시피스트 부드러운 칠면조 키튼 캔 85g",
       "category": "food",
       "location": "경기 성남시 분당구 대왕판교로606번길 31",
       "latitude": 37.3966887360553,
       "longitude": 127.110662408872,
       "status": "shared",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 17,
-      "title": "[펫프곳간] THE 건강한 형제 독 수제간식6 50g",
+      "title": "위스카스 캣 참치 주니어 파우치 80g",
       "category": "food",
       "location": "경기 성남시 분당구 대왕판교로606번길 41",
       "latitude": 37.3964807575672,
       "longitude": 127.111931027754,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 18,
@@ -474,47 +372,95 @@
       "longitude": 127.110848679207,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 19,
-      "title": "[펫프곳간] THE 건강한 형제 독 수제간식8 50g",
+      "title": "알모네티쳐 캣 닭고기 키튼 캔 70g",
       "category": "food",
       "location": "경기 성남시 분당구 대왕판교로606번길 58",
       "latitude": 37.3954205092827,
       "longitude": 127.113554546191,
-      "status": "shared",
+      "status": "sharing",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     },
     {
       "id": 20,
-      "title": "[펫프곳간] THE 건강한 형제 독 수제간식9 50g",
+      "title": "웰니스 캣 코어 시그니쳐 셀렉트 파테 닭고기&칠면조 키튼 캔 79g",
       "category": "snack",
       "location": "경기 성남시 분당구 판교역로146번길 20",
       "latitude": 37.39279369494,
       "longitude": 127.112017130086,
-      "status": "shared",
+      "status": "sharing",
       "main_category": "cat",
-      "good_image_list": [
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png",
-        "../../../assets/imgs/dog.png"
-      ]
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+    },
+    {
+      "id": 21,
+      "title": "뉴트로 캣 연어&현미 1세이상",
+      "category": "snack",
+      "location": "경기 성남시 분당구 판교역로 166",
+      "latitude": 37.3952969470752,
+      "longitude": 127.110449292622,
+      "status": "sharing",
+      "main_category": "cat",
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+    },
+    {
+      "id": 22,
+      "title": "시저 독 쇠고기&달걀 1세이하 캔 100g",
+      "category": "snack",
+      "location": "경기 성남시 분당구 분당내곡로 117",
+      "latitude": 37.3943014713942,
+      "longitude": 127.112200514447,
+      "status": "sharing",
+      "main_category": "dog",
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+    },
+    {
+      "id": 23,
+      "title": "알모네이쳐 캣 대서양참치 캔 70g",
+      "category": "snack",
+      "location": "경기 성남시 분당구 판교역로 145",
+      "latitude": 37.3944039022277,
+      "longitude": 127.108352326702,
+      "status": "sharing",
+      "main_category": "cat",
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+    },
+    {
+      "id": 24,
+      "title": "알모네이쳐 캣 참치&뱅어 캔 70g",
+      "category": "snack",
+      "location": "경기 성남시 분당구 판교역로 136",
+      "latitude": 37.3925072208217,
+      "longitude": 127.110430292919,
+      "status": "sharing",
+      "main_category": "cat",
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+    },
+    {
+      "id": 25,
+      "title": "로얄캐닌 독 미니 인도어 어덜트 3kg 소화기 건강",
+      "category": "snack",
+      "location": "경기 성남시 분당구 판교역로146번길 2",
+      "latitude": 37.3933238461237,
+      "longitude": 127.110109304146,
+      "status": "sharing",
+      "main_category": "dog",
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+    },
+    {
+      "id": 26,
+      "title": "오리젠 독 오리지날 2kg",
+      "category": "snack",
+      "location": "경기 성남시 분당구 대왕판교로606번길 10",
+      "latitude": 37.395800819414,
+      "longitude": 127.107592379777,
+      "status": "sharing",
+      "main_category": "dog",
+      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
     }
   ]
 }
