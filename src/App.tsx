@@ -37,7 +37,7 @@ export default function App() {
       <Route path="/offer" element={<OfferPage />} />
       <Route path="/upload" element={<UploadPage />} />
       <Route path="/edit/:id" element={<EditPage />} />
-      <Route path="/addInfo" element={<AddInfoPage />} />
+      <Route path="/addInfo:loginType" element={<AddInfoPage />} />
       <Route path="/signup" element={<JoinPage />} />
     </Routes>
   );

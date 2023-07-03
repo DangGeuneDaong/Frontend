@@ -33,7 +33,7 @@ function RedirectNaverPage() {
       )
       .then((res) => {
         console.log(res);
-        const { accessToken: accessToken } = res.data;
+        const accessToken = res.data;
         //엑세스 토큰 G => addinfoPage
         if (!accessToken) {
           setAlertMessage('로그인에 실패하였습니다.');
@@ -42,7 +42,7 @@ function RedirectNaverPage() {
         //엑세스 토큰 G => addinfoPage
         if (accessToken && accessToken.startsWith('G')) {
           localStorage.setItem('accessToken', accessToken.slice(1));
-          navigate('/addInfo');
+          navigate('/addInfo?loginType=naver');
           //엑세스 토큰 U => mainPage
         } else if (accessToken && accessToken.startsWith('U')) {
           localStorage.setItem('accessToken', accessToken.slice(1));

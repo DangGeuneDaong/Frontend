@@ -45,7 +45,7 @@ function RedirectKakaoPage() {
         console.log('accessToken : ', accessToken);
         if (accessToken && accessToken.startsWith('G')) {
           localStorage.setItem('accessToken', accessToken.slice(1));
-          navigate('/addInfo');
+          navigate('/addInfo?loginType=kakao');
           //엑세스 토큰 U => mainPage
         } else if (accessToken && accessToken.startsWith('U')) {
           //앞글자 제거 후 로컬에 저장

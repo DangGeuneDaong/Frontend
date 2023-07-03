@@ -2,6 +2,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useRandom } from '../../../hooks/useRandom';
+import { useLocation } from 'react-router-dom';
 
 import MainTemplate from '../../../components/template/MainTemplate';
 import Input from '../../../components/Form/Input';
@@ -17,11 +18,15 @@ export interface AddInfoProps {
 }
 
 function AddInfoPage() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const loginType = params.get('loginType');
   const { getSocialUserProfile } = useAuth();
-  const { loginType, generateRandomNicknameK, generateRandomNicknameN } =
-    useRandom();
+  const { generateRandomNicknameK, generateRandomNicknameN } = useRandom();
   const initialNickname =
-    loginType === 'K' ? generateRandomNicknameK() : generateRandomNicknameN();
+    loginType === 'kakao'
+      ? generateRandomNicknameK()
+      : generateRandomNicknameN();
   const [nicknameEdited, setNicknameEdited] = useState<boolean>(false);
   const [randomNickname, setRandomNickname] = useState<string>(initialNickname);
   const [userProfile, setUserProfile] = useState<string | null>(null);
@@ -76,12 +81,11 @@ function AddInfoPage() {
   const handleRefreshNickname = async () => {
     if (!nicknameEdited) {
       const newRandomNickname =
-        loginType === 'K'
+        loginType === 'kakao'
           ? generateRandomNicknameK()
           : generateRandomNicknameN();
       setRandomNickname(newRandomNickname);
       setValue('nickName', newRandomNickname);
-      setError('nickName', { message: '' });
     }
   };
   const handleUploadImg = () => {

@@ -34,7 +34,6 @@ const randomNicknamesN = [
 ];
 
 export function useRandom() {
-  const [loginType, setLoginType] = useState<string>('K');
   //랜덤닉네임 함수
   function generateRandomNicknameK() {
     const randomAdjectiveValue =
@@ -54,5 +53,5 @@ export function useRandom() {
     return `${randomAdjectiveValue} ${randomNicknameValue}`;
   }
 
-  return { loginType, generateRandomNicknameK, generateRandomNicknameN };
+  return { generateRandomNicknameK, generateRandomNicknameN };
 }
