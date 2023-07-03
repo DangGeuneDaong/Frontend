@@ -87,11 +87,13 @@ export const addPost = async (data: any) => {
       status: data.status,
     };
 
-    formData.append('request', JSON.stringify(requestObject));
+    const uploaderString = JSON.stringify(requestObject);
+    await formData.append(
+      'request',
+      new Blob([uploaderString], { type: 'application/json' })
+    );
 
-    for (let i = 0; i < data.files.length; i++) {
-      formData.append('files', data.files[i]);
-    }
+    await formData.append('files', data.files);
 
     const response = await instance.post(
       'http://13.209.220.63/good/offer/info',
