@@ -15,14 +15,15 @@ export interface ItemType {
 }
 
 export const StatusType: keyValueType = {
-  'sharing': '나눔중',
-  'shared': '나눔완료'
+  'SHARING': '나눔중',
+  'COMPLETE': '나눔완료'
 };
 
 export const CategoryType: keyValueType = {
-  'food': '사료',
-  'snack': '간식',
-  'supply': '용품'
+  'FODDER': '사료',
+  'SNACK': '간식',
+  'SUPPLY': '용품',
+  'CLOTHES': '의류'
 };
 
 
