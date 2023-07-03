@@ -123,10 +123,7 @@ function OfferPage() {
     const { data } = await instance.put(
       `${SERVER_URL}/good/offer/status?goodId=${param}`
     ); // 구조 분해 할당
-    if (showPosts) {
-      showPosts.status = 'COMPLETE';
-      setShowPosts({ ...showPosts });
-    }
+    setShowPosts(data.status);
 
     // 있던 모달창이 사라짐
     {
