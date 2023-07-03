@@ -20,7 +20,8 @@ interface TakerPageProps {
 }
 
 function CommentArea({ userId }: TakerPageProps) {
-  const param = useParams();
+  // const param = useParams();
+  const param = '20';
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
