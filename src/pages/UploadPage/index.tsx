@@ -33,7 +33,7 @@ const productType = [
   { key: 'FODDER', value: '사료' },
   { key: 'CLOTHES', value: '의류' },
   { key: 'SNACKS', value: '간식' },
-  { key: 'DEFECATIONS', value: '배변용품' },
+  { key: 'SUPPLY', value: '용품' },
 ];
 
 function UploadPage() {
