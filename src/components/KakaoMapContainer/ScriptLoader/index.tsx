@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
+import Loader from '../../Loader';
 
 interface ScriptLoaderProps {
   children: ReactNode;
@@ -40,9 +41,7 @@ const ScriptLoader = (props: ScriptLoaderProps) => {
     <>
       {
         mapScriptLoaded ? props.children : (
-          <div>
-            지도를 가져오는 중입니다.
-          </div>
+          <Loader/>
         )
       }
     </>

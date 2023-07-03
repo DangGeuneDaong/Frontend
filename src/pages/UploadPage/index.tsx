@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
@@ -24,10 +24,22 @@ export interface UploadPageCSSProps {
   inputContainerDirection?: 'row' | 'column';
 }
 
+const categoryType = [
+  { key: 'DOG', value: '강아지' },
+  { key: 'CAT', value: '고양이' },
+];
+
+const productType = [
+  { key: 'FODDER', value: '사료' },
+  { key: 'CLOTHES', value: '의류' },
+  { key: 'SNACKS', value: '간식' },
+  { key: 'SUPPLY', value: '용품' },
+];
+
 function UploadPage() {
   const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useState<any>(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState<any>(userInfoState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -55,13 +67,13 @@ function UploadPage() {
   } = useForm({ mode: 'onBlur' });
 
   // 디버깅용 코드
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) =>
-  //     console.log(value, name, type)
-  //   );
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) =>
+      console.log(value, name, type)
+    );
 
-  //   return () => subscription.unsubscribe();
-  // }, [watch]);
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   // useEffect(() => {
   //   console.log('선택된 파일', selectedFiles);
@@ -110,10 +122,21 @@ function UploadPage() {
 
   const onSubmit = async (data: any) => {
     try {
+      // TODO : REFACOTRING
+      const mainCategory = categoryType.find(
+        (item) => item.value === selectedCategory
+      );
+      const mainCategoryKey = mainCategory ? mainCategory.key : undefined;
+
+      const subCategory = productType.find(
+        (item) => item.value === selectedProduct
+      );
+      const subCategoryKey = subCategory ? subCategory.key : undefined;
+
       const postData = {
         userId: userInfo.userId,
-        main_category: selectedCategory,
-        sub_category: selectedProduct,
+        mainCategory: mainCategoryKey,
+        subCategory: subCategoryKey,
         title: data.title,
         description: data.description,
         status: 'SHARING',
@@ -160,7 +183,7 @@ function UploadPage() {
 
               <S.DropdownContainer>
                 <Dropdown
-                  listData={['사료', '간식', '용품']}
+                  listData={['사료', '의류', '간식', '배변용품']}
                   selectedItem={selectedProduct}
                   onSelectItem={(item) => setSelectedProduct(item)}
                 ></Dropdown>

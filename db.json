@@ -2,8 +2,8 @@
   "Good": [
     {
       "id": 1,
-      "main_category": "강아지",
-      "sub_category": "사료",
+      "main_category": "DOG",
+      "sub_category": "FODDER",
       "title": "웰시코기 유기농 사료",
       "description": "안녕하세요! 웰시코기 유기농 사료 나눔합니다!",
       "status": "나눔 중",
@@ -22,8 +22,8 @@
     },
     {
       "id": 2,
-      "main_category": "강아지",
-      "sub_category": "사료",
+      "main_category": "DOG",
+      "sub_category": "FODDER",
       "title": "웰시코기 유기농 사료",
       "description": "안녕하세요! 웰시코기 유기농 사료 나눔합니다!",
       "status": "나눔 중",
@@ -73,8 +73,108 @@
       "content": "사료 성분에 OOO이 들어있는지 궁금해요! 저희 강아지가 알러지가 있어서요!!",
       "good_id": 1,
       "user_id": 4
+    },
+    {
+      "content": "",
+      "id": 5
+    },
+    {
+      "content": "",
+      "id": 6
+    },
+    {
+      "content": "",
+      "id": 7
     }
   ],
+  "chat": {
+    "create": [
+      {
+        "roomId": 1,
+        "takerId": "삼성이",
+        "offerId": "슼케이"
+      },
+      {
+        "roomId": 2,
+        "takerId": "국민이",
+        "offerId": "현다이"
+      },
+      {
+        "roomId": 3,
+        "takerId": "삼성이",
+        "offerId": "현다이"
+      },
+      {
+        "roomId": 4,
+        "takerId": "국민이",
+        "offerId": "슼케이"
+      }
+    ],
+    "enter": [
+      {
+        "roomId": 1,
+        "userId": "aiden"
+      }
+    ],
+    "leave": [
+      {
+        "roomId": 1
+      },
+      {
+        "roomId": 2
+      },
+      {
+        "roomId": 3
+      },
+      {
+        "roomId": 4
+      }
+    ]
+  },
+  "websocket": {
+    "pub": {
+      "message": [
+        {
+          "userId": "aiden1",
+          "message": "hello world1",
+          "sendAt": "2022/10/30 hh:mm1",
+          "messageType": "ENTER"
+        },
+        {
+          "userId": "aiden2",
+          "message": "hello world2",
+          "sendAt": "2022/10/30 hh:mm2",
+          "messageType": "CHAT"
+        },
+        {
+          "userId": "aiden3",
+          "message": "hello world3",
+          "sendAt": "2022/10/30 hh:mm3",
+          "messageType": "LEAVE"
+        }
+      ]
+    },
+    "sub": [
+      {
+        "userId": "aiden1",
+        "message": "hello world1",
+        "sendAt": "2022/10/30 hh:mm1",
+        "messageType": "ENTER"
+      },
+      {
+        "userId": "aiden2",
+        "message": "hello world2",
+        "sendAt": "2022/10/30 hh:mm2",
+        "messageType": "CHAT"
+      },
+      {
+        "userId": "aiden3",
+        "message": "hello world3",
+        "sendAt": "2022/10/30 hh:mm3",
+        "messageType": "LEAVE"
+      }
+    ]
+  },
   "mainGood": [
     {
       "id": 1,
@@ -85,7 +185,13 @@
       "longitude": 127.10781452584,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 2,
@@ -96,7 +202,13 @@
       "longitude": 127.106819052222,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 3,
@@ -107,7 +219,13 @@
       "longitude": 127.10809135176,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 4,
@@ -118,7 +236,13 @@
       "longitude": 127.108397541913,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 5,
@@ -129,7 +253,13 @@
       "longitude": 127.109392242827,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 6,
@@ -140,7 +270,13 @@
       "longitude": 127.109346727217,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 7,
@@ -151,7 +287,13 @@
       "longitude": 127.109447329444,
       "status": "shared",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 8,
@@ -162,7 +304,13 @@
       "longitude": 127.109744862813,
       "status": "shared",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 9,
@@ -173,7 +321,13 @@
       "longitude": 127.106677024605,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 10,
@@ -184,7 +338,13 @@
       "longitude": 127.110086097675,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 11,
@@ -195,7 +355,13 @@
       "longitude": 127.109940329938,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 12,
@@ -206,7 +372,13 @@
       "longitude": 127.110449292622,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 13,
@@ -217,7 +389,13 @@
       "longitude": 127.112113596734,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 14,
@@ -228,7 +406,13 @@
       "longitude": 127.110306812433,
       "status": "sharing",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 15,
@@ -239,7 +423,13 @@
       "longitude": 127.112200514447,
       "status": "shared",
       "main_category": "dog",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 16,
@@ -250,7 +440,13 @@
       "longitude": 127.110662408872,
       "status": "shared",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 17,
@@ -261,7 +457,13 @@
       "longitude": 127.111931027754,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 18,
@@ -272,7 +474,13 @@
       "longitude": 127.110848679207,
       "status": "sharing",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 19,
@@ -283,7 +491,13 @@
       "longitude": 127.113554546191,
       "status": "shared",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     },
     {
       "id": 20,
@@ -294,7 +508,13 @@
       "longitude": 127.112017130086,
       "status": "shared",
       "main_category": "cat",
-      "good_image_list": ["../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png", "../../../assets/imgs/dog.png"]
+      "good_image_list": [
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png",
+        "../../../assets/imgs/dog.png"
+      ]
     }
   ]
 }

@@ -29,6 +29,16 @@ export const ItemSection = styled.section`
   cursor: pointer;
 `;
 
+
+export const ItemStatus = styled.span<ItemStatusCSSProps>`
+  margin-bottom: 4px;
+  width: 42px;
+  font-size: 12px;
+  font-weight: bold;
+  /* color: ${props => props.status === '나눔중' ? props.theme.color.primary : 'black'}; */
+  color: ${props => props.status === 'sharing' ? '#FA5672' : 'black'};
+`;
+
 export const ItemBasicInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,22 +51,4 @@ export const ItemTitle = styled.h2`
 
 export const ItemLocation = styled.span`
   font-size: 13px;
-`;
-
-export const ItemStatus = styled.span<ItemStatusCSSProps>`
-  margin-bottom: 4px;
-  width: 42px;
-  font-size: 12px;
-  font-weight: bold;
-  /* color: ${props => props.status === '나눔중' ? props.theme.color.primary : 'black'}; */
-  color: ${props => props.status === 'sharing' ? '#FA5672' : 'black'};
-`;
-
-export const ItemImages = styled.div`
-  margin-top: 20px;
-  height: 158px;
-  line-height: 158px;
-  text-align: center;
-  border: 1px solid rgba(0,0,0, 0.1);
-  border-radius: 8px;
 `;
