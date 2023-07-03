@@ -93,7 +93,10 @@ export const addPost = async (data: any) => {
     });
 
     formData.append('request', requestBlob);
-    formData.append('files', data.files);
+
+    data.files.forEach((file: any) => {
+      formData.append('files', file);
+    });
 
     const response = await instance.post(
       'http://13.209.220.63/good/offer/info',
