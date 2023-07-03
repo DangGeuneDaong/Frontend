@@ -114,9 +114,9 @@ export const getPosts = async (requestURL: string) => {
   const instance = axiosInstance();
 
   try {
-    const response = await instance.get(requestURL);
+    const response = await instance.get(`http://13.209.220.63${requestURL}`);
     if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
-    return response;
+    return response.data;
   } catch (error) {
     console.log('error : ', error);
   }
