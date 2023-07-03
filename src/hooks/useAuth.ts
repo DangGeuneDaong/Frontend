@@ -9,7 +9,10 @@ import {
   loginRequest,
   logoutRequest,
   userProfileRequest,
+  socialUserProfileRequest,
+  addInfoRequest,
 } from '../apis/auth/api';
+import { AddInfoProps } from '../pages/RedirectPage/AddInfoPage';
 
 export function useAuth<T extends { [key: string]: any }>() {
   const navigate = useNavigate();
@@ -68,6 +71,9 @@ export function useAuth<T extends { [key: string]: any }>() {
     setError(null);
     try {
       const response = await loginRequest(data);
+      if (response.data.accessToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+      }
 
       //유저 정보 가져와 상태로 관리
       const userInfo = await getUserProfile(data.userId);
@@ -83,11 +89,11 @@ export function useAuth<T extends { [key: string]: any }>() {
               message: '비밀번호가 일치하지 않습니다.',
             });
             break;
-          // default:
-          //   setAlertMessage(
-          //     '가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?'
-          //   );
-          //   setShowModal(true);
+          default:
+            setAlertMessage(
+              '가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?'
+            );
+            setShowModal(true);
         }
       } else {
         setAlertMessage('서버에 연결할 수 없습니다.');
@@ -100,6 +106,11 @@ export function useAuth<T extends { [key: string]: any }>() {
 
   const getUserProfile = async (userId: string) => {
     const response = await userProfileRequest(userId);
+    return response.data;
+  };
+
+  const getSocialUserProfile = async (accessToken: string) => {
+    const response = await socialUserProfileRequest(accessToken);
     return response.data;
   };
 
@@ -118,11 +129,52 @@ export function useAuth<T extends { [key: string]: any }>() {
     }
   };
 
+  //추가 정보 제출
+  const handleInfoSubmit = async (data: AddInfoProps, profileUrl: string) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await addInfoRequest(data, profileUrl);
+      if (response.status === 200) {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+          const userProfileResponse = await getSocialUserProfile(accessToken);
+          if (userProfileResponse.status === 200) {
+            setUser(userProfileResponse.data);
+          }
+        }
+      }
+    } catch (error: any) {
+      if (error.response && error.response.data.message) {
+        switch (error.response.data.message) {
+          case 'Duplicate nickname':
+            setError({
+              field: 'nickname',
+              message: '닉네임이 중복되었습니다.',
+            });
+            break;
+          default:
+            setAlertMessage(
+              '정보입력 중 오류가 발생하였습니다. 다시 시도해주세요.'
+            );
+            setShowModal(true);
+        }
+      } else {
+        setAlertMessage('서버에 연결할 수 없습니다.');
+        setShowModal(true);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     handleLogin,
     handleRegister,
     handleLogout,
+    handleInfoSubmit,
     getUserProfile,
+    getSocialUserProfile,
     isLoading,
     error,
     alertMessage,
