@@ -112,8 +112,8 @@ function UploadPage() {
     try {
       const postData = {
         userId: userInfo.userId,
-        main_category: selectedCategory,
-        sub_category: selectedProduct,
+        mainCategory: selectedCategory,
+        subCategory: selectedProduct,
         title: data.title,
         description: data.description,
         status: 'SHARING',

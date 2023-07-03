@@ -81,8 +81,8 @@ export const addPost = async (data: any) => {
   try {
     const requestObject = {
       userId: data.userId,
-      main_category: data.main_category,
-      sub_category: data.sub_category,
+      mainCategory: data.mainCategory,
+      subCategory: data.subCategory,
       title: data.title,
       description: data.description,
       status: data.status,
