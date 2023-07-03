@@ -75,9 +75,11 @@ function CommentArea({ userId }: TakerPageProps) {
 
   const [checkRoomId, setCheckRoomId] = useState([]);
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
-  const userData = instance.get(`${SERVER_URL}/user/info?userId=${param}`);
   // recoil로 user data
   const [getUserData, setGetUserData] = useRecoilState(userInfoState);
+  const userData = instance.get(
+    `${SERVER_URL}/user/info?userId=${getUserData.userId}`
+  );
 
   useEffect(() => {
     const checkChatStatus = async () => {

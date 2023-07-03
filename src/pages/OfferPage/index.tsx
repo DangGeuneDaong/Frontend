@@ -121,13 +121,9 @@ function OfferPage() {
 
   const onClickStatusHandler = async () => {
     const { data } = await instance.patch(
-      `${SERVER_URL}/good/offer/info?goodId=${param}`,
-      {
-        status: '나눔 완료',
-      }
+      `${SERVER_URL}/good/offer/info?goodId=${param}`
     ); // 구조 분해 할당
     if (showPosts) {
-      showPosts.status = '나눔 완료';
       setShowPosts({ ...showPosts });
     }
 
