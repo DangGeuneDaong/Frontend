@@ -76,10 +76,6 @@ function OfferPage() {
     setShowRoomlists(result_roomlists.data);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
     id: -1,
     nickname: '',
@@ -119,17 +115,22 @@ function OfferPage() {
     }
   };
 
+  const [checkStatus, setCheckStatus] = useState(showPosts?.status);
   const onClickStatusHandler = async () => {
     const { data } = await instance.put(
       `${SERVER_URL}/good/offer/status?goodId=${param}`
     ); // 구조 분해 할당
-    setShowPosts(data.status);
+    setCheckStatus(data.status);
 
     // 있던 모달창이 사라짐
     {
       isOpenSharingModal && setIsOpenSharingModal(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [checkStatus]);
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const onClickDeleteConfirmModalHandler = () => {
