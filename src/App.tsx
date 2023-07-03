@@ -22,8 +22,12 @@ import AddInfoPage from './pages/RedirectPage/AddInfoPage';
 
 //마이 페이지
 import MyPage from './pages/MyPage';
+import { userFetchInfo } from './apis/user';
 
 export default function App() {
+  const user = userFetchInfo('dangdang22');
+  console.log('유저 정보 : ', user);
+
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
