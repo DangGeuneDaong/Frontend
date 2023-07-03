@@ -4,6 +4,7 @@ import { userInfoState } from '../../../states/userInfo';
 import { useRecoilState } from 'recoil';
 import { useAuth } from '../../../hooks/useAuth';
 import PopLayer from '../../PopLayer';
+import ConfirmModal from '../../Modal/Confirm';
 
 import * as S from './styles';
 
@@ -12,10 +13,11 @@ function Header() {
 
   // 로그인 및 비로그인 상태에 따라 다른 컴포넌트 렌더링
   // NOTE: UI 구현 시 상태토글을 위해 임의로 로그인 및 로그아웃 상태를 localStorage로 구현
-  const [isAuthUser, setIsAuthUser] = useState<boolean>(
+  const [isLogged, setIsLogged] = useState<boolean>(
     !!localStorage.getItem('accessToken')
   );
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { handleLogout } = useAuth();
 
   // 경로 변경 함수
@@ -23,9 +25,6 @@ function Header() {
     navigate(`/${routePath}`);
   };
 
-  // PopLayer 메뉴 리스트
-  // TODO : routePath를 마이페이지, 프로필 수정 페이지 생길 때 적절한 경로로 변경
-  // TODO : 로그아웃 기능 구현
   const menuList = [
     {
       name: '마이페이지',
@@ -33,15 +32,12 @@ function Header() {
     },
     {
       name: '프로필 수정',
-      onClickHandler: () => routeChange('editPropile'),
+      onClickHandler: () => routeChange('editProfile'),
     },
     {
       name: '로그아웃',
       onClickHandler: () => {
-        // TODO : Confirm 모달로 변경
-        if (window.confirm('로그아웃 하시겠습니까?')) {
-          handleLogout();
-        }
+        setIsModalOpen(true);
       },
       itemStyle: { color: 'red' },
     },
@@ -50,14 +46,26 @@ function Header() {
   return (
     <S.HeaderContainer>
       <S.HeaderInner>
+        {isModalOpen && (
+          <ConfirmModal
+            title="로그아웃"
+            message="로그아웃 하시겠습니까?"
+            onCancel={() => setIsModalOpen(false)}
+            onConfirm={() => handleLogout()}
+          />
+        )}
         <S.HeaderRightMenu>
-          {isAuthUser ? (
+          {isLogged ? (
             <PopLayer itemList={menuList}>
-              {/* 팝 레이어 */}
-              {/* 팝 레이어 - 유저 프로필 */}
-              {/* TODO : 로그인 시 프로필 정보 연동 */}
               <S.UserProfileImage>
-                <img src={userInfo.profile_url} alt="유저 프로필 이미지" />
+                <img
+                  src={
+                    userInfo.profile_url
+                      ? userInfo.profile_url
+                      : 'https://www.thechooeok.com/common/img/default_profile.png'
+                  }
+                  alt="유저 프로필 이미지"
+                />
               </S.UserProfileImage>
             </PopLayer>
           ) : (
