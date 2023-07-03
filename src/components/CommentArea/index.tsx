@@ -85,6 +85,7 @@ function CommentArea({ userId }: TakerPageProps) {
     const checkChatStatus = async () => {
       const { data } = await instance.get(`${SERVER_URL}/chat/enter`);
       console.log(`chatData: `, data);
+      console.log(`getUserData: `, getUserData);
       setCheckChatStatus(data.isOpened);
     };
 
