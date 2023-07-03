@@ -130,7 +130,7 @@ function OfferPage() {
 
   useEffect(() => {
     fetchData();
-  }, [checkStatus]);
+  }, [setCheckStatus]);
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const onClickDeleteConfirmModalHandler = () => {
@@ -197,7 +197,7 @@ function OfferPage() {
             <Button
               onClickHandler={onClickSharingConfirmModalHandler}
               styleType={
-                showPosts?.status === '나눔 완료' ? 'disabled' : 'primary'
+                showPosts?.status === 'COMPLETE' ? 'disabled' : 'primary'
               }
             >
               나눔완료
