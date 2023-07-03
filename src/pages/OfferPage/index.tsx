@@ -124,6 +124,7 @@ function OfferPage() {
       `${SERVER_URL}/good/offer/status?goodId=${param}`
     ); // 구조 분해 할당
     if (showPosts) {
+      showPosts.status = 'COMPLETE';
       setShowPosts({ ...showPosts });
     }
 
