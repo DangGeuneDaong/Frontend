@@ -86,15 +86,16 @@ function CommentArea({ userId }: TakerPageProps) {
     };
 
     console.log(`getUserData.userId: `, getUserData.userId);
-    console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
+    // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
 
     // <Chat />에 roomId 적용하여
     if (
-      changeButton === true &&
-      checkChatStatus.takerId === getUserData.userId
+      changeButton === true
+      // &&
+      // checkChatStatus.takerId === getUserData.userId
     ) {
       // taker의 nickname을 알 수 있는 방법
-      setCheckRoomId(checkChatStatus.roomId);
+      // setCheckRoomId(checkChatStatus.roomId);
       checkChatStatus();
     }
   }, []);
