@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
@@ -26,6 +26,8 @@ export interface UploadPageCSSProps {
 
 function UploadPage() {
   const navigate = useNavigate();
+
+  const [userInfo, setUserInfo] = useRecoilState<any>(userInfoState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -109,7 +111,7 @@ function UploadPage() {
   const onSubmit = async (data: any) => {
     try {
       const postData = {
-        // userId : userID 로그인 시 recoil state에서 가져오기
+        userId: userInfo.userId,
         main_category: selectedCategory,
         sub_category: selectedProduct,
         title: data.title,
