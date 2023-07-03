@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
+import { userInfoState } from '../../states/userInfo';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { instance } from '../../apis/auth/api';
 
 import { FaUser } from 'react-icons/fa';
 
@@ -16,41 +18,49 @@ import * as S from './styles';
 interface MyPostsProps {
   id: number;
   title: string;
-  featuredImage: string; //(가장 첫번째로 등록된 이미지를 보내드려요)!
+  featuredImage: string; //가장 첫번째 이미지
   updatedAt: string;
   location: string;
-  sharingApplicationNum: number; //신청자수
+  sharingApplicatonNum: number;
   status: string;
 }
 
 function MyPage() {
+  const [userData, setUserData] = useRecoilState(userInfoState);
   const [isDeleted, setIsDeleted] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [filter, setFilter] = useState('all');
   const [page, setPage] = useState(1);
   const LIMIT = 5;
   const offset = (page - 1) * LIMIT;
-  const [myPosts, setMyPosts] = useState<MyPostsProps[] | undefined>();
+  const [myWrittenPosts, setMyWrittenPosts] = useState<
+    MyPostsProps[] | undefined
+  >();
+  const [myAppliedPosts, setMyAppliedPosts] = useState<
+    MyPostsProps[] | undefined
+  >();
   const navigate = useNavigate();
-  const profileUrl =
-    'https://www.thechooeok.com/common/img/default_profile.png';
+  const totalPosts =
+    filter === 'all'
+      ? myWrittenPosts
+      : filter === 'shared'
+      ? myWrittenPosts?.filter((post) => post.status === 'COMPLETE')
+      : myAppliedPosts;
+  const currentPagePosts = totalPosts?.slice(offset, offset + LIMIT);
 
   useEffect(() => {
     const getMyPosts = async () => {
       try {
-        const response = await axios.get('/:userId');
-        //setMyPosts(response.data);
-        setMyPosts([
-          {
-            id: 1,
-            title: 'title',
-            featuredImage: 'goodImage1',
-            updatedAt: '2023-06-15T16:08:27.028199',
-            location: '서울 강남구',
-            sharingApplicationNum: 0,
-            status: 'sharing',
-          },
-        ]);
+        //마이페이지 > 내가 쓴 글
+        const writtenResponse = await instance.get(
+          `/good/offer?userId=${userData.userId}`
+        );
+        //마이페이지 > 나눔 신청한 글
+        const appliedResponse = await instance.get(
+          `/sharing/list?userId=${userData.userId}`
+        );
+        setMyWrittenPosts(writtenResponse.data);
+        setMyAppliedPosts(appliedResponse.data);
       } catch (error) {
         console.error(error);
       }
@@ -61,15 +71,12 @@ function MyPage() {
   const handleShared = async (id: number) => {
     setIsShared(true);
     try {
-      await axios.patch(`/${id}`, { status: 'shared' });
-      //setMyPosts(myPosts.map(post=>post.id === id ? {...postState, status:'shared'} : post))
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handleStatus = async (id: number) => {
-    try {
-      await axios.patch(`/${id}`);
+      await instance.put(`good/offer/status?goodId=${id}`);
+      setMyWrittenPosts(
+        myWrittenPosts?.map((post) =>
+          post.id === id ? { ...post, status: 'COMPLETE' } : post
+        )
+      );
     } catch (error) {
       console.error(error);
     }
@@ -80,13 +87,13 @@ function MyPage() {
   const handleDelete = async (id: number) => {
     setIsDeleted(true);
     try {
-      await axios.delete(`/${id}`);
-      setMyPosts(myPosts!.filter((post) => post.id !== id));
+      await instance.delete(`good/offer/info?goodId=${id}`);
+      setMyWrittenPosts(myWrittenPosts?.filter((post) => post.id !== id));
     } catch (error) {
       console.error(error);
     }
   };
-  let filteredPosts = myPosts;
+
   return (
     <MainTemplate>
       {isDeleted && (
@@ -120,75 +127,90 @@ function MyPage() {
               <S.Span>
                 <Link to={'/edit-profile'}>프로필 수정 </Link>
               </S.Span>
-              <S.ProfileImg src={profileUrl} />
-              <h3>닉네임</h3>
+              <S.ProfileImg src={userData.profile_url} />
+              <h3>{userData.nickName}</h3>
             </S.UserContainer>
           </S.UpdateContainer>
 
           <S.ListContainer>
             <S.Breadcrumb>
-              <span onClick={() => setFilter('all')}>전체</span> |{' '}
+              <span onClick={() => setFilter('all')}>전체</span>
               <span
                 onClick={() => {
                   setFilter('shared');
                 }}
               >
-                나눔완료
-              </span>{' '}
-              |{' '}
-              <span onClick={() => setFilter('received')}>나눔 신청한 글</span>
+                나눔완료한 글
+              </span>
+              <span onClick={() => setFilter('applied')}>신청한 글</span>
             </S.Breadcrumb>
             <S.List>
-              {/* //{
-              // let filteredPosts = myPosts;
-              // if(filter === 'shared'){
-              //   filteredPosts = myPosts.filter(post=>post.status === 'shared')
-              //   //나눔받은글?
-              // }else if(filter === 'received'){
-              //   filteredPosts = myPosts.filter(post=>post.status == 'received')
-              // }
-              // filteredPosts.slice(offset, offset+LIMIT).map((post, id)=>{})
-              // }
-              // {myPosts.slice(offset, offset + LIMIT).map((post,id) => {})} */}
+              {currentPagePosts?.map((post) => (
+                <S.Post key={post.id}>
+                  <S.PostInfos>
+                    <S.PostImg src={post.featuredImage} />
+                    <S.Description>
+                      <S.DescriptionUp>
+                        <h3>{post.title}</h3>
+                        <span>{post.updatedAt}</span>
+                      </S.DescriptionUp>
 
-              <S.Post>
-                <S.PostInfos>
-                  <S.PostImg src={'featuredImage'} />
-                  <S.Description>
-                    <S.DescriptionUp>
-                      <h3>{'title'}</h3>
-                      <span>{'updatedAt'}</span>
-                    </S.DescriptionUp>
+                      <S.DescriptionDown>
+                        <S.Nums>{post.location}</S.Nums>
+                        <S.Nums>
+                          <FaUser /> {post.sharingApplicatonNum}
+                        </S.Nums>
+                      </S.DescriptionDown>
+                    </S.Description>
+                  </S.PostInfos>
 
-                    <S.DescriptionDown>
-                      <S.Nums>{'location'}</S.Nums>
-                      <S.Nums>
-                        <FaUser /> {'sharingApplicatonNum'}
-                      </S.Nums>
-                    </S.DescriptionDown>
-                  </S.Description>
-                </S.PostInfos>
+                  <S.UpdatePost>
+                    {filter === 'received' ? (
+                      <Button
+                        type="button"
+                        // styleType={
+                        //   post.status === 'sharing' ? 'primary' : 'disabled'
+                        // }
+                        borderRadius="20px"
+                        hoverStyle="background-color:"
+                        onClickHandler={() => handleShared}
+                      >
+                        나눔신청 취소
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          type="button"
+                          styleType={
+                            post.status === 'SHARING' ? 'primary' : 'disabled'
+                          }
+                          borderRadius="20px"
+                          hoverStyle="background-color:"
+                          onClickHandler={() => handleShared(post.id)}
+                        >
+                          나눔완료
+                        </Button>
 
-                <S.UpdatePost>
-                  <Button
-                    type="button"
-                    // styleType={
-                    //   post.status === 'sharing' ? 'primary' : 'disabled'
-                    // }
-                    borderRadius="20px"
-                    hoverStyle="background-color:"
-                    onClickHandler={() => handleShared}
-                  >
-                    나눔완료
-                  </Button>
+                        <S.PostInfo>
+                          <S.UpdateBtn onClick={() => handleEdit(post.id)}>
+                            수정
+                          </S.UpdateBtn>
+                          <S.UpdateBtn onClick={() => handleDelete(post.id)}>
+                            삭제
+                          </S.UpdateBtn>
+                        </S.PostInfo>
+                      </>
+                    )}
+                  </S.UpdatePost>
+                </S.Post>
+              ))}
 
-                  <S.PostInfo>
-                    <S.UpdateBtn>수정</S.UpdateBtn>
-                    <S.UpdateBtn>삭제</S.UpdateBtn>
-                  </S.PostInfo>
-                </S.UpdatePost>
-              </S.Post>
-              <Pagination total={10} limit={3} page={5} setPage={setPage} />
+              <Pagination
+                total={totalPosts?.length || 0}
+                limit={3}
+                page={5}
+                setPage={setPage}
+              />
             </S.List>
           </S.ListContainer>
         </S.SubContainer>
