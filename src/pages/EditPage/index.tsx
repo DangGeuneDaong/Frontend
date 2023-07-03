@@ -31,7 +31,7 @@ function EditPage() {
   //   const param = useParams();
 
   // TODO : API 연동 시점에 param 값으로 post 데이터 가져오기
-  const param = '3';
+  const param = '20';
   const { post } = useFetchPost(param);
   console.log('불러온 데이터', post);
 
