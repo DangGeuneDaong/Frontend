@@ -121,7 +121,7 @@ function OfferPage() {
 
   const onClickStatusHandler = async () => {
     const { data } = await instance.put(
-      `${SERVER_URL}/good/offer/info?goodId=${param}`
+      `${SERVER_URL}/good/offer/status?goodId=${param}`
     ); // 구조 분해 할당
     if (showPosts) {
       setShowPosts({ ...showPosts });
