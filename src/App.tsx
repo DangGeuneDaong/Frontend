@@ -23,9 +23,16 @@ import AddInfoPage from './pages/RedirectPage/AddInfoPage';
 //마이 페이지
 import MyPage from './pages/MyPage';
 import { userFetchInfo } from './apis/user';
+import { useEffect } from 'react';
 
 export default function App() {
-  userFetchInfo('dangdang22');
+  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    if (userId) {
+      userFetchInfo(userId);
+    }
+  }, [userId]);
 
   return (
     <Routes>
