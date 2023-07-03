@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
-import axiosInstance from '..';
+import axios from 'axios';
+import { instance } from '../auth/api';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { PostModel, postState, postStateLoading } from '../../states/goodState';
 import { useQuery } from 'react-query';
@@ -7,7 +8,6 @@ import { useEffect } from 'react';
 
 // 이미지 업로드
 export const uploadImage = async (selectedFiles: File[]) => {
-  const instance: AxiosInstance = axiosInstance();
   const formData = new FormData();
 
   // 업로드 한 이미지가 없다면 빈 배열을 return
@@ -22,15 +22,10 @@ export const uploadImage = async (selectedFiles: File[]) => {
     }
 
     // S3에서 각각의 이미지에 대해 String 값으로 return
-    // const response = await instance.post('/api/img/upload', formData);
-    // const response = await instance.post(
-    //   'http://localhost:5000/image',
-    //   formData
-    // );
-
-    const response = selectedFiles.map((_, index) => {
-      return `https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample${index}`;
-    });
+    const response = await instance.post(
+      'http://13.209.220.63/img/upload',
+      formData
+    );
 
     return response;
   } catch (error) {
@@ -43,7 +38,7 @@ export const uploadImage = async (selectedFiles: File[]) => {
 export const fetchPost = async (postId: string) => {
   try {
     console.log('개별글 조회 시작');
-    const instance: AxiosInstance = axiosInstance();
+
     const post = await instance.get(`http://13.209.220.63/good/${postId}`);
 
     return post.data;
@@ -81,13 +76,37 @@ export const useFetchPost = (postId: string) => {
 
 // 글 등록
 export const addPost = async (data: any) => {
-  try {
-    const instance: AxiosInstance = axiosInstance();
-    // const response = await instance.post('/good/offer/info', data);
-    const response = await instance.post('http://13.209.220.63/good', data);
+  const formData = new FormData();
 
-    // 성공 로직
-    console.log('성공');
+  try {
+    const requestObject = {
+      userId: data.userId,
+      mainCategory: data.mainCategory,
+      subCategory: data.subCategory,
+      title: data.title,
+      description: data.description,
+      status: data.status,
+    };
+
+    const requestBlob = new Blob([JSON.stringify(requestObject)], {
+      type: 'application/json',
+    });
+
+    formData.append('request', requestBlob);
+
+    data.files.forEach((file: any) => {
+      formData.append('files', file);
+    });
+
+    const response = await instance.post(
+      'http://13.209.220.63/good/offer/info',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
 
     return response;
   } catch (error: any) {
@@ -98,7 +117,6 @@ export const addPost = async (data: any) => {
 // 글 수정
 export const editPost = async (data: any) => {
   try {
-    const instance: AxiosInstance = axiosInstance();
     const response = await instance.put(`http://13.209.220.63/good/3`, data);
 
     return response;
@@ -108,12 +126,10 @@ export const editPost = async (data: any) => {
 };
 
 export const getPosts = async (requestURL: string) => {
-  const instance = axiosInstance();
-
   try {
-    const response = await instance.get(requestURL);
+    const response = await instance.get(`http://13.209.220.63${requestURL}`);
     if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
-    return response;
+    return response.data;
   } catch (error) {
     console.log('error : ', error);
   }

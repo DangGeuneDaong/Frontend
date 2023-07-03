@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
 
 // api
-import { addPost, uploadImage } from '../../apis/good';
+import { addPost } from '../../apis/good';
+import { userInfoState } from '../../states/userInfo';
 
 // components
 import MainTemplate from '../../components/template/MainTemplate';
@@ -23,8 +24,22 @@ export interface UploadPageCSSProps {
   inputContainerDirection?: 'row' | 'column';
 }
 
+const categoryType = [
+  { key: 'DOG', value: '강아지' },
+  { key: 'CAT', value: '고양이' },
+];
+
+const productType = [
+  { key: 'FODDER', value: '사료' },
+  { key: 'CLOTHES', value: '의류' },
+  { key: 'SNACKS', value: '간식' },
+  { key: 'SUPPLY', value: '용품' },
+];
+
 function UploadPage() {
   const navigate = useNavigate();
+
+  const [userInfo, setUserInfo] = useRecoilState<any>(userInfoState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -60,14 +75,14 @@ function UploadPage() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  useEffect(() => {
-    console.log('선택된 파일', selectedFiles);
-  }, [selectedFiles]);
+  // useEffect(() => {
+  //   console.log('선택된 파일', selectedFiles);
+  // }, [selectedFiles]);
 
-  useEffect(() => {
-    setValue('title', '제목');
-    setValue('description', '내용');
-  }, []);
+  // useEffect(() => {
+  //   setValue('title', '제목');
+  //   setValue('description', '내용');
+  // }, []);
 
   // 엔터 입력 시 포커스가 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -86,7 +101,6 @@ function UploadPage() {
   };
 
   // 폼 전송
-  const { mutateAsync: uploadImagesMutation } = useMutation(uploadImage);
   const { mutate: addPostMutation } = useMutation(addPost, {
     onSuccess: () => {
       setAlertMessage({
@@ -108,18 +122,25 @@ function UploadPage() {
 
   const onSubmit = async (data: any) => {
     try {
-      // NOTE : 이미지 업로드 순서 보장을 위해 mutateAsync 사용
-      // muatate는 반환값이 없지만, mutateAsync는 return 값을 Promise로 반환
-      const uploadedImages = await uploadImagesMutation(selectedFiles);
+      // TODO : REFACOTRING
+      const mainCategory = categoryType.find(
+        (item) => item.value === selectedCategory
+      );
+      const mainCategoryKey = mainCategory ? mainCategory.key : undefined;
+
+      const subCategory = productType.find(
+        (item) => item.value === selectedProduct
+      );
+      const subCategoryKey = subCategory ? subCategory.key : undefined;
 
       const postData = {
-        // user_id : userID 로그인 시 recoil state에서 가져오기
-        main_category: selectedCategory,
-        sub_category: selectedProduct,
+        userId: userInfo.userId,
+        mainCategory: mainCategoryKey,
+        subCategory: subCategoryKey,
         title: data.title,
         description: data.description,
-        status: '판매중',
-        good_image_list: uploadedImages,
+        status: 'SHARING',
+        files: selectedFiles,
       };
 
       addPostMutation(postData);
@@ -162,7 +183,7 @@ function UploadPage() {
 
               <S.DropdownContainer>
                 <Dropdown
-                  listData={['사료', '간식', '용품']}
+                  listData={['사료', '의류', '간식', '배변용품']}
                   selectedItem={selectedProduct}
                   onSelectItem={(item) => setSelectedProduct(item)}
                 ></Dropdown>

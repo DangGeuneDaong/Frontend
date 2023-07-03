@@ -1,10 +1,8 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useState, useRef, useEffect } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-import { useRecoilState } from 'recoil';
 import { useAuth } from '../../../hooks/useAuth';
 import { useRandom } from '../../../hooks/useRandom';
-import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 import MainTemplate from '../../../components/template/MainTemplate';
 import Input from '../../../components/Form/Input';
@@ -12,26 +10,30 @@ import Loader from '../../../components/Loader';
 import SearchLocation from '../../../components/SearchLocation';
 
 import * as S from './styles';
-import { userInfoState } from '../../../states/userInfo';
 
 export interface AddInfoProps {
-  nickname: string;
+  nickName: string;
   location: string;
   profile_url: string;
 }
 
 function AddInfoPage() {
-  const [userData, setUserData] = useRecoilState(userInfoState);
-  const { getUserProfile } = useAuth();
-  const { loginType, generateRandomNicknameK, generateRandomNicknameN } =
-    useRandom();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const loginType = params.get('loginType');
+  console.log('loginType : ', loginType);
+  const { getSocialUserProfile } = useAuth();
+  const { generateRandomNicknameK, generateRandomNicknameN } = useRandom();
   const initialNickname =
-    loginType === 'K' ? generateRandomNicknameK() : generateRandomNicknameN();
+    loginType === 'kakao'
+      ? generateRandomNicknameK()
+      : generateRandomNicknameN();
   const [nicknameEdited, setNicknameEdited] = useState<boolean>(false);
   const [randomNickname, setRandomNickname] = useState<string>(initialNickname);
   const [userProfile, setUserProfile] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
-
+  const { handleInfoSubmit, isLoading, error, alertMessage, showModal } =
+    useAuth();
   const {
     control,
     formState: { errors, isValid },
@@ -43,50 +45,27 @@ function AddInfoPage() {
   } = useForm<AddInfoProps>({
     mode: 'onBlur',
     defaultValues: {
-      nickname: initialNickname,
+      nickName: initialNickname,
       location: '',
     },
   });
   const watchProfileUrl = watch('profile_url');
-  // useEffect(() => {
-  //   getUserProfile()
-  //     .then((userData) => {
-  //       setUserProfile(userData.profile_url);
-  //       setValue('profile_url', userData.profile_url);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, [setValue]);
-
-  const handleInfoSubmit = async (data: AddInfoProps) => {
-    try {
-      const response = await axios.post('http://13.209.220.63/user/signup', {
-        ...data,
-        profile_url: watchProfileUrl,
-      });
-
-      setUserData(response.data.user);
-    } catch (error) {
-      setError('nickname', { message: '닉네임이 중복되었습니다.' });
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      getSocialUserProfile(accessToken)
+        .then((socialUserData) => {
+          setUserProfile(socialUserData.profile_url);
+          setValue('profile_url', socialUserData.profile_url);
+        })
+        .catch((error) => console.error(error));
     }
-  };
-
-  const queryClient = useQueryClient();
-  const { isLoading } = useMutation(handleInfoSubmit, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('additional-info');
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+  }, [setValue]);
 
   //프로필 사진 미리보기
   const onPreviewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     const file = e.target.files?.[0];
-    console.log(file);
     if (file) {
       //file => URL
       const url = URL.createObjectURL(file);
@@ -103,12 +82,11 @@ function AddInfoPage() {
   const handleRefreshNickname = async () => {
     if (!nicknameEdited) {
       const newRandomNickname =
-        loginType === 'K'
+        loginType === 'kakao'
           ? generateRandomNicknameK()
           : generateRandomNicknameN();
       setRandomNickname(newRandomNickname);
-      setValue('nickname', newRandomNickname);
-      setError('nickname', { message: '' });
+      setValue('nickName', newRandomNickname);
     }
   };
   const handleUploadImg = () => {
@@ -122,7 +100,11 @@ function AddInfoPage() {
       <S.Container>
         <S.SubContainer>
           <S.H1>추가 정보 입력</S.H1>
-          <S.Form onSubmit={handleSubmit(handleInfoSubmit)}>
+          <S.Form
+            onSubmit={handleSubmit((data) =>
+              handleInfoSubmit(data, watchProfileUrl)
+            )}
+          >
             <S.ProfileImg src={watchProfileUrl} />
             {watchProfileUrl !== userProfile ? (
               <S.CancelButton onClick={resetImg}>
@@ -142,7 +124,7 @@ function AddInfoPage() {
             <S.NicknameContainer>
               <Controller
                 control={control}
-                name="nickname"
+                name="nickName"
                 defaultValue=""
                 rules={{ required: '닉네임은 필수 입력입니다.' }}
                 render={({ field }) => (
