@@ -14,6 +14,7 @@ import Button from '../../components/Button';
 import axiosInstance from '../../apis';
 import Confirm from '../../components/Modal/Confirm';
 import Chat from '../../components/Chat/Chat';
+import { instance } from '../../apis/auth/api';
 
 interface DataProps {
   id?: number;
@@ -58,7 +59,6 @@ function OfferPage() {
   // const SERVER_URL = 'http://localhost:5000';
 
   const fetchData = async () => {
-    const instance: AxiosInstance = axiosInstance();
     // 1. Good의 n번째 id로 선택된 데이터 get 요청
     const { data } = await instance.get(
       `${SERVER_URL}/good/offer/info?goodId=${param}`
@@ -121,7 +121,6 @@ function OfferPage() {
   };
 
   const onClickStatusHandler = async () => {
-    const instance: AxiosInstance = axiosInstance();
     const { data } = await instance.patch(
       `${SERVER_URL}/good/offer/info?goodId=${param}`,
       {
@@ -151,7 +150,6 @@ function OfferPage() {
     }
   };
   const onClickGoodDataDeleteHandler = async () => {
-    const instance: AxiosInstance = axiosInstance();
     await instance.delete(`${SERVER_URL}/good/offer/info?goodId=${param}`);
     navigate(`/`); // main Page로 이동
 

@@ -6,13 +6,14 @@ import axios, { AxiosInstance } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
+import { useRecoilState } from 'recoil';
 
 import Textarea from '../Form/Textarea';
 import axiosInstance from '../../apis';
 import ChatRoomArea from '../ChatRoomArea';
 import Chat from '../Chat/Chat';
 import { userInfoState } from '../../states/userInfo';
-import { useRecoilState } from 'recoil';
+import { instance } from '../../apis/auth/api';
 
 interface TakerPageProps {
   userId?: string;
@@ -38,7 +39,6 @@ function CommentArea({ userId }: TakerPageProps) {
 
   const SERVER_URL = 'http://13.209.220.63';
   // const SERVER_URL = 'http://localhost:5000';
-  const instance: AxiosInstance = axiosInstance();
   const fetchData = async ({ content, takerId }: any) => {
     const result_comment = await instance.post(
       `${SERVER_URL}/sharing/application`,
