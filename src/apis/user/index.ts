@@ -27,5 +27,7 @@ export const userFetchInfo = async (userId: string) => {
     }
   }, [query.data, setUserInfo]);
 
+  console.log('userInfo : ', userInfo);
+
   return { userInfo };
 };
