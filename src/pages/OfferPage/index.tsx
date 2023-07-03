@@ -60,12 +60,14 @@ function OfferPage() {
   const fetchData = async () => {
     const instance: AxiosInstance = axiosInstance();
     // 1. Good의 n번째 id로 선택된 데이터 get 요청
-    const { data } = await instance.get(`${SERVER_URL}/Good/${id}`);
+    const { data } = await instance.get(
+      `${SERVER_URL}/good/offer/info?goodId=${param}`
+    );
     setShowPosts(data);
 
     // 2. Sharing_Application 데이터 get 요청
     const result_takerlists = await instance.get(
-      `${SERVER_URL}/Sharing_Application`
+      `${SERVER_URL}/sharing/application?goodId=${param}`
     );
     setShowTakerlists(result_takerlists.data);
 
@@ -120,9 +122,12 @@ function OfferPage() {
 
   const onClickStatusHandler = async () => {
     const instance: AxiosInstance = axiosInstance();
-    const { data } = await instance.patch(`${SERVER_URL}/Good/1`, {
-      status: '나눔 완료',
-    }); // 구조 분해 할당
+    const { data } = await instance.patch(
+      `${SERVER_URL}/good/offer/info?goodId=${param}`,
+      {
+        status: '나눔 완료',
+      }
+    ); // 구조 분해 할당
     if (showPosts) {
       showPosts.status = '나눔 완료';
       setShowPosts({ ...showPosts });
@@ -147,7 +152,7 @@ function OfferPage() {
   };
   const onClickGoodDataDeleteHandler = async () => {
     const instance: AxiosInstance = axiosInstance();
-    await instance.delete(`${SERVER_URL}/Good/2`);
+    await instance.delete(`${SERVER_URL}/good/offer/info?goodId=${param}`);
     navigate(`/`); // main Page로 이동
 
     // 있던 모달창이 사라짐

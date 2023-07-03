@@ -2,6 +2,7 @@ import * as S from './styles';
 
 import { useEffect, useState } from 'react';
 import axios, { AxiosInstance } from 'axios';
+import { useParams } from 'react-router-dom';
 
 import ImageCarouselArea from '../../components/ImageCarouselArea';
 import PostArea from '../../components/PostArea';
@@ -27,6 +28,7 @@ interface PostsProps {
 }
 
 function TakerPage() {
+  const param = useParams();
   const [showPosts, setShowPosts] = useState<PostsProps>();
 
   useEffect(() => {
@@ -34,7 +36,9 @@ function TakerPage() {
     // const SERVER_URL = 'http://localhost:5000';
     const fetchData = async () => {
       const instance: AxiosInstance = axiosInstance();
-      const { data } = await instance.get(`${SERVER_URL}/Good/1`);
+      const { data } = await instance.get(
+        `${SERVER_URL}/good/offer/info?goodId=${param}`
+      );
       setShowPosts(data);
     };
     fetchData();
