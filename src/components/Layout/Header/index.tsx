@@ -32,7 +32,7 @@ function Header() {
     },
     {
       name: '프로필 수정',
-      onClickHandler: () => routeChange('editProfile'),
+      onClickHandler: () => routeChange('edit-profile'),
     },
     {
       name: '로그아웃',

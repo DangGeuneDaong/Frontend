@@ -1,7 +1,6 @@
 import * as S from './styles';
 
 import { useEffect, useState } from 'react';
-import { AxiosInstance } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import ImageCarouselArea from '../../components/ImageCarouselArea';
@@ -11,7 +10,6 @@ import TakerListArea from '../../components/TakerListArea';
 import ChatRoomArea from '../../components/ChatRoomArea';
 import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
-import axiosInstance from '../../apis';
 import Confirm from '../../components/Modal/Confirm';
 import Chat from '../../components/Chat/Chat';
 import { instance } from '../../apis/auth/api';
@@ -54,30 +52,42 @@ function OfferPage() {
   const offset = (page - 1) * LIMIT;
   const navigate = useNavigate();
 
-  const SERVER_URL = 'http://13.209.220.63';
   // const SERVER_URL = 'http://localhost:5000';
 
-  const fetchData = async () => {
-    // 1. Good의 n번째 id로 선택된 데이터 get 요청
-    const { data } = await instance.get(
-      `${SERVER_URL}/good/offer/info?goodId=${param}`
-    );
-    setShowPosts(data);
+  const getData = async () => {
+    try {
+      // 1. Good의 n번째 id로 선택된 데이터 get 요청
+      const { data } = await instance.get(`/good/offer/info?goodId=${param}`);
+      setShowPosts(data);
 
-    // 2. Sharing_Application 데이터 get 요청
-    const result_takerlists = await instance.get(
-      `${SERVER_URL}/sharing/application?goodId=${param}`
-    );
-    setShowTakerlists(result_takerlists.data);
+      // 2. Sharing_Application 데이터 get 요청
+      const result_takerlists = await instance.get(
+        `/sharing/application?goodId=${param}`
+      );
+      setShowTakerlists(result_takerlists.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    // 3. 채팅방 개설 및 입장
-    await instance.post(`${SERVER_URL}/chat/create`);
-    const result_roomlists = await instance.get(`${SERVER_URL}/chat/enter`);
-    setShowRoomlists(result_roomlists.data);
+  const userId = localStorage.getItem('userId');
+  const postData = async (id: any) => {
+    try {
+      // 3. 채팅방 개설 및 입장
+      const data = {
+        takerId: userId,
+        sharingApplicationId: id,
+      };
+      await instance.post(`/chat/create`, data);
+      await instance.get(`/chat/enter`);
+      // setShowRoomlists(result_roomlists.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
-    fetchData();
+    getData();
   }, []);
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
@@ -87,6 +97,8 @@ function OfferPage() {
   });
 
   const showChange = (id: number, nickname?: string, distance?: string) => {
+    postData(id);
+    console.log(id);
     // 만약 버튼을 클릭했을 때, 현재 유저와 같은 유저라면 채팅창 닫기(초기화)
     if (selectedButtonId === id) {
       setSelectedButtonId(null);
@@ -106,45 +118,17 @@ function OfferPage() {
     setSelectedUserData(data);
   };
 
-  const onClickSharingConfirmModalHandler = () => {
-    // 없던 모달창이 생김
-    {
-      !isOpenSharingModal && setIsOpenSharingModal(true);
-    }
-  };
-  const onClickSharingCancelModalHandler = () => {
-    // 있던 모달창이 사라짐
-    {
-      isOpenSharingModal && setIsOpenSharingModal(false);
-    }
-  };
-
+  // 삭제하기 버튼을 클릭했을 때, 서버에 good table을 삭제하고, 메인 페이지로 이동
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
-  const onClickDeleteConfirmModalHandler = () => {
-    {
-      !isOpenDeleteModal && setIsOpenDeleteModal(true);
-    }
-  };
-  const onClickDeleteCancelModalHandler = () => {
-    {
-      isOpenDeleteModal && setIsOpenDeleteModal(false);
-    }
-  };
   const onClickGoodDataDeleteHandler = async () => {
-    await instance.delete(`${SERVER_URL}/good/offer/info?goodId=${param}`);
+    await instance.delete(`/good/offer/info?goodId=${param}`);
     navigate(`/`); // main Page로 이동
-
-    // 있던 모달창이 사라짐
-    {
-      isOpenDeleteModal && setIsOpenDeleteModal(false);
-    }
   };
 
-  // const [checkStatus, setCheckStatus] = useState(showPosts?.status);
+  // 나눔완료 버튼을 클릭했을 때, 서버 status를 COMPLETE로 변경하고, 화면에 COMPELTE 렌더링
   const [isCompleteText, setIsCompleteText] = useState<string>('SHARING');
-  // const changeStatus = isCompleteText === 'SHARING' ? 'SHARING' : 'COMPLETE';
   const onClickStatusHandler = async (status: string) => {
-    await instance.put(`${SERVER_URL}/good/offer/status?goodId=${param}`); // 구조 분해 할당
+    await instance.put(`/good/offer/status?goodId=${param}`); // 구조 분해 할당
     setIsCompleteText(status);
   };
 
@@ -169,17 +153,19 @@ function OfferPage() {
             </>
           )}
 
-          {/* <EditArea /> */}
           <S.EditContainer>
-            <Button onClickHandler={onClickDeleteConfirmModalHandler}>
+            <Button onClickHandler={() => setIsOpenDeleteModal(true)}>
               삭제하기
             </Button>
             {isOpenDeleteModal && (
               <Confirm
                 title={'정말로 삭제하시겠습니까?'}
                 message={'확인 버튼을 누르실 경우 해당 게시글이 삭제됩니다.'}
-                onConfirm={onClickGoodDataDeleteHandler}
-                onCancel={onClickDeleteCancelModalHandler}
+                onConfirm={() => {
+                  onClickGoodDataDeleteHandler();
+                  setIsOpenDeleteModal(false);
+                }}
+                onCancel={() => setIsOpenDeleteModal(false)}
               />
             )}
             <Button
@@ -190,7 +176,7 @@ function OfferPage() {
               수정하기
             </Button>
             <Button
-              onClickHandler={onClickSharingConfirmModalHandler}
+              onClickHandler={() => setIsOpenSharingModal(true)}
               styleType={isCompleteText === 'COMPLETE' ? 'disabled' : 'primary'}
             >
               나눔완료
@@ -205,7 +191,7 @@ function OfferPage() {
                   onClickStatusHandler('COMPLETE');
                   setIsOpenSharingModal(false);
                 }}
-                onCancel={onClickSharingCancelModalHandler} // 재사용성을 위해
+                onCancel={() => setIsOpenSharingModal(false)} // 재사용성을 위해
               />
             )}
           </S.EditContainer>
