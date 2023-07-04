@@ -78,7 +78,7 @@ export function socialUserProfileRequest(accessToken: string) {
   return instance.get(`/user/payload?accessToken=${accessToken}`);
 }
 
-//추가정보 입력
+//유저 정보 입력
 export function addInfoRequest(data: AddInfoProps, profileUrl: string) {
-  return instance.post('/user/update', { ...data, profile_url: profileUrl });
+  return instance.put('/user/change', { ...data, profile_url: profileUrl });
 }

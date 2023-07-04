@@ -21,8 +21,11 @@ import EditPage from './pages/EditPage';
 // 정보 추가 페이지
 import AddInfoPage from './pages/RedirectPage/AddInfoPage';
 
-//마이 페이지
+// 마이 페이지
 import MyPage from './pages/MyPage';
+
+// 프로필 수정 페이지
+import EditProfilePage from './pages/EditProfilePage';
 
 export default function App() {
   const userId = localStorage.getItem('userId');
@@ -41,6 +44,7 @@ export default function App() {
       <Route path="/edit" element={<EditPage />} />
       <Route path="/addInfo" element={<AddInfoPage />} />
       <Route path="/signup" element={<JoinPage />} />
+      <Route path="/edit-profile" element={<EditProfilePage />} />
     </Routes>
   );
 }
