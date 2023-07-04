@@ -286,7 +286,6 @@ export default Chat;
 //   const SERVER_URL = 'http://localhost:6000';
 //   // Username 받아오기(setUsername)
 //   // const getUsername = async () => {
-//   //   const instance: AxiosInstance = axiosInstance();
 //   //   const sendMessage = await instance.get(
 //   //     `${SERVER_URL}/websocket/pub/message/${roomId}`
 //   //   );

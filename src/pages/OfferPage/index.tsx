@@ -14,6 +14,7 @@ import Button from '../../components/Button';
 import axiosInstance from '../../apis';
 import Confirm from '../../components/Modal/Confirm';
 import Chat from '../../components/Chat/Chat';
+import { instance } from '../../apis/auth/api';
 
 interface DataProps {
   id?: number;
@@ -22,24 +23,23 @@ interface DataProps {
 }
 
 interface PostsProps {
-  id: number;
-  main_category: string;
-  sub_category: string;
+  goodId: number;
+  offerNickName: string;
+  mainCategory: string;
+  subCategory: string;
   title: string;
   description: string;
+  location: string;
   status: string;
-  good_image_list: string[];
-  view_cnt: number;
-  created_at: string;
-  modified_at: string;
-  user_id: {
-    nickname: string;
-    location: string;
-  };
+  goodImageList: string[];
+  viewCnt: number;
+  updatedAt: string;
+  modifiedAt: string;
 }
 
 function OfferPage() {
-  const param = useParams();
+  // const param = useParams();
+  const param = 20;
 
   const [showPosts, setShowPosts] = useState<PostsProps>(); // 1개를 받아오기 때문에 배열 사용 X
   const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
@@ -58,14 +58,15 @@ function OfferPage() {
   // const SERVER_URL = 'http://localhost:5000';
 
   const fetchData = async () => {
-    const instance: AxiosInstance = axiosInstance();
     // 1. Good의 n번째 id로 선택된 데이터 get 요청
-    const { data } = await instance.get(`${SERVER_URL}/Good/${id}`);
+    const { data } = await instance.get(
+      `${SERVER_URL}/good/offer/info?goodId=${param}`
+    );
     setShowPosts(data);
 
     // 2. Sharing_Application 데이터 get 요청
     const result_takerlists = await instance.get(
-      `${SERVER_URL}/Sharing_Application`
+      `${SERVER_URL}/sharing/application?goodId=${param}`
     );
     setShowTakerlists(result_takerlists.data);
 
@@ -118,15 +119,12 @@ function OfferPage() {
     }
   };
 
-  const onClickStatusHandler = async () => {
-    const instance: AxiosInstance = axiosInstance();
-    const { data } = await instance.patch(`${SERVER_URL}/Good/1`, {
-      status: '나눔 완료',
-    }); // 구조 분해 할당
-    if (showPosts) {
-      showPosts.status = '나눔 완료';
-      setShowPosts({ ...showPosts });
-    }
+  // const [checkStatus, setCheckStatus] = useState(showPosts?.status);
+  const [isCompleteText, setIsCompleteText] = useState<string>('SHARING');
+  const changeStatus = isCompleteText === 'SHARING' ? 'SHARING' : 'COMPLETE';
+  const onClickStatusHandler = async (status: string) => {
+    await instance.put(`${SERVER_URL}/good/offer/status?goodId=${param}`); // 구조 분해 할당
+    setIsCompleteText(status);
 
     // 있던 모달창이 사라짐
     {
@@ -146,8 +144,7 @@ function OfferPage() {
     }
   };
   const onClickGoodDataDeleteHandler = async () => {
-    const instance: AxiosInstance = axiosInstance();
-    await instance.delete(`${SERVER_URL}/Good/2`);
+    await instance.delete(`${SERVER_URL}/good/offer/info?goodId=${param}`);
     navigate(`/`); // main Page로 이동
 
     // 있던 모달창이 사라짐
@@ -162,16 +159,16 @@ function OfferPage() {
         <S.OfferContainer>
           {showPosts && (
             <>
-              <ImageCarouselArea config={showPosts?.good_image_list} />
+              <ImageCarouselArea config={showPosts?.goodImageList} />
               <PostArea
-                key={showPosts.id}
-                nickname={showPosts.user_id.nickname}
-                location={showPosts.user_id.location}
-                status={showPosts.status}
+                key={showPosts.goodId}
+                nickname={showPosts.offerNickName}
+                location={showPosts.location}
+                status={changeStatus}
                 title={showPosts.title}
-                firstCategory={showPosts.main_category}
-                secondCategory={showPosts.sub_category}
-                createdTime={showPosts.created_at}
+                firstCategory={showPosts.mainCategory}
+                secondCategory={showPosts.subCategory}
+                createdTime={showPosts.updatedAt}
                 productDetails={showPosts.description}
               />
             </>
@@ -200,7 +197,7 @@ function OfferPage() {
             <Button
               onClickHandler={onClickSharingConfirmModalHandler}
               styleType={
-                showPosts?.status === '나눔 완료' ? 'disabled' : 'primary'
+                showPosts?.status === 'COMPLETE' ? 'disabled' : 'primary'
               }
             >
               나눔완료
@@ -211,7 +208,7 @@ function OfferPage() {
                 message={
                   '확인 버튼을 누르실 경우 나눔 중에서 나눔 완료로 변경되어 새로운 신청자를 받을 수 없습니다.'
                 }
-                onConfirm={onClickStatusHandler}
+                onConfirm={() => onClickStatusHandler('COMPLETE')}
                 onCancel={onClickSharingCancelModalHandler} // 재사용성을 위해
               />
             )}

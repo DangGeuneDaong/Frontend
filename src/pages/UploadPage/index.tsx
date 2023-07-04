@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 // api
 import { addPost } from '../../apis/good';
-import { userInfoState } from '../../states/userInfo';
+import { userState } from '../../states/userInfo';
 
 // components
 import MainTemplate from '../../components/template/MainTemplate';
@@ -39,7 +39,7 @@ const productType = [
 function UploadPage() {
   const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useRecoilState<any>(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState<any>(userState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');

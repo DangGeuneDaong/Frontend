@@ -2,39 +2,43 @@ import * as S from './styles';
 
 import { useEffect, useState } from 'react';
 import axios, { AxiosInstance } from 'axios';
+import { useParams } from 'react-router-dom';
 
 import ImageCarouselArea from '../../components/ImageCarouselArea';
 import PostArea from '../../components/PostArea';
 import CommentArea from '../../components/CommentArea';
 import MainTemplate from '../../components/template/MainTemplate';
-import axiosInstance from '../../apis';
+import { instance } from '../../apis/auth/api';
 
 interface PostsProps {
-  id: number;
-  main_category: string;
-  sub_category: string;
+  goodId: number;
+  offerNickName: string;
+  mainCategory: string;
+  subCategory: string;
   title: string;
   description: string;
+  location: string;
   status: string;
-  good_image_list: string[];
-  view_cnt: number;
-  created_at: string;
-  modified_at: string;
-  user_id: {
-    nickname: string;
-    location: string;
-  };
+  goodImageList: string[];
+  viewCnt: number;
+  updatedAt: string;
+  modifiedAt: string;
 }
 
 function TakerPage() {
+  // const param = useParams();
+  const param = '20';
+  // console.log(`param: `, param);
+
   const [showPosts, setShowPosts] = useState<PostsProps>();
 
   useEffect(() => {
     const SERVER_URL = 'http://13.209.220.63';
     // const SERVER_URL = 'http://localhost:5000';
     const fetchData = async () => {
-      const instance: AxiosInstance = axiosInstance();
-      const { data } = await instance.get(`${SERVER_URL}/Good/1`);
+      const { data } = await instance.get(
+        `${SERVER_URL}/good/taker/info?goodId=${param}`
+      );
       setShowPosts(data);
     };
     fetchData();
@@ -45,17 +49,17 @@ function TakerPage() {
       <S.TakerContainer>
         {showPosts && (
           <>
-            <ImageCarouselArea config={showPosts?.good_image_list} />
+            <ImageCarouselArea config={showPosts?.goodImageList} />
             <PostArea
-              key={showPosts.id}
-              nickname={showPosts.user_id.nickname}
-              location={showPosts.user_id.location}
-              status={showPosts.status}
+              key={showPosts.goodId}
+              nickname={showPosts.offerNickName}
+              firstCategory={showPosts.mainCategory}
+              secondCategory={showPosts.subCategory}
               title={showPosts.title}
-              firstCategory={showPosts.main_category}
-              secondCategory={showPosts.sub_category}
-              createdTime={showPosts.created_at}
               productDetails={showPosts.description}
+              location={showPosts.location}
+              status={showPosts.status}
+              createdTime={showPosts.updatedAt}
             />
           </>
         )}
