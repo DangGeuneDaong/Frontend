@@ -64,18 +64,19 @@ function CommentArea() {
 
   const postCommentInfo = () => {
     // 0. '신청하기' || '신청취소' 버튼 변경 기능
-    console.log('changeButton2: ', changeButton);
-    const newButton = changeButton === false ? true : false;
-    setChangeButton(newButton);
-    console.log('changeButton2: ', changeButton);
+    console.log('changButton1: ', changeButton);
+    setChangeButton(true);
+    console.log('changButton2: ', changeButton);
 
     const commentData = watch('postComment');
-    if (newButton === true) {
+    console.log('commentData: ', commentData);
+    if (changeButton) {
       // 1. textarea 데이터를 '신청하기'버튼 클릭 시 submit
       postData({ commentData, userId });
     } else {
       // 2. 취소 버튼 클릭 시, Data delete
       deleteData();
+      setChangeButton(false);
     }
   };
 
