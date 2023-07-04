@@ -9,8 +9,8 @@ import * as S from './styles';
 import SkeletonItemList from '../Skeleton/SkeletonItemList';
 
 interface ItemListProps {
-  pageItems: ItemType[];
-  setPageItems: Dispatch<SetStateAction<ItemType[]>>;
+  currentPageItems: ItemType[];
+  setCurrentPageItems: Dispatch<SetStateAction<ItemType[]>>;
   category: string;
   condition: ItemFilterProps;
   keyword: string;
@@ -19,8 +19,8 @@ interface ItemListProps {
 }
 
 const ItemList = ({
-  pageItems,
-  setPageItems,
+  currentPageItems,
+  setCurrentPageItems,
   category,
   condition,
   keyword,
@@ -43,12 +43,12 @@ const ItemList = ({
   const { isLoading, data } = usePosts(queryParameters);
 
   useEffect(() => {
-    if (!isLoading && data !== null) {
-      setPageItems(data);  
+    if (!isLoading && data) {
+      setCurrentPageItems(data);
     }
-  }, [isLoading]);
+  }, []);
 
-  const itemList = pageItems && pageItems.map((item) => {
+  const itemList = currentPageItems && currentPageItems.map((item) => {
     return <Item itemInfo={item} key={item.id} />;
   });
 

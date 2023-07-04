@@ -55,8 +55,8 @@ const KakaoMap = ({
   };
 
   useEffect(() => {
-    if (!isLoading && data !== null) {
-      updateItems(data);  
+    if (!isLoading && data) {
+      updateItems(data);
     }
 
     if (!map) {
