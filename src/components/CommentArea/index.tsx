@@ -94,8 +94,8 @@ function CommentArea({ userId }: TakerPageProps) {
     console.log(`getUserData.userId: `, getUserData.userId);
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
   }, []);
-
-  console.log(watch('postComment'));
+  console.log(`checkChatStatus: `, checkChatStatus);
+  console.log('postComment: ', watch('postComment'));
 
   return (
     <S.Container>
