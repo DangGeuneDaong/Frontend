@@ -43,14 +43,15 @@ function CommentArea() {
   const SERVER_URL = 'http://13.209.220.63';
   // const SERVER_URL = 'http://localhost:5000';
   const postData = async ({ content, takerId }: any) => {
+    console.log('content1: ', content);
     const result_comment = await instance.post(
       `${SERVER_URL}/sharing/application`,
       {
-        descript: content,
+        description: content,
       }
     );
     setPostComment(result_comment.data.content);
-    console.log(content);
+    console.log('content2: ', content);
     // chat/create로 takerId post하기
     await instance.post(`${SERVER_URL}/chat/create`, takerId);
   };
