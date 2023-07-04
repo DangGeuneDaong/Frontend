@@ -54,25 +54,36 @@ function OfferPage() {
 
   // const SERVER_URL = 'http://localhost:5000';
 
-  const fetchData = async () => {
-    // 1. Good의 n번째 id로 선택된 데이터 get 요청
-    const { data } = await instance.get(`/good/offer/info?goodId=${param}`);
-    setShowPosts(data);
+  const getData = async () => {
+    try {
+      // 1. Good의 n번째 id로 선택된 데이터 get 요청
+      const { data } = await instance.get(`/good/offer/info?goodId=${param}`);
+      setShowPosts(data);
 
-    // 2. Sharing_Application 데이터 get 요청
-    const result_takerlists = await instance.get(
-      `/sharing/application?goodId=${param}`
-    );
-    setShowTakerlists(result_takerlists.data);
+      // 2. Sharing_Application 데이터 get 요청
+      const result_takerlists = await instance.get(
+        `/sharing/application?goodId=${param}`
+      );
+      setShowTakerlists(result_takerlists.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    // 3. 채팅방 개설 및 입장
-    await instance.post(`/chat/create`);
-    const result_roomlists = await instance.get(`/chat/enter`);
-    setShowRoomlists(result_roomlists.data);
+  const postData = async () => {
+    try {
+      // 3. 채팅방 개설 및 입장
+      await instance.post(`/chat/create`);
+      const result_roomlists = await instance.get(`/chat/enter`);
+      setShowRoomlists(result_roomlists.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
-    fetchData();
+    getData();
+    postData();
   }, []);
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
