@@ -90,7 +90,6 @@ function CommentArea({ userId }: TakerPageProps) {
       setCheckChatStatus(data.isOpened);
     };
     checkChatStatus();
-    console.log(`chatData2: `, data);
     console.log(`getUserData3: `, getUserData);
     console.log(`getUserData.userId: `, getUserData.userId);
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
@@ -141,13 +140,13 @@ function CommentArea({ userId }: TakerPageProps) {
           </Button>
         </S.Form>
       )}
-      {changeButton &&
+      {/* {changeButton &&
         checkChatStatus?.isOpened &&
         checkChatStatus?.takerId === getUserData.userId && (
           <ChatRoomArea>
             <Chat roomId={checkChatStatus?.roomId} />
           </ChatRoomArea>
-        )}
+        )} */}
     </S.Container>
   );
 }
