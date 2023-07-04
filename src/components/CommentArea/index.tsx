@@ -15,13 +15,15 @@ import Chat from '../Chat/Chat';
 import { userState } from '../../states/userInfo';
 import { instance } from '../../apis/auth/api';
 
-interface TakerPageProps {
-  userId?: string;
-}
+// interface TakerPageProps {
+//   userId?: string;
+// }
+// { userId }: TakerPageProps
 
-function CommentArea({ userId }: TakerPageProps) {
+function CommentArea() {
   // const param = useParams();
   const param = '20';
+  const userId = localStorage.getItem('userId');
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
@@ -40,16 +42,20 @@ function CommentArea({ userId }: TakerPageProps) {
 
   const SERVER_URL = 'http://13.209.220.63';
   // const SERVER_URL = 'http://localhost:5000';
-  const fetchData = async ({ content, takerId }: any) => {
+  const postData = async ({ content, takerId }: any) => {
+    console.log('content1: ', content);
     const result_comment = await instance.post(
       `${SERVER_URL}/sharing/application`,
-      content
+      {
+        description: content,
+      }
     );
     setPostComment(result_comment.data.content);
+    console.log('content2: ', content);
     // chat/create로 takerId post하기
     await instance.post(`${SERVER_URL}/chat/create`, takerId);
   };
-  const deleteData = async (content: any) => {
+  const deleteData = async () => {
     const result_comment = await instance.delete(
       `${SERVER_URL}/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
     );
@@ -58,18 +64,18 @@ function CommentArea({ userId }: TakerPageProps) {
 
   const postCommentInfo = () => {
     // 0. '신청하기' || '신청취소' 버튼 변경 기능
+    console.log('changeButton2: ', changeButton);
     const newButton = changeButton === false ? true : false;
     setChangeButton(newButton);
+    console.log('changeButton2: ', changeButton);
 
     const commentData = watch('postComment');
-    const data = { content: commentData };
-
     if (newButton === true) {
       // 1. textarea 데이터를 '신청하기'버튼 클릭 시 submit
-      fetchData(data);
+      postData({ commentData, userId });
     } else {
       // 2. 취소 버튼 클릭 시, Data delete
-      deleteData(data);
+      deleteData();
     }
   };
 
@@ -77,39 +83,28 @@ function CommentArea({ userId }: TakerPageProps) {
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
   const [getUserData, setGetUserData] = useRecoilState<any>(userState);
-  const userData = instance.get(
-    `${SERVER_URL}/user/info?userId=${getUserData.userId}`
-  );
+  const userData = instance.get(`${SERVER_URL}/user/info?userId=${userId}`);
+  console.log(`userId: `, userId);
+  console.log(`getUserData1: `, getUserData);
 
   useEffect(() => {
     const checkChatStatus = async () => {
       const { data } = await instance.get(`${SERVER_URL}/chat/enter`);
-      console.log(`chatData: `, data);
-      console.log(`getUserData: `, getUserData);
+      console.log(`chatData1: `, data);
+      console.log(`getUserData2: `, getUserData);
       setCheckChatStatus(data.isOpened);
     };
-
+    checkChatStatus();
+    console.log(`getUserData3: `, getUserData);
     console.log(`getUserData.userId: `, getUserData.userId);
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
-
-    // <Chat />에 roomId 적용하여
-    if (
-      changeButton === true
-      // &&
-      // checkChatStatus.takerId === getUserData.userId
-    ) {
-      // taker의 nickname을 알 수 있는 방법
-      // setCheckRoomId(checkChatStatus.roomId);
-      checkChatStatus();
-    }
   }, []);
-
-  console.log(watch('postComment'));
+  console.log(`checkChatStatus: `, checkChatStatus);
 
   return (
     <S.Container>
       {!changeButton && (
-        <S.Form onSubmit={handleSubmit(fetchData)}>
+        <S.Form onSubmit={handleSubmit(postData)}>
           <Textarea
             placeholder={'궁금한 사항을 적어주세요!'}
             errors={errors}
@@ -149,11 +144,13 @@ function CommentArea({ userId }: TakerPageProps) {
           </Button>
         </S.Form>
       )}
-      {changeButton && checkChatStatus && (
-        <ChatRoomArea>
-          <Chat roomId={checkRoomId} />
-        </ChatRoomArea>
-      )}
+      {/* {changeButton &&
+        checkChatStatus?.isOpened &&
+        checkChatStatus?.takerId === getUserData.userId && (
+          <ChatRoomArea>
+            <Chat roomId={checkChatStatus?.roomId} />
+          </ChatRoomArea>
+        )} */}
     </S.Container>
   );
 }

@@ -71,15 +71,17 @@ export function useAuth<T extends { [key: string]: any }>() {
     setError(null);
     try {
       const response = await loginRequest(data);
-      if (response.data.accessToken) {
-        localStorage.setItem('accessToken', response.data.accessToken);
+      console.log(`응답 : `, response);
+      if (response.data) {
+        localStorage.setItem('accessToken', response.data.substr(1));
+        console.log(`accessToken : `, response.data.accessToken);
         localStorage.setItem('userId', data.userId);
+        console.log(`userId : `, data.userId);
+        //유저 정보 가져와 상태로 관리
+        const userInfo = await getUserProfile(data.userId);
+        setUser(userInfo);
+        navigate('/');
       }
-
-      //유저 정보 가져와 상태로 관리
-      const userInfo = await getUserProfile(data.userId);
-      setUser(userInfo);
-      await navigate('/');
     } catch (error: any) {
       setIsLoading(false);
       if (error.response && error.response.data.message) {
