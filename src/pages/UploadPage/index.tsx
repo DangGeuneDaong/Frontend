@@ -39,7 +39,7 @@ const productType = [
 function UploadPage() {
   const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useRecoilState<any>(userState);
+  const [userInfo, _setUserInfo] = useRecoilState<any>(userState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
