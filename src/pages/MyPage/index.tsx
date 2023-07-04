@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { userInfoState } from '../../states/userInfo';
 import { Link } from 'react-router-dom';
@@ -27,6 +26,7 @@ interface MyPostsProps {
 
 function MyPage() {
   const [userData, setUserData] = useRecoilState(userInfoState);
+  const [selected, setSelected] = useState<number | null>(null);
   const [isDeleted, setIsDeleted] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [filter, setFilter] = useState('all');
@@ -48,52 +48,50 @@ function MyPage() {
       : myAppliedPosts;
   const currentPagePosts = totalPosts?.slice(offset, offset + LIMIT);
 
+  const getMyPosts = async () => {
+    try {
+      //마이페이지 > 내가 쓴 글
+      const writtenResponse = await instance.get(
+        `/good/offer?userId=${userData.userId}`
+      );
+      //마이페이지 > 나눔 신청한 글
+      const appliedResponse = await instance.get(
+        `/sharing/list?userId=${userData.userId}`
+      );
+      setMyWrittenPosts(writtenResponse.data);
+      setMyAppliedPosts(appliedResponse.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    const getMyPosts = async () => {
-      try {
-        //마이페이지 > 내가 쓴 글
-        const writtenResponse = await instance.get(
-          `/good/offer?userId=${userData.userId}`
-        );
-        //마이페이지 > 나눔 신청한 글
-        const appliedResponse = await instance.get(
-          `/sharing/list?userId=${userData.userId}`
-        );
-        setMyWrittenPosts(writtenResponse.data);
-        setMyAppliedPosts(appliedResponse.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     getMyPosts();
   }, []);
 
-  const handleShared = async (id: number) => {
-    setIsShared(true);
+  //나눔완료 변경
+  const handleShared = async () => {
     try {
-      await instance.put(`good/offer/status?goodId=${id}`);
+      if (selected === null) return;
+      await instance.put(`good/offer/status?goodId=${selected}`);
       setMyWrittenPosts(
         myWrittenPosts?.map((post) =>
-          post.id === id ? { ...post, status: 'COMPLETE' } : post
+          post.id === selected ? { ...post, status: 'COMPLETE' } : post
         )
       );
     } catch (error) {
       console.error(error);
     }
   };
-  const handleEdit = (id: number) => {
-    navigate(`/edit/${id}`);
-  };
+  //나눔글 삭제
   const handleDelete = async (id: number) => {
-    setIsDeleted(true);
     try {
-      await instance.delete(`good/offer/info?goodId=${id}`);
-      setMyWrittenPosts(myWrittenPosts?.filter((post) => post.id !== id));
+      if (selected === null) return;
+      await instance.delete(`good/offer/info?goodId=${selected}`);
+      setMyWrittenPosts(myWrittenPosts?.filter((post) => post.id !== selected));
     } catch (error) {
       console.error(error);
     }
   };
-
   return (
     <MainTemplate>
       {isDeleted && (
@@ -117,7 +115,7 @@ function MyPage() {
           cancelText="취소"
           alignType="top"
           onCancel={() => setIsShared(false)}
-          onConfirm={() => handleDelete}
+          onConfirm={() => handleShared}
         />
       )}
       <S.Container>
@@ -134,76 +132,88 @@ function MyPage() {
 
           <S.ListContainer>
             <S.Breadcrumb>
-              <span onClick={() => setFilter('all')}>전체</span>
-              <span
+              <S.BreadcrumbSpan onClick={() => setFilter('all')}>
+                전체 |
+              </S.BreadcrumbSpan>
+              <S.BreadcrumbSpan
                 onClick={() => {
                   setFilter('shared');
                 }}
               >
-                나눔완료한 글
-              </span>
-              <span onClick={() => setFilter('applied')}>신청한 글</span>
+                나눔완료한 글 |
+              </S.BreadcrumbSpan>
+              <S.BreadcrumbSpan onClick={() => setFilter('applied')}>
+                신청한 글
+              </S.BreadcrumbSpan>
             </S.Breadcrumb>
             <S.List>
-              {currentPagePosts?.map((post) => (
-                <S.Post key={post.id}>
-                  <S.PostInfos>
-                    <S.PostImg src={post.featuredImage} />
-                    <S.Description>
-                      <S.DescriptionUp>
-                        <h3>{post.title}</h3>
-                        <span>{post.updatedAt}</span>
-                      </S.DescriptionUp>
+              {currentPagePosts ? (
+                currentPagePosts?.map((post) => (
+                  <S.Post key={post.id}>
+                    <S.PostInfos>
+                      <S.PostImg src={post.featuredImage} />
+                      <S.Description>
+                        <S.DescriptionUp>
+                          <S.Title
+                            onClick={() => navigate(`/offer/${post.id}`)}
+                          >
+                            {post.title}
+                          </S.Title>
+                          <span>{post.updatedAt}</span>
+                        </S.DescriptionUp>
 
-                      <S.DescriptionDown>
-                        <S.Nums>{post.location}</S.Nums>
-                        <S.Nums>
-                          <FaUser /> {post.sharingApplicatonNum}
-                        </S.Nums>
-                      </S.DescriptionDown>
-                    </S.Description>
-                  </S.PostInfos>
+                        <S.DescriptionDown>
+                          <S.Nums>{post.location}</S.Nums>
+                          <S.Nums>
+                            <FaUser /> {post.sharingApplicatonNum}
+                          </S.Nums>
+                        </S.DescriptionDown>
+                      </S.Description>
+                    </S.PostInfos>
 
-                  <S.UpdatePost>
-                    {filter === 'received' ? (
-                      <Button
-                        type="button"
-                        // styleType={
-                        //   post.status === 'sharing' ? 'primary' : 'disabled'
-                        // }
-                        borderRadius="20px"
-                        hoverStyle="background-color:"
-                        onClickHandler={() => handleShared}
-                      >
-                        나눔신청 취소
-                      </Button>
-                    ) : (
-                      <>
-                        <Button
-                          type="button"
-                          styleType={
-                            post.status === 'SHARING' ? 'primary' : 'disabled'
-                          }
-                          borderRadius="20px"
-                          hoverStyle="background-color:"
-                          onClickHandler={() => handleShared(post.id)}
-                        >
-                          나눔완료
-                        </Button>
+                    <S.UpdatePost>
+                      {filter === 'shared' && (
+                        <>
+                          <Button
+                            type="button"
+                            styleType={
+                              post.status === 'SHARING' ? 'primary' : 'disabled'
+                            }
+                            borderRadius="20px"
+                            hoverStyle="background-color:"
+                            onClickHandler={() => {
+                              setSelected(post.id);
+                              setIsShared(true);
+                            }}
+                          >
+                            나눔완료
+                          </Button>
 
-                        <S.PostInfo>
-                          <S.UpdateBtn onClick={() => handleEdit(post.id)}>
-                            수정
-                          </S.UpdateBtn>
-                          <S.UpdateBtn onClick={() => handleDelete(post.id)}>
-                            삭제
-                          </S.UpdateBtn>
-                        </S.PostInfo>
-                      </>
-                    )}
-                  </S.UpdatePost>
-                </S.Post>
-              ))}
+                          <S.PostInfo>
+                            <S.UpdateBtn
+                              onClick={() => navigate(`/edit/${post.id}`)}
+                            >
+                              수정
+                            </S.UpdateBtn>
+                            <S.UpdateBtn
+                              onClick={() => {
+                                setSelected(post.id);
+                                setIsDeleted(true);
+                              }}
+                            >
+                              삭제
+                            </S.UpdateBtn>
+                          </S.PostInfo>
+                        </>
+                      )}
+                    </S.UpdatePost>
+                  </S.Post>
+                ))
+              ) : (
+                <S.Empty>
+                  <h2>게시물이 존재하지 않습니다.</h2>
+                </S.Empty>
+              )}
 
               <Pagination
                 total={totalPosts?.length || 0}
