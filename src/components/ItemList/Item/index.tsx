@@ -5,6 +5,9 @@ import ItemImageCarousel from "../ItemImageCarousel";
 import { ItemType, StatusType } from "../../KakaoMapContainer/itemType";
 
 import * as S from './styles';
+import { useRecoilValue } from "recoil";
+import { userInfoState } from "../../../states/userInfo";
+import { checkPostOwner } from "../../../apis/good";
 
 interface ItemProps {
   itemInfo: ItemType;
@@ -13,18 +16,17 @@ interface ItemProps {
 const Item = ({itemInfo} : ItemProps) => {
   const [location, setLocation] = useState<string>('');
   const navigate = useNavigate();
+  const userInfo = useRecoilValue(userInfoState);
   
-  const moveDetailPage = () => {
-    if (localStorage.getItem('access_token')){
-      // 유저 id 가져오는 로직 + 해당 유저가 작성한 글인지 확인하는 로직
-      // const { isMyPost } = await axios.get('http://localhost:8081/good/checkWriter');
+  const moveDetailPage = async () => {
+    if (userInfo) {
+      const isMyPost = await checkPostOwner(itemInfo.id, userInfo.userId);
 
-
-      // if (해당 유저가 작성한 글이라면= true) {
-        // navigate(`/good/offer/info?goodId=${itemInfo.id}`);
-      // }
+      if (isMyPost) {
+        navigate(`/offer/${itemInfo.id}`);
+      }
     }
-    navigate(`/good/taker/info?goodId=${itemInfo.id}`);
+    navigate(`/taker/${itemInfo.id}`);
   };
 
   // any -> any로 인해 발생할 수 있는 이상한 데이터는??

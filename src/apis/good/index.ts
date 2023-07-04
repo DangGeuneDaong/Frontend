@@ -144,7 +144,7 @@ export const getPosts = async (requestURL: string) => {
 
 export const checkPostOwner = async (goodId: number, userId: number) => {
   try {
-    const response = await instance.get(`http://13.209.220.63/good/check?goodId=${goodId}&userId=${userId}`);
+    const response = await instance.get(`http://13.209.220.63/good/match?userId=${userId}&goodId=${goodId}`);
     return response.data;
   } catch (error) {
     console.log('checkPostOwner error : ', error);
