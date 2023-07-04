@@ -61,7 +61,7 @@ const KakaoMap = ({
 
     const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
     const kakaoMap = new kakao.maps.Map($mapContainer!, {
-      center: new kakao.maps.LatLng(userInfo.longitude, userInfo.latitude), // 지도의 중심좌표 (가입 시 유저정보 기준)
+      center: new kakao.maps.LatLng(userInfo.latitude, userInfo.longitude), // 지도의 중심좌표 (가입 시 유저정보 기준)
       // center: new kakao.maps.LatLng(37.3952969470752, 127.110449292622), // 지도의 중심좌표 (판교)
       level: 4, // 지도의 확대 레벨
     });
