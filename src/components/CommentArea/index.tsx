@@ -51,6 +51,7 @@ function CommentArea() {
 
   // const SERVER_URL = 'http://localhost:5000';
   const postData = async (content: any) => {
+    // 서버에 content 데이터 post하기
     try {
       const data = {
         userId: userId,
@@ -65,9 +66,13 @@ function CommentArea() {
     } catch (e) {
       console.log(e);
     }
+
+    // Button 변경하기
+    setChangeButton(true);
   };
 
   const deleteData = async () => {
+    // 서버에 sharingApplication Delete하기
     try {
       await instance.delete(
         `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
@@ -75,20 +80,9 @@ function CommentArea() {
     } catch (e) {
       console.log(e);
     }
-  };
 
-  const postCommentInfo = () => {
-    if (changeButton === false) {
-      setChangeButton(true);
-      // 1. textarea 데이터를 '신청하기'버튼 클릭 시 submit
-      const commentData = watch('postComment');
-      console.log('commentData: ', commentData);
-      postData({ commentData, userId });
-    } else {
-      setChangeButton(false);
-      // 2. 취소 버튼 클릭 시, Data delete
-      deleteData();
-    }
+    // Button 변경하기
+    setChangeButton(false);
   };
 
   const [checkRoomId, setCheckRoomId] = useState([]);
