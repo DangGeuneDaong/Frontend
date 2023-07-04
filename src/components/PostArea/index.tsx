@@ -13,7 +13,7 @@ export interface MainTemplateProps {
   productDetails?: string;
 }
 
-function ImageCarousel({
+function PostArea({
   nickname,
   location,
   status,
