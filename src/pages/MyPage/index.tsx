@@ -25,6 +25,7 @@ interface MyPostsProps {
 }
 
 function MyPage() {
+  const userId = localStorage.getItem('userId');
   const [userData, setUserData] = useRecoilState(userInfoState);
   const [selected, setSelected] = useState<number | null>(null);
   const [isDeleted, setIsDeleted] = useState(false);
@@ -52,11 +53,11 @@ function MyPage() {
     try {
       //마이페이지 > 내가 쓴 글
       const writtenResponse = await instance.get(
-        `/good/offer?userId=${userData.userId}`
+        `/good/offer?userId=${userId}`
       );
       //마이페이지 > 나눔 신청한 글
       const appliedResponse = await instance.get(
-        `/sharing/list?userId=${userData.userId}`
+        `/sharing/list?userId=${userId}`
       );
       setMyWrittenPosts(writtenResponse.data);
       setMyAppliedPosts(appliedResponse.data);
