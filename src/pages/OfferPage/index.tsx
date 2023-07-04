@@ -148,10 +148,6 @@ function OfferPage() {
     setIsCompleteText(status);
   };
 
-  // useEffect(() => {
-  //   isCompleteText;
-  // }, [onClickStatusHandler]);
-
   return (
     <MainTemplate>
       <S.Container>
