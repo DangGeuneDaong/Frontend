@@ -148,9 +148,9 @@ function OfferPage() {
     setIsCompleteText(status);
   };
 
-  useEffect(() => {
-    isCompleteText;
-  }, [onClickStatusHandler]);
+  // useEffect(() => {
+  //   isCompleteText;
+  // }, [onClickStatusHandler]);
 
   return (
     <MainTemplate>
@@ -195,9 +195,7 @@ function OfferPage() {
             </Button>
             <Button
               onClickHandler={onClickSharingConfirmModalHandler}
-              styleType={
-                showPosts?.status === 'COMPLETE' ? 'disabled' : 'primary'
-              }
+              styleType={isCompleteText === 'COMPLETE' ? 'disabled' : 'primary'}
             >
               나눔완료
             </Button>
