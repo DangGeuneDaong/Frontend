@@ -68,10 +68,13 @@ function CommentArea() {
   };
 
   const deleteData = async () => {
-    const result_comment = await instance.delete(
-      `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
-    );
-    setPostComment(result_comment.data.content);
+    try {
+      await instance.delete(
+        `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
+      );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const postCommentInfo = () => {
@@ -142,7 +145,6 @@ function CommentArea() {
           <Button
             height={'90px'}
             borderRadius={'10px'}
-            onClickHandler={postCommentInfo}
             style={{
               backgroundColor: 'white',
               borderColor: `${theme.color.red}`,
