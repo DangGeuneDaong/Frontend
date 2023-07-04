@@ -54,25 +54,40 @@ function OfferPage() {
 
   // const SERVER_URL = 'http://localhost:5000';
 
-  const fetchData = async () => {
-    // 1. Good의 n번째 id로 선택된 데이터 get 요청
-    const { data } = await instance.get(`/good/offer/info?goodId=${param}`);
-    setShowPosts(data);
+  const getData = async () => {
+    try {
+      // 1. Good의 n번째 id로 선택된 데이터 get 요청
+      const { data } = await instance.get(`/good/offer/info?goodId=${param}`);
+      setShowPosts(data);
 
-    // 2. Sharing_Application 데이터 get 요청
-    const result_takerlists = await instance.get(
-      `/sharing/application?goodId=${param}`
-    );
-    setShowTakerlists(result_takerlists.data);
+      // 2. Sharing_Application 데이터 get 요청
+      const result_takerlists = await instance.get(
+        `/sharing/application?goodId=${param}`
+      );
+      setShowTakerlists(result_takerlists.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    // 3. 채팅방 개설 및 입장
-    await instance.post(`/chat/create`);
-    const result_roomlists = await instance.get(`/chat/enter`);
-    setShowRoomlists(result_roomlists.data);
+  const userId = localStorage.getItem('userId');
+  const postData = async (id: any) => {
+    try {
+      // 3. 채팅방 개설 및 입장
+      const data = {
+        takerId: userId,
+        sharingApplicationId: id,
+      };
+      await instance.post(`/chat/create`, data);
+      await instance.get(`/chat/enter`);
+      // setShowRoomlists(result_roomlists.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
-    fetchData();
+    getData();
   }, []);
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
@@ -82,6 +97,8 @@ function OfferPage() {
   });
 
   const showChange = (id: number, nickname?: string, distance?: string) => {
+    postData(id);
+    console.log(id);
     // 만약 버튼을 클릭했을 때, 현재 유저와 같은 유저라면 채팅창 닫기(초기화)
     if (selectedButtonId === id) {
       setSelectedButtonId(null);

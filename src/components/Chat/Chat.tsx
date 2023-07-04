@@ -19,10 +19,10 @@ function Chat({ roomId }: OfferPageProps) {
   document.addEventListener('DOMContentLoaded', function () {
     // ["websocket", "xhr-streaming", "xhr-polling"]
     const sock = new SockJS(`${SERVER_URL}`, null, {
-      transports: ['xhr-polling'],
+      transports: ['websocket'],
     });
     stomp = webstomp.over(sock);
-    //
+    // Chat 서버 연결
     stomp.connect('/websocket', function (frame: any) {
       console.log('Connected!!');
 
