@@ -80,28 +80,20 @@ function CommentArea({ userId }: TakerPageProps) {
   const userData = instance.get(
     `${SERVER_URL}/user/info?userId=${getUserData.userId}`
   );
+  console.log(`getUserData1: `, getUserData);
 
   useEffect(() => {
     const checkChatStatus = async () => {
       const { data } = await instance.get(`${SERVER_URL}/chat/enter`);
-      console.log(`chatData: `, data);
-      console.log(`getUserData: `, getUserData);
+      console.log(`chatData1: `, data);
+      console.log(`getUserData2: `, getUserData);
       setCheckChatStatus(data.isOpened);
     };
-
+    checkChatStatus();
+    console.log(`chatData2: `, data);
+    console.log(`getUserData3: `, getUserData);
     console.log(`getUserData.userId: `, getUserData.userId);
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
-
-    // <Chat />에 roomId 적용하여
-    if (
-      changeButton === true
-      // &&
-      // checkChatStatus.takerId === getUserData.userId
-    ) {
-      // taker의 nickname을 알 수 있는 방법
-      // setCheckRoomId(checkChatStatus.roomId);
-      checkChatStatus();
-    }
   }, []);
 
   console.log(watch('postComment'));
@@ -149,11 +141,13 @@ function CommentArea({ userId }: TakerPageProps) {
           </Button>
         </S.Form>
       )}
-      {changeButton && checkChatStatus && (
-        <ChatRoomArea>
-          <Chat roomId={checkRoomId} />
-        </ChatRoomArea>
-      )}
+      {changeButton &&
+        checkChatStatus?.isOpened &&
+        checkChatStatus?.takerId === getUserData.userId && (
+          <ChatRoomArea>
+            <Chat roomId={checkChatStatus?.roomId} />
+          </ChatRoomArea>
+        )}
     </S.Container>
   );
 }
