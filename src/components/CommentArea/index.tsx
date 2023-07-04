@@ -23,7 +23,7 @@ import { instance } from '../../apis/auth/api';
 function CommentArea() {
   // const param = useParams();
   const param = '20';
-  const userId = localStorage.getItem('userId');
+
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
@@ -88,21 +88,18 @@ function CommentArea() {
   const [checkRoomId, setCheckRoomId] = useState([]);
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
-  const [getUserData, setGetUserData] = useRecoilState<any>(userState);
+  // const [getUserData, setGetUserData] = useRecoilState<any>(userState);
+  const userId = localStorage.getItem('userId');
   const userData = instance.get(`/user/info?userId=${userId}`);
   console.log(`userId: `, userId);
-  console.log(`getUserData1: `, getUserData);
 
   useEffect(() => {
     const checkChatStatus = async () => {
       const { data } = await instance.get(`/chat/enter`);
       console.log(`chatData1: `, data);
-      console.log(`getUserData2: `, getUserData);
       setCheckChatStatus(data.isOpened);
     };
     checkChatStatus();
-    console.log(`getUserData3: `, getUserData);
-    console.log(`getUserData.userId: `, getUserData.userId);
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
   }, []);
   console.log(`checkChatStatus: `, checkChatStatus);
@@ -149,13 +146,14 @@ function CommentArea() {
           </Button>
         </S.Form>
       )}
-      {/* {changeButton &&
-        checkChatStatus?.isOpened &&
-        checkChatStatus?.takerId === getUserData.userId && (
-          <ChatRoomArea>
-            <Chat roomId={checkChatStatus?.roomId} />
-          </ChatRoomArea>
-        )} */}
+      {changeButton && (
+        // checkChatStatus?.takerId === userId &&
+        // checkChatStatus?.isOpened && (
+        // roomId={checkChatStatus?.roomId}
+        <ChatRoomArea>
+          <Chat />
+        </ChatRoomArea>
+      )}
     </S.Container>
   );
 }
