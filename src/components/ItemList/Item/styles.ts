@@ -36,7 +36,7 @@ export const ItemStatus = styled.span<ItemStatusCSSProps>`
   font-size: 12px;
   font-weight: bold;
   /* color: ${props => props.status === '나눔중' ? props.theme.color.primary : 'black'}; */
-  color: ${props => props.status === 'sharing' ? '#FA5672' : 'black'};
+  color: ${props => props.status === 'SHARING' ? '#FA5672' : 'black'};
 `;
 
 export const ItemBasicInfo = styled.div`

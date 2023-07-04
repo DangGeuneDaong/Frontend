@@ -48,11 +48,11 @@ const ItemFilter = ({ condition, onClose, onSelectFilter, setPage } : ItemFilter
         <S.PetTypeFilter>
           <S.PetType type='radio' id='allPetType' name='petType' value='all' checked={petType === 'all'} onChange={(e) => setPetType(e.target.value)}/>
           <S.PetTypeLabel htmlFor='allPetType'>전체</S.PetTypeLabel>
-          <S.PetType type='radio' id='dog' name='petType' value='dog' checked={petType === 'dog'} onChange={(e) => setPetType(e.target.value)}/>
+          <S.PetType type='radio' id='dog' name='petType' value='DOG' checked={petType === 'DOG'} onChange={(e) => setPetType(e.target.value)}/>
           <S.PetTypeLabel htmlFor='dog'>
             <S.TypeImg src={dogImg} alt='강아지'/>강아지
           </S.PetTypeLabel>
-          <S.PetType type='radio' id='cat' name='petType' value='cat' checked={petType === 'cat'} onChange={(e) => setPetType(e.target.value)}/>
+          <S.PetType type='radio' id='cat' name='petType' value='CAT' checked={petType === 'CAT'} onChange={(e) => setPetType(e.target.value)}/>
           <S.PetTypeLabel htmlFor='cat'>
             <S.TypeImg src={catImg} alt='강아지'/>고양이
           </S.PetTypeLabel>
@@ -61,7 +61,7 @@ const ItemFilter = ({ condition, onClose, onSelectFilter, setPage } : ItemFilter
         <S.StatusFilter>
           <S.Status type='radio' id='allStates' name='status' value='all' checked={status === 'all'} onChange={(e) => setStatus(e.target.value)}/>
           <S.StatusLabel htmlFor='allStates'>전체</S.StatusLabel>
-          <S.Status type='radio' id='sharing' name='status' value='sharing' checked={status === 'sharing'} onChange={(e) => setStatus(e.target.value)}/>
+          <S.Status type='radio' id='sharing' name='status' value='SHARING' checked={status === 'SHARING'} onChange={(e) => setStatus(e.target.value)}/>
           <S.StatusLabel htmlFor='sharing'>나눔중</S.StatusLabel>
         </S.StatusFilter>
         <S.SubmitButton type='submit'>적용</S.SubmitButton>

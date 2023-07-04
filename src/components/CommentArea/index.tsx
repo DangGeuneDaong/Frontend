@@ -4,19 +4,24 @@ import * as S from './styles';
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosInstance } from 'axios';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
+import { useRecoilState } from 'recoil';
 
 import Textarea from '../Form/Textarea';
-// import Chat from '../Chat/Chat';
 import axiosInstance from '../../apis';
 import ChatRoomArea from '../ChatRoomArea';
 import Chat from '../Chat/Chat';
+import { userInfoState } from '../../states/userInfo';
+import { instance } from '../../apis/auth/api';
 
 interface TakerPageProps {
   userId?: string;
 }
 
 function CommentArea({ userId }: TakerPageProps) {
+  // const param = useParams();
+  const param = '20';
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
@@ -35,10 +40,9 @@ function CommentArea({ userId }: TakerPageProps) {
 
   const SERVER_URL = 'http://13.209.220.63';
   // const SERVER_URL = 'http://localhost:5000';
-  const instance: AxiosInstance = axiosInstance();
   const fetchData = async ({ content, takerId }: any) => {
     const result_comment = await instance.post(
-      `${SERVER_URL}/Sharing_Application`,
+      `${SERVER_URL}/sharing/application`,
       content
     );
     setPostComment(result_comment.data.content);
@@ -47,7 +51,7 @@ function CommentArea({ userId }: TakerPageProps) {
   };
   const deleteData = async (content: any) => {
     const result_comment = await instance.delete(
-      `${SERVER_URL}/sharing/application?sharingApplicationId=1` // 차후, sharing/application?sharingApplicationId=1로 변경
+      `${SERVER_URL}/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
     );
     setPostComment(result_comment.data.content);
   };
@@ -71,17 +75,31 @@ function CommentArea({ userId }: TakerPageProps) {
 
   const [checkRoomId, setCheckRoomId] = useState([]);
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
-  const userData = instance.get(`${SERVER_URL}/user`);
+  // recoil로 user data
+  const [getUserData, setGetUserData] = useRecoilState<any>(userInfoState);
+  const userData = instance.get(
+    `${SERVER_URL}/user/info?userId=${getUserData.userId}`
+  );
+
   useEffect(() => {
     const checkChatStatus = async () => {
       const { data } = await instance.get(`${SERVER_URL}/chat/enter`);
+      console.log(`chatData: `, data);
+      console.log(`getUserData: `, getUserData);
       setCheckChatStatus(data.isOpened);
     };
 
+    console.log(`getUserData.userId: `, getUserData.userId);
+    // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
+
     // <Chat />에 roomId 적용하여
-    if (changeButton === true && checkChatStatus.takerId === userData.userId) {
+    if (
+      changeButton === true
+      // &&
+      // checkChatStatus.takerId === getUserData.userId
+    ) {
       // taker의 nickname을 알 수 있는 방법
-      setCheckRoomId(checkChatStatus.roomId);
+      // setCheckRoomId(checkChatStatus.roomId);
       checkChatStatus();
     }
   }, []);

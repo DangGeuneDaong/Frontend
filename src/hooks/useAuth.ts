@@ -73,6 +73,7 @@ export function useAuth<T extends { [key: string]: any }>() {
       const response = await loginRequest(data);
       if (response.data.accessToken) {
         localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('userId', data.userId);
       }
 
       //유저 정보 가져와 상태로 관리
@@ -122,6 +123,8 @@ export function useAuth<T extends { [key: string]: any }>() {
 
       //로컬에서 accessToken 삭제
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('userId');
+
       //상태 삭제
       setUser(null);
     } catch (error: any) {
@@ -160,7 +163,7 @@ export function useAuth<T extends { [key: string]: any }>() {
             setShowModal(true);
         }
       } else {
-        setAlertMessage('서버에 연결할 수 없습니다.');
+        setAlertMessage('서버에 연결할 수 없습니다. 다시 시도해주세요.');
         setShowModal(true);
       }
     } finally {
