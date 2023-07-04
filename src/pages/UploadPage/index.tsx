@@ -75,9 +75,9 @@ function UploadPage() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  // useEffect(() => {
-  //   console.log('선택된 파일', selectedFiles);
-  // }, [selectedFiles]);
+  useEffect(() => {
+    console.log('선택된 파일', selectedFiles);
+  }, [selectedFiles]);
 
   // useEffect(() => {
   //   setValue('title', '제목');
@@ -246,7 +246,10 @@ function UploadPage() {
           title={alertMessage.title}
           message={alertMessage.message}
           alignType="top"
-          onConfirm={() => setShowAlert(false)}
+          onConfirm={() => {
+            setShowAlert(false);
+            navigate('/');
+          }}
         />
       )}
 
