@@ -26,6 +26,7 @@ interface MyPostsProps {
 
 function MyPage() {
   const [userData, setUserData] = useRecoilState(userInfoState);
+  const [selected, setSelected] = useState<number | null>(null);
   const [isDeleted, setIsDeleted] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [filter, setFilter] = useState('all');
@@ -68,25 +69,25 @@ function MyPage() {
   }, []);
 
   //나눔완료 변경
-  const handleShared = async (id: number) => {
-    setIsShared(true);
+  const handleShared = async () => {
     try {
-      await instance.put(`good/offer/status?goodId=${id}`);
-      getMyPosts();
+      if (selected === null) return;
+      await instance.put(`good/offer/status?goodId=${selected}`);
+      setMyWrittenPosts(
+        myWrittenPosts?.map((post) =>
+          post.id === selected ? { ...post, status: 'COMPLETE' } : post
+        )
+      );
     } catch (error) {
       console.error(error);
     }
   };
-  //나눔글 수정
-  const handleEdit = (id: number) => {
-    navigate(`/edit/${id}`);
-  };
   //나눔글 삭제
   const handleDelete = async (id: number) => {
-    setIsDeleted(true);
     try {
-      await instance.delete(`good/offer/info?goodId=${id}`);
-      setMyWrittenPosts(myWrittenPosts?.filter((post) => post.id !== id));
+      if (selected === null) return;
+      await instance.delete(`good/offer/info?goodId=${selected}`);
+      setMyWrittenPosts(myWrittenPosts?.filter((post) => post.id !== selected));
     } catch (error) {
       console.error(error);
     }
@@ -114,7 +115,7 @@ function MyPage() {
           cancelText="취소"
           alignType="top"
           onCancel={() => setIsShared(false)}
-          onConfirm={() => handleDelete}
+          onConfirm={() => handleShared}
         />
       )}
       <S.Container>
@@ -180,16 +181,26 @@ function MyPage() {
                             }
                             borderRadius="20px"
                             hoverStyle="background-color:"
-                            onClickHandler={() => handleShared(post.id)}
+                            onClickHandler={() => {
+                              setSelected(post.id);
+                              setIsShared(true);
+                            }}
                           >
                             나눔완료
                           </Button>
 
                           <S.PostInfo>
-                            <S.UpdateBtn onClick={() => handleEdit(post.id)}>
+                            <S.UpdateBtn
+                              onClick={() => navigate(`/edit/${post.id}`)}
+                            >
                               수정
                             </S.UpdateBtn>
-                            <S.UpdateBtn onClick={() => handleDelete(post.id)}>
+                            <S.UpdateBtn
+                              onClick={() => {
+                                setSelected(post.id);
+                                setIsDeleted(true);
+                              }}
+                            >
                               삭제
                             </S.UpdateBtn>
                           </S.PostInfo>
