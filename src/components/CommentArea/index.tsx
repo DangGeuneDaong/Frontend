@@ -63,20 +63,16 @@ function CommentArea() {
   };
 
   const postCommentInfo = () => {
-    // 0. '신청하기' || '신청취소' 버튼 변경 기능
-    console.log('changButton1: ', changeButton);
-    setChangeButton(true);
-    console.log('changButton2: ', changeButton);
-
-    const commentData = watch('postComment');
-    console.log('commentData: ', commentData);
-    if (changeButton) {
+    if (changeButton === false) {
+      setChangeButton(true);
       // 1. textarea 데이터를 '신청하기'버튼 클릭 시 submit
+      const commentData = watch('postComment');
+      console.log('commentData: ', commentData);
       postData({ commentData, userId });
     } else {
+      setChangeButton(false);
       // 2. 취소 버튼 클릭 시, Data delete
       deleteData();
-      setChangeButton(false);
     }
   };
 
