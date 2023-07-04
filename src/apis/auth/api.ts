@@ -63,7 +63,7 @@ export function loginRequest(data: LoginPageProps) {
 }
 //회원가입 요청
 export function registerRequest(data: JoinPageProps) {
-  return instance.post('/user/signup', data);
+  return axios.post('/user/signup', data);
 }
 //로그아웃 요청
 export function logoutRequest() {
