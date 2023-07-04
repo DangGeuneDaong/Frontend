@@ -80,6 +80,7 @@ function CommentArea() {
   const [getUserData, setGetUserData] = useRecoilState<any>(userState);
   const userId = localStorage.getItem('userId');
   const userData = instance.get(`${SERVER_URL}/user/info?userId=${userId}`);
+  console.log(`userId: `, userId);
   console.log(`getUserData1: `, getUserData);
 
   useEffect(() => {
