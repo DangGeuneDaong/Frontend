@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { userFetchInfo } from './apis/user';
 
 // 메인 페이지
 import MainPage from './pages/MainPage';
@@ -22,17 +23,10 @@ import AddInfoPage from './pages/RedirectPage/AddInfoPage';
 
 //마이 페이지
 import MyPage from './pages/MyPage';
-import { userFetchInfo } from './apis/user';
-import { useEffect } from 'react';
 
 export default function App() {
-  useEffect(() => {
-    const userId = localStorage.getItem('userId');
-
-    if (userId) {
-      userFetchInfo(userId);
-    }
-  }, [userFetchInfo]);
+  const userId = localStorage.getItem('userId');
+  userFetchInfo(userId as string);
 
   return (
     <Routes>

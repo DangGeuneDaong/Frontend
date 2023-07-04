@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import axios from 'axios';
+
 import { instance } from '../auth/api';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { PostModel, postState, postStateLoading } from '../../states/goodState';
@@ -117,8 +117,37 @@ export const addPost = async (data: any) => {
 
 // 글 수정
 export const editPost = async (data: any) => {
+  const formData = new FormData();
+
   try {
-    const response = await instance.put(`http://13.209.220.63/good/3`, data);
+    const requestObject = {
+      userId: data.userId,
+      mainCategory: data.mainCategory,
+      subCategory: data.subCategory,
+      title: data.title,
+      description: data.description,
+      status: data.status,
+    };
+
+    const requestBlob = new Blob([JSON.stringify(requestObject)], {
+      type: 'application/json',
+    });
+
+    formData.append('request', requestBlob);
+
+    data.files.forEach((file: any) => {
+      formData.append('files', file);
+    });
+
+    const response = await instance.put(
+      'http://13.209.220.63/good/offer/info',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
 
     return response;
   } catch (error: any) {

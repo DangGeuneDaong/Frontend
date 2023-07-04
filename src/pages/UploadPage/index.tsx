@@ -39,7 +39,7 @@ const productType = [
 function UploadPage() {
   const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useRecoilState<any>(userState);
+  const [userInfo, _setUserInfo] = useRecoilState<any>(userState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -108,7 +108,6 @@ function UploadPage() {
         message: '나눔글이 등록되었습니다.',
       });
       setShowAlert(true);
-      navigate('/');
     },
     onError: (error) => {
       setAlertMessage({
