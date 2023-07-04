@@ -141,3 +141,12 @@ export const UpdateBtn = styled.button`
     font-weight: 500;
   }
 `;
+
+export const Empty = styled.div`
+  width: 100%;
+  height: 100%;
+  justfy-content: center;
+  align-items: center;
+  padding: 20px;
+  color: ${(props) => props.theme.color.lightGray};
+`;

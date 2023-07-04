@@ -133,14 +133,14 @@ function MyPage() {
           <S.ListContainer>
             <S.Breadcrumb>
               <S.BreadcrumbSpan onClick={() => setFilter('all')}>
-                전체
+                전체 |
               </S.BreadcrumbSpan>
               <S.BreadcrumbSpan
                 onClick={() => {
                   setFilter('shared');
                 }}
               >
-                나눔완료한 글
+                나눔완료한 글 |
               </S.BreadcrumbSpan>
               <S.BreadcrumbSpan onClick={() => setFilter('applied')}>
                 신청한 글
@@ -210,7 +210,9 @@ function MyPage() {
                   </S.Post>
                 ))
               ) : (
-                <>게시물이 존재하지 않습니다.</>
+                <S.Empty>
+                  <h2>게시물이 존재하지 않습니다.</h2>
+                </S.Empty>
               )}
 
               <Pagination
