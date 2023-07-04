@@ -97,6 +97,8 @@ function OfferPage() {
   });
 
   const showChange = (id: number, nickname?: string, distance?: string) => {
+    postData(id);
+    console.log(id);
     // 만약 버튼을 클릭했을 때, 현재 유저와 같은 유저라면 채팅창 닫기(초기화)
     if (selectedButtonId === id) {
       setSelectedButtonId(null);
@@ -104,7 +106,6 @@ function OfferPage() {
     } else {
       setSelectedButtonId(id);
       setIsOpenChat(true);
-      postData(id);
     }
 
     // map으로 보낸 데이터 저장
