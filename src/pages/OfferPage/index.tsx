@@ -70,12 +70,17 @@ function OfferPage() {
     }
   };
 
-  const postData = async () => {
+  const userId = localStorage.getItem('userId');
+  const postData = async (id: any) => {
     try {
       // 3. 채팅방 개설 및 입장
-      await instance.post(`/chat/create`);
-      const result_roomlists = await instance.get(`/chat/enter`);
-      setShowRoomlists(result_roomlists.data);
+      const data = {
+        takerId: userId,
+        sharingApplicationId: id,
+      };
+      await instance.post(`/chat/create`, data);
+      await instance.get(`/chat/enter`);
+      // setShowRoomlists(result_roomlists.data);
     } catch (e) {
       console.log(e);
     }
@@ -83,7 +88,6 @@ function OfferPage() {
 
   useEffect(() => {
     getData();
-    postData();
   }, []);
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
@@ -100,6 +104,7 @@ function OfferPage() {
     } else {
       setSelectedButtonId(id);
       setIsOpenChat(true);
+      postData(id);
     }
 
     // map으로 보낸 데이터 저장
