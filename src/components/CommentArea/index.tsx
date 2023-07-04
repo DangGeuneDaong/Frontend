@@ -23,6 +23,7 @@ import { instance } from '../../apis/auth/api';
 function CommentArea() {
   // const param = useParams();
   const param = '20';
+  const userId = localStorage.getItem('userId');
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
@@ -41,12 +42,15 @@ function CommentArea() {
 
   const SERVER_URL = 'http://13.209.220.63';
   // const SERVER_URL = 'http://localhost:5000';
-  const fetchData = async ({ content, takerId }: any) => {
+  const postData = async ({ content, takerId }: any) => {
     const result_comment = await instance.post(
       `${SERVER_URL}/sharing/application`,
-      content
+      {
+        descript: content,
+      }
     );
     setPostComment(result_comment.data.content);
+    console.log(content);
     // chat/create로 takerId post하기
     await instance.post(`${SERVER_URL}/chat/create`, takerId);
   };
@@ -63,14 +67,13 @@ function CommentArea() {
     setChangeButton(newButton);
 
     const commentData = watch('postComment');
-    const data = { content: commentData };
 
     if (newButton === true) {
       // 1. textarea 데이터를 '신청하기'버튼 클릭 시 submit
-      fetchData(data);
+      postData({ commentData, userId });
     } else {
       // 2. 취소 버튼 클릭 시, Data delete
-      deleteData(data);
+      deleteData(commentData);
     }
   };
 
@@ -78,7 +81,6 @@ function CommentArea() {
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
   const [getUserData, setGetUserData] = useRecoilState<any>(userState);
-  const userId = localStorage.getItem('userId');
   const userData = instance.get(`${SERVER_URL}/user/info?userId=${userId}`);
   console.log(`userId: `, userId);
   console.log(`getUserData1: `, getUserData);
@@ -96,12 +98,11 @@ function CommentArea() {
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
   }, []);
   console.log(`checkChatStatus: `, checkChatStatus);
-  console.log('postComment: ', watch('postComment'));
 
   return (
     <S.Container>
       {!changeButton && (
-        <S.Form onSubmit={handleSubmit(fetchData)}>
+        <S.Form onSubmit={handleSubmit(postData)}>
           <Textarea
             placeholder={'궁금한 사항을 적어주세요!'}
             errors={errors}
