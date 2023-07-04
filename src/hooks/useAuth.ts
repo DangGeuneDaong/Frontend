@@ -73,7 +73,7 @@ export function useAuth<T extends { [key: string]: any }>() {
       const response = await loginRequest(data);
       console.log(`응답 : `, response);
       if (response.data.accessToken) {
-        localStorage.setItem('accessToken', response.data);
+        localStorage.setItem('accessToken', response.data[0]);
         console.log(`accessToken : `, response.data.accessToken);
         localStorage.setItem('userId', data.userId);
         console.log(`userId : `, data.userId);
