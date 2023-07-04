@@ -15,11 +15,12 @@ import Chat from '../Chat/Chat';
 import { userState } from '../../states/userInfo';
 import { instance } from '../../apis/auth/api';
 
-interface TakerPageProps {
-  userId?: string;
-}
+// interface TakerPageProps {
+//   userId?: string;
+// }
+// { userId }: TakerPageProps
 
-function CommentArea({ userId }: TakerPageProps) {
+function CommentArea() {
   // const param = useParams();
   const param = '20';
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
@@ -77,9 +78,8 @@ function CommentArea({ userId }: TakerPageProps) {
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
   const [getUserData, setGetUserData] = useRecoilState<any>(userState);
-  const userData = instance.get(
-    `${SERVER_URL}/user/info?userId=${getUserData.userId}`
-  );
+  const userId = localStorage.getItem('userId');
+  const userData = instance.get(`${SERVER_URL}/user/info?userId=${userId}`);
   console.log(`getUserData1: `, getUserData);
 
   useEffect(() => {
