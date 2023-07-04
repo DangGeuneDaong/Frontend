@@ -63,6 +63,18 @@ export const Breadcrumb = styled.div`
   align-self: flex-start;
 `;
 
+export const BreadcrumbSpan = styled.span`
+  cursor: pointer;
+  margin-left: 3px;
+`;
+
+export const Title = styled.h3`
+  cursor: pointer;
+  & :hover {
+    text-decoration: underline;
+  }
+`;
+
 export const List = styled.div`
   width: 90%;
   height: 100%;
