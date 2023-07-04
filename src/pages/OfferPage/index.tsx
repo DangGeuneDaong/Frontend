@@ -120,7 +120,7 @@ function OfferPage() {
   };
 
   // const [checkStatus, setCheckStatus] = useState(showPosts?.status);
-  const [isCompleteText, setIsCompleteText] = useState('SHARING');
+  const [isCompleteText, setIsCompleteText] = useState<string>('SHARING');
   const changeStatus = isCompleteText === 'SHARING' ? 'SHARING' : 'COMPLETE';
   const onClickStatusHandler = async (status: string) => {
     await instance.put(`${SERVER_URL}/good/offer/status?goodId=${param}`); // 구조 분해 할당
