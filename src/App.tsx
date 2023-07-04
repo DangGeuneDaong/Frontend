@@ -26,13 +26,13 @@ import { userFetchInfo } from './apis/user';
 import { useEffect } from 'react';
 
 export default function App() {
-  const userId = localStorage.getItem('userId');
-
   useEffect(() => {
+    const userId = localStorage.getItem('userId');
+
     if (userId) {
       userFetchInfo(userId);
     }
-  }, [userId]);
+  }, [userFetchInfo]);
 
   return (
     <Routes>
