@@ -71,9 +71,12 @@ export function useAuth<T extends { [key: string]: any }>() {
     setError(null);
     try {
       const response = await loginRequest(data);
+      console.log(`accessToken1 : `, response.data.accessToken);
       if (response.data.accessToken) {
         localStorage.setItem('accessToken', response.data.accessToken);
+        console.log(`accessToken2 : `, response.data.accessToken);
         localStorage.setItem('userId', data.userId);
+        console.log(`userId : `, data.userId);
       }
 
       //유저 정보 가져와 상태로 관리
