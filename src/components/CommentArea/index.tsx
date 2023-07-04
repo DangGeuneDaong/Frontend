@@ -40,24 +40,20 @@ function CommentArea() {
     watch, // 실시간 값 감시 가능
   } = useForm();
 
-  const SERVER_URL = 'http://13.209.220.63';
   // const SERVER_URL = 'http://localhost:5000';
-  const postData = async ({ content, takerId }: any) => {
+  async function postData({ content, takerId }: any) {
     console.log('content1: ', content);
-    const result_comment = await instance.post(
-      `${SERVER_URL}/sharing/application`,
-      {
-        description: content,
-      }
-    );
+    const result_comment = await instance.post(`/sharing/application`, {
+      description: content,
+    });
     setPostComment(result_comment.data.content);
     console.log('content2: ', content);
     // chat/create로 takerId post하기
-    await instance.post(`${SERVER_URL}/chat/create`, takerId);
-  };
+    await instance.post(`/chat/create`, takerId);
+  }
   const deleteData = async () => {
     const result_comment = await instance.delete(
-      `${SERVER_URL}/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
+      `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
     );
     setPostComment(result_comment.data.content);
   };
@@ -80,13 +76,13 @@ function CommentArea() {
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
   const [getUserData, setGetUserData] = useRecoilState<any>(userState);
-  const userData = instance.get(`${SERVER_URL}/user/info?userId=${userId}`);
+  const userData = instance.get(`/user/info?userId=${userId}`);
   console.log(`userId: `, userId);
   console.log(`getUserData1: `, getUserData);
 
   useEffect(() => {
     const checkChatStatus = async () => {
-      const { data } = await instance.get(`${SERVER_URL}/chat/enter`);
+      const { data } = await instance.get(`/chat/enter`);
       console.log(`chatData1: `, data);
       console.log(`getUserData2: `, getUserData);
       setCheckChatStatus(data.isOpened);
