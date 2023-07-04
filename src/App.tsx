@@ -22,8 +22,18 @@ import AddInfoPage from './pages/RedirectPage/AddInfoPage';
 
 //마이 페이지
 import MyPage from './pages/MyPage';
+import { userFetchInfo } from './apis/user';
+import { useEffect } from 'react';
 
 export default function App() {
+  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    if (userId) {
+      userFetchInfo(userId);
+    }
+  }, [userId]);
+
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
@@ -34,7 +44,7 @@ export default function App() {
       <Route path="/redirect-kakao" element={<RedirectKakaoPage />} />
       <Route path="/redirect-naver" element={<RedirectNaverPage />} />
       <Route path="/upload" element={<UploadPage />} />
-      <Route path="/edit/:id" element={<EditPage />} />
+      <Route path="/edit" element={<EditPage />} />
       <Route path="/addInfo" element={<AddInfoPage />} />
       <Route path="/signup" element={<JoinPage />} />
     </Routes>

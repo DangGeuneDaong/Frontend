@@ -119,21 +119,6 @@ function OfferPage() {
     }
   };
 
-  const onClickStatusHandler = async () => {
-    const { data } = await instance.put(
-      `${SERVER_URL}/good/offer/status?goodId=${param}`
-    ); // 구조 분해 할당
-    if (showPosts) {
-      showPosts.status = 'COMPLETE';
-      setShowPosts({ ...showPosts });
-    }
-
-    // 있던 모달창이 사라짐
-    {
-      isOpenSharingModal && setIsOpenSharingModal(false);
-    }
-  };
-
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const onClickDeleteConfirmModalHandler = () => {
     {
@@ -155,6 +140,14 @@ function OfferPage() {
     }
   };
 
+  // const [checkStatus, setCheckStatus] = useState(showPosts?.status);
+  const [isCompleteText, setIsCompleteText] = useState<string>('SHARING');
+  // const changeStatus = isCompleteText === 'SHARING' ? 'SHARING' : 'COMPLETE';
+  const onClickStatusHandler = async (status: string) => {
+    await instance.put(`${SERVER_URL}/good/offer/status?goodId=${param}`); // 구조 분해 할당
+    setIsCompleteText(status);
+  };
+
   return (
     <MainTemplate>
       <S.Container>
@@ -166,7 +159,7 @@ function OfferPage() {
                 key={showPosts.goodId}
                 nickname={showPosts.offerNickName}
                 location={showPosts.location}
-                status={showPosts.status}
+                status={isCompleteText}
                 title={showPosts.title}
                 firstCategory={showPosts.mainCategory}
                 secondCategory={showPosts.subCategory}
@@ -198,9 +191,7 @@ function OfferPage() {
             </Button>
             <Button
               onClickHandler={onClickSharingConfirmModalHandler}
-              styleType={
-                showPosts?.status === '나눔 완료' ? 'disabled' : 'primary'
-              }
+              styleType={isCompleteText === 'COMPLETE' ? 'disabled' : 'primary'}
             >
               나눔완료
             </Button>
@@ -210,7 +201,10 @@ function OfferPage() {
                 message={
                   '확인 버튼을 누르실 경우 나눔 중에서 나눔 완료로 변경되어 새로운 신청자를 받을 수 없습니다.'
                 }
-                onConfirm={onClickStatusHandler}
+                onConfirm={() => {
+                  onClickStatusHandler('COMPLETE');
+                  setIsOpenSharingModal(false);
+                }}
                 onCancel={onClickSharingCancelModalHandler} // 재사용성을 위해
               />
             )}

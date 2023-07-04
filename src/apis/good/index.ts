@@ -39,7 +39,7 @@ export const fetchPost = async (postId: string) => {
   try {
     console.log('개별글 조회 시작');
 
-    const post = await instance.get(`http://13.209.220.63/good/${postId}`);
+    const post = await instance.get(`/good/offer/info?goodId=${postId}`);
 
     return post.data;
   } catch (error: any) {
