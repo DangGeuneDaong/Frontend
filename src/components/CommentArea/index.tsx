@@ -12,7 +12,7 @@ import Textarea from '../Form/Textarea';
 import axiosInstance from '../../apis';
 import ChatRoomArea from '../ChatRoomArea';
 import Chat from '../Chat/Chat';
-import { userInfoState } from '../../states/userInfo';
+import { userState } from '../../states/userInfo';
 import { instance } from '../../apis/auth/api';
 
 interface TakerPageProps {
@@ -76,7 +76,7 @@ function CommentArea({ userId }: TakerPageProps) {
   const [checkRoomId, setCheckRoomId] = useState([]);
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
-  const [getUserData, setGetUserData] = useRecoilState(userInfoState);
+  const [getUserData, setGetUserData] = useRecoilState<any>(userState);
   const userData = instance.get(
     `${SERVER_URL}/user/info?userId=${getUserData.userId}`
   );

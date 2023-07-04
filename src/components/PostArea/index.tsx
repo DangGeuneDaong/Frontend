@@ -5,7 +5,7 @@ import React from 'react';
 export interface MainTemplateProps {
   nickname?: string;
   location?: string;
-  status?: React.ReactNode;
+  status?: string;
   title?: string;
   firstCategory?: string;
   secondCategory?: string;
@@ -13,7 +13,7 @@ export interface MainTemplateProps {
   productDetails?: string;
 }
 
-function ImageCarousel({
+function PostArea({
   nickname,
   location,
   status,
@@ -48,4 +48,4 @@ function ImageCarousel({
   );
 }
 
-export default ImageCarousel;
+export default PostArea;
