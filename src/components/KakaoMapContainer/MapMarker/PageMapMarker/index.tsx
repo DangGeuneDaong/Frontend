@@ -48,19 +48,19 @@ const PageMapMarker = ({ item, map }: PageMapMarkerProps) => {
         // navigate(`/good/offer/info?goodId=${itemInfo.id}`);
       // }
     }
-    navigate(`/good/taker/info?goodId=${item.id}`);
+    // navigate(`/good/taker/info?goodId=${item.id}`);
   };
 
   return (
     $markerContainer
       && createPortal(
         <S.Container onClick={moveDetailPage}>
-          {item.main_category === 'dog' 
+          {item.mainCategory === 'dog' 
             ? <S.MarkerImage src={dogMarkerImg} alt='강아지'/>
             : <S.MarkerImage src={catMarkerImg} alt='고양이'/>}
           <S.ItemInfo>
             <S.Title>{item.title}</S.Title>
-            <S.Category>{CategoryType[item.category]}</S.Category>
+            <S.Category>{CategoryType[item.subCategory]}</S.Category>
           </S.ItemInfo>
         </S.Container>
         , $markerContainer)

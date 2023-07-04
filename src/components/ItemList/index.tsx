@@ -49,7 +49,7 @@ const ItemList = ({
   }, []);
 
   const itemList = currentPageItems && currentPageItems.map((item) => {
-    return <Item itemInfo={item} key={item.id} />;
+    return <Item itemInfo={item} key={item.goodId} />;
   });
 
   return <S.Container>{isLoading ? <SkeletonItemList /> : itemList}</S.Container>;

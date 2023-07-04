@@ -3,15 +3,15 @@ type keyValueType = {
 }
 
 export interface ItemType {
-  id: number;
+  goodId: number;
   title: string;
-  main_category: string;
-  category: string;
+  mainCategory: string;
+  subCategory: string;
   latitude: number;
   longitude: number;
-  address: string;
+  location: string;
   status: string;
-  good_image_list: string[];
+  goodImages: string[];
 }
 
 export const StatusType: keyValueType = {
