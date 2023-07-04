@@ -25,10 +25,26 @@ import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
 import axiosInstance from '../../apis';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../states/userInfo';
+
+const categoryType = [
+  { key: 'DOG', value: '강아지' },
+  { key: 'CAT', value: '고양이' },
+];
+
+const productType = [
+  { key: 'FODDER', value: '사료' },
+  { key: 'CLOTHES', value: '의류' },
+  { key: 'SNACKS', value: '간식' },
+  { key: 'SUPPLY', value: '용품' },
+];
 
 function EditPage() {
   const navigate = useNavigate();
   //   const param = useParams();
+
+  const [userInfo, setUserInfo] = useRecoilState<any>(userState);
 
   // TODO : API 연동 시점에 param 값으로 post 데이터 가져오기
   const param = '20';
@@ -99,13 +115,13 @@ function EditPage() {
         }
       };
 
-      setSelectedCategory(post.main_category);
-      setSelectedProduct(post.sub_category);
+      setSelectedCategory(post.mainCategory);
+      setSelectedProduct(post.subCategory);
       setValue('title', post.title);
       setValue('description', post.description);
 
       if (post.files) {
-        createFileObjects(post.files);
+        createFileObjects(post.goodImageList);
       }
     }
   }, [post, setValue]);
@@ -147,7 +163,6 @@ function EditPage() {
         message: '나눔글이 수정이 완료되었습니다.',
       });
       setShowAlert(true);
-      navigate('/');
     },
     onError: (error) => {
       setAlertMessage({
@@ -165,14 +180,24 @@ function EditPage() {
       // muatate는 반환값이 없지만, mutateAsync는 return 값을 Promise로 반환
       const uploadedImages = await uploadImagesMutation(selectedFiles);
 
+      const mainCategory = categoryType.find(
+        (item) => item.value === selectedCategory
+      );
+      const mainCategoryKey = mainCategory ? mainCategory.key : undefined;
+
+      const subCategory = productType.find(
+        (item) => item.value === selectedProduct
+      );
+      const subCategoryKey = subCategory ? subCategory.key : undefined;
+
       const postData = {
-        // userId : userID 로그인 시 recoil state에서 가져오기
-        main_category: selectedCategory,
-        sub_category: selectedProduct,
+        userId: userInfo.userId,
+        mainCategory: mainCategoryKey,
+        subCategory: subCategoryKey,
         title: data.title,
         description: data.description,
         status: 'SHARING',
-        files: uploadedImages,
+        files: selectedFiles,
       };
 
       editPostMutation(postData);

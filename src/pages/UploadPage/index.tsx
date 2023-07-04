@@ -108,7 +108,6 @@ function UploadPage() {
         message: '나눔글이 등록되었습니다.',
       });
       setShowAlert(true);
-      navigate('/');
     },
     onError: (error) => {
       setAlertMessage({
