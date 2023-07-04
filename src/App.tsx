@@ -37,8 +37,8 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
-      <Route path="/taker" element={<TakerPage />} />
-      <Route path="/offer" element={<OfferPage />} />
+      <Route path="/taker/:id" element={<TakerPage />} />
+      <Route path="/offer/:id" element={<OfferPage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/signin" element={<LoginPage />} />
       <Route path="/redirect-kakao" element={<RedirectKakaoPage />} />
