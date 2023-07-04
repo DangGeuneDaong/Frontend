@@ -1,7 +1,7 @@
-import axios from 'axios';
-
+import { instance } from '../../apis/auth/api';
 import { useEffect, useState } from 'react';
-
+import { userState } from '../../states/userInfo';
+import { useRecoilState } from 'recoil';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { set, useForm } from 'react-hook-form';
@@ -26,6 +26,28 @@ import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
 import axiosInstance from '../../apis';
 
+const categoryType = [
+  { key: 'DOG', value: '강아지' },
+  { key: 'CAT', value: '고양이' },
+];
+
+const productType = [
+  { key: 'FODDER', value: '사료' },
+  { key: 'CLOTHES', value: '의류' },
+  { key: 'SNACKS', value: '간식' },
+  { key: 'SUPPLY', value: '용품' },
+];
+
+const getCategoryValueByKey = (key: string) => {
+  const category = categoryType.find((item) => item.key === key);
+  return category ? category.value : undefined;
+};
+
+const getProductValueByKey = (key: string) => {
+  const product = productType.find((item) => item.key === key);
+  return product ? product.value : undefined;
+};
+
 function EditPage() {
   const navigate = useNavigate();
   //   const param = useParams();
@@ -34,6 +56,8 @@ function EditPage() {
   const param = '20';
   const { post } = useFetchPost(param);
   console.log('불러온 데이터', post);
+
+  const [userInfo, setUserInfo] = useRecoilState<any>(userState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -81,7 +105,6 @@ function EditPage() {
       const createFileObjects = async (imageUrls: string[]) => {
         try {
           const imageFilesPromises = imageUrls.map(async (url: string) => {
-            const instance = axiosInstance();
             const response = await instance.get(url, { responseType: 'blob' });
             const data = response.data;
             const filename = url.split('/').pop();
@@ -90,22 +113,24 @@ function EditPage() {
             return new File([data], filename!, metadata);
           });
 
-          // 모든 이미지가 변환될 때까지 대기한 후 imageFiles에 할당
           const imageFiles = await Promise.all(imageFilesPromises);
-
           setSelectedFiles(imageFiles);
         } catch (error) {
           console.error('Failed to create file objects:', error);
         }
       };
 
-      setSelectedCategory(post.main_category);
-      setSelectedProduct(post.sub_category);
+      const categoryValue = getCategoryValueByKey(post.mainCategory);
+      const productValue = getProductValueByKey(post.subCategory);
+
+      setSelectedCategory(categoryValue!);
+      setSelectedProduct(productValue!);
+
       setValue('title', post.title);
       setValue('description', post.description);
 
-      if (post.files) {
-        createFileObjects(post.files);
+      if (post.goodImageList) {
+        createFileObjects(post.goodImageList);
       }
     }
   }, [post, setValue]);
@@ -139,7 +164,6 @@ function EditPage() {
   };
 
   // 폼 전송
-  const { mutateAsync: uploadImagesMutation } = useMutation(uploadImage);
   const { mutate: editPostMutation } = useMutation(editPost, {
     onSuccess: () => {
       setAlertMessage({
@@ -147,7 +171,6 @@ function EditPage() {
         message: '나눔글이 수정이 완료되었습니다.',
       });
       setShowAlert(true);
-      navigate('/');
     },
     onError: (error) => {
       setAlertMessage({
@@ -161,18 +184,25 @@ function EditPage() {
 
   const onSubmit = async (data: any) => {
     try {
-      // NOTE : 이미지 업로드 순서 보장을 위해 mutateAsync 사용
-      // muatate는 반환값이 없지만, mutateAsync는 return 값을 Promise로 반환
-      const uploadedImages = await uploadImagesMutation(selectedFiles);
+      // TODO : REFACOTRING
+      const mainCategory = categoryType.find(
+        (item) => item.value === selectedCategory
+      );
+      const mainCategoryKey = mainCategory ? mainCategory.key : undefined;
+
+      const subCategory = productType.find(
+        (item) => item.value === selectedProduct
+      );
+      const subCategoryKey = subCategory ? subCategory.key : undefined;
 
       const postData = {
-        // userId : userID 로그인 시 recoil state에서 가져오기
-        main_category: selectedCategory,
-        sub_category: selectedProduct,
+        userId: userInfo.userId,
+        mainCategory: mainCategoryKey,
+        subCategory: subCategoryKey,
         title: data.title,
         description: data.description,
         status: 'SHARING',
-        files: uploadedImages,
+        files: selectedFiles,
       };
 
       editPostMutation(postData);

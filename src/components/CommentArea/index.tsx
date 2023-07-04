@@ -15,13 +15,15 @@ import Chat from '../Chat/Chat';
 import { userState } from '../../states/userInfo';
 import { instance } from '../../apis/auth/api';
 
-interface TakerPageProps {
-  userId?: string;
-}
+// interface TakerPageProps {
+//   userId?: string;
+// }
+// { userId }: TakerPageProps
 
-function CommentArea({ userId }: TakerPageProps) {
+function CommentArea() {
   // const param = useParams();
   const param = '20';
+  const userId = localStorage.getItem('userId');
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
@@ -38,53 +40,62 @@ function CommentArea({ userId }: TakerPageProps) {
     watch, // 실시간 값 감시 가능
   } = useForm();
 
-  const SERVER_URL = 'http://13.209.220.63';
+  // 디버깅용 코드
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) =>
+  //     console.log(value, name, type)
+  //   );
+
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
+
   // const SERVER_URL = 'http://localhost:5000';
-  const fetchData = async ({ content, takerId }: any) => {
-    const result_comment = await instance.post(
-      `${SERVER_URL}/sharing/application`,
-      content
-    );
-    setPostComment(result_comment.data.content);
-    // chat/create로 takerId post하기
-    await instance.post(`${SERVER_URL}/chat/create`, takerId);
-  };
-  const deleteData = async (content: any) => {
-    const result_comment = await instance.delete(
-      `${SERVER_URL}/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
-    );
-    setPostComment(result_comment.data.content);
-  };
+  const postData = async (content: any) => {
+    // 서버에 content 데이터 post하기
+    try {
+      const data = {
+        userId: userId,
+        goodId: param,
+        content: content.postComment,
+      };
 
-  const postCommentInfo = () => {
-    // 0. '신청하기' || '신청취소' 버튼 변경 기능
-    const newButton = changeButton === false ? true : false;
-    setChangeButton(newButton);
+      await instance.post(`/sharing/application`, data);
 
-    const commentData = watch('postComment');
-    const data = { content: commentData };
-
-    if (newButton === true) {
-      // 1. textarea 데이터를 '신청하기'버튼 클릭 시 submit
-      fetchData(data);
-    } else {
-      // 2. 취소 버튼 클릭 시, Data delete
-      deleteData(data);
+      // chat/create로 takerId post하기
+      // await instance.post(`/chat/create`, takerId);
+    } catch (e) {
+      console.log(e);
     }
+
+    // Button 변경하기
+    setChangeButton(true);
+  };
+
+  const deleteData = async () => {
+    // 서버에 sharingApplication Delete하기
+    try {
+      await instance.delete(
+        `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
+      );
+    } catch (e) {
+      console.log(e);
+    }
+
+    // Button 변경하기
+    setChangeButton(false);
   };
 
   const [checkRoomId, setCheckRoomId] = useState([]);
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
   const [getUserData, setGetUserData] = useRecoilState<any>(userState);
-  const userData = instance.get(
-    `${SERVER_URL}/user/info?userId=${getUserData.userId}`
-  );
+  const userData = instance.get(`/user/info?userId=${userId}`);
+  console.log(`userId: `, userId);
   console.log(`getUserData1: `, getUserData);
 
   useEffect(() => {
     const checkChatStatus = async () => {
-      const { data } = await instance.get(`${SERVER_URL}/chat/enter`);
+      const { data } = await instance.get(`/chat/enter`);
       console.log(`chatData1: `, data);
       console.log(`getUserData2: `, getUserData);
       setCheckChatStatus(data.isOpened);
@@ -95,12 +106,11 @@ function CommentArea({ userId }: TakerPageProps) {
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
   }, []);
   console.log(`checkChatStatus: `, checkChatStatus);
-  console.log('postComment: ', watch('postComment'));
 
   return (
     <S.Container>
       {!changeButton && (
-        <S.Form onSubmit={handleSubmit(fetchData)}>
+        <S.Form onSubmit={handleSubmit(postData)}>
           <Textarea
             placeholder={'궁금한 사항을 적어주세요!'}
             errors={errors}
@@ -115,7 +125,7 @@ function CommentArea({ userId }: TakerPageProps) {
             width={'90px'}
             height={'90px'}
             borderRadius={'10px'}
-            onClickHandler={postCommentInfo}
+            // onClickHandler={postCommentInfo}
             style={{
               lineHeight: '90px',
             }}
@@ -129,7 +139,6 @@ function CommentArea({ userId }: TakerPageProps) {
           <Button
             height={'90px'}
             borderRadius={'10px'}
-            onClickHandler={postCommentInfo}
             style={{
               backgroundColor: 'white',
               borderColor: `${theme.color.red}`,

@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
-import axios from 'axios';
+
 import { instance } from '../auth/api';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { PostModel, postState, postStateLoading } from '../../states/goodState';
 import { useQuery } from 'react-query';
 import { useEffect } from 'react';
+import { ItemType } from '../../components/KakaoMapContainer/itemType';
 
 // 이미지 업로드
 export const uploadImage = async (selectedFiles: File[]) => {
@@ -116,8 +117,37 @@ export const addPost = async (data: any) => {
 
 // 글 수정
 export const editPost = async (data: any) => {
+  const formData = new FormData();
+
   try {
-    const response = await instance.put(`http://13.209.220.63/good/3`, data);
+    const requestObject = {
+      userId: data.userId,
+      mainCategory: data.mainCategory,
+      subCategory: data.subCategory,
+      title: data.title,
+      description: data.description,
+      status: data.status,
+    };
+
+    const requestBlob = new Blob([JSON.stringify(requestObject)], {
+      type: 'application/json',
+    });
+
+    formData.append('request', requestBlob);
+
+    data.files.forEach((file: any) => {
+      formData.append('files', file);
+    });
+
+    const response = await instance.put(
+      'http://13.209.220.63/good/offer/info',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
 
     return response;
   } catch (error: any) {
@@ -125,12 +155,27 @@ export const editPost = async (data: any) => {
   }
 };
 
+interface GetPostModel {
+  responseList: ItemType[];
+  totalPage: number;
+}
+
 export const getPosts = async (requestURL: string) => {
   try {
     const response = await instance.get(`http://13.209.220.63${requestURL}`);
     if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
+    const data: GetPostModel = response.data;
+    return data.responseList;
+  } catch (error) {
+    console.log('getPosts error : ', error);
+  }
+};
+
+export const checkPostOwner = async (goodId: number, userId: number) => {
+  try {
+    const response = await instance.get(`http://13.209.220.63/good/match?userId=${userId}&goodId=${goodId}`);
     return response.data;
   } catch (error) {
-    console.log('error : ', error);
+    console.log('checkPostOwner error : ', error);
   }
 };
