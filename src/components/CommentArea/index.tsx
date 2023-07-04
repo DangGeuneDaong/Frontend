@@ -40,17 +40,33 @@ function CommentArea() {
     watch, // 실시간 값 감시 가능
   } = useForm();
 
+  // 디버깅용 코드
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) =>
+  //     console.log(value, name, type)
+  //   );
+
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
+
   // const SERVER_URL = 'http://localhost:5000';
-  async function postData({ content, takerId }: any) {
-    console.log('content1: ', content);
-    const result_comment = await instance.post(`/sharing/application`, {
-      description: content,
-    });
-    setPostComment(result_comment.data.content);
-    console.log('content2: ', content);
-    // chat/create로 takerId post하기
-    await instance.post(`/chat/create`, takerId);
-  }
+  const postData = async (content: any) => {
+    try {
+      const data = {
+        userId: userId,
+        goodId: param,
+        content: content.postComment,
+      };
+
+      await instance.post(`/sharing/application`, data);
+
+      // chat/create로 takerId post하기
+      // await instance.post(`/chat/create`, takerId);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const deleteData = async () => {
     const result_comment = await instance.delete(
       `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
@@ -112,7 +128,7 @@ function CommentArea() {
             width={'90px'}
             height={'90px'}
             borderRadius={'10px'}
-            onClickHandler={postCommentInfo}
+            // onClickHandler={postCommentInfo}
             style={{
               lineHeight: '90px',
             }}
