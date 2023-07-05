@@ -38,9 +38,6 @@ function MultiUploader({
 
     // MAX_RESISTER_IMAGE_COUNT 개수를 초과하면, 이미지 등록 불가
     if (files.length + imageList.length > MAX_REGISTER_IMAGE_COUNT) {
-      // TODO : 알럿 띄우고, 최대 처리 개수 안 넘는 애들만 등록하기
-      // TODO : alert()으로 처리하고 추후 모달로 대체
-      // alert('최대 이미지 등록 개수를 초과하였습니다.')
       onAlertMessage({
         title: '이미지 등록 개수 초과',
         message: '최대 이미지 등록 개수를 초과하였습니다.',
