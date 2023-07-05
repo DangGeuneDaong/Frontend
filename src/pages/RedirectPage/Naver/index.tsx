@@ -32,9 +32,7 @@ function RedirectNaverPage() {
         )
       )
       .then((res) => {
-        console.log(res);
         const accessToken = res.data;
-        //엑세스 토큰 G => addinfoPage
         if (!accessToken) {
           setAlertMessage('로그인에 실패하였습니다.');
         }
@@ -49,7 +47,6 @@ function RedirectNaverPage() {
           navigate('/');
         }
       })
-
       .catch((error) => {
         if (error) {
           setAlertMessage('로그인에 실패하였습니다.');

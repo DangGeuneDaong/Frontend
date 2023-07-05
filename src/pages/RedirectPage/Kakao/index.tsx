@@ -34,9 +34,7 @@ function RedirectKakaoPage() {
         )
       )
       .then((res) => {
-        console.log(res);
         const accessToken = res.data;
-
         if (!accessToken) {
           setAlertMessage('로그인에 실패하였습니다.');
         }
@@ -48,7 +46,6 @@ function RedirectKakaoPage() {
           navigate('/addInfo?loginType=kakao');
           //엑세스 토큰 U => mainPage
         } else if (accessToken && accessToken.startsWith('U')) {
-          //앞글자 제거 후 로컬에 저장
           localStorage.setItem('accessToken', accessToken.slice(1));
           navigate('/');
         }
