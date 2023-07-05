@@ -7,6 +7,9 @@ import dogMarkerImg from '../../../../assets/imgs/dog.png';
 import catMarkerImg from '../../../../assets/imgs/cat.png';
 
 import * as S from './styles';
+import { checkPostOwner } from '../../../../apis/good';
+import { useRecoilValue } from 'recoil';
+import { userInfoState } from '../../../../states/userInfo';
 
 interface PageMapMarkerProps {
   key: string;
@@ -16,6 +19,7 @@ interface PageMapMarkerProps {
 
 const PageMapMarker = ({ item, map }: PageMapMarkerProps) => {
   const navigate = useNavigate();
+  const userInfo = useRecoilValue(userInfoState);
   const $markerContainer = document.createElement('div');  
   $markerContainer.style.position = 'absolute';
   $markerContainer.style.zIndex = '1';
@@ -38,17 +42,15 @@ const PageMapMarker = ({ item, map }: PageMapMarkerProps) => {
   customOverlay.setMap(map);
 
 
-  const moveDetailPage = () => {
-    if (localStorage.getItem('access_token')){
-      // 유저 id 가져오는 로직 + 해당 유저가 작성한 글인지 확인하는 로직
-      // const { isMyPost } = await axios.get('http://localhost:8081/good/checkWriter');
+  const moveDetailPage = async () => {
+    if (userInfo) {
+      const isMyPost = await checkPostOwner(item.goodId, userInfo.userId);
 
-
-      // if (해당 유저가 작성한 글이라면= true) {
-        // navigate(`/good/offer/info?goodId=${itemInfo.id}`);
-      // }
+      if (isMyPost) {
+        return navigate(`/offer/${item.goodId}`);
+      }
     }
-    // navigate(`/good/taker/info?goodId=${item.id}`);
+    return navigate(`/taker/${item.goodId}`);
   };
 
   return (

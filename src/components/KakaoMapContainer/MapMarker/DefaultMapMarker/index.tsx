@@ -12,13 +12,13 @@ import { useRecoilValue } from 'recoil';
 import { userInfoState } from '../../../../states/userInfo';
 import { checkPostOwner } from '../../../../apis/good';
 
-interface ActiveMapMarkerProps {
+interface DefaultMapMarkerProps {
   key: string;
   item: ItemType;
   map: kakao.maps.Map;
 }
 
-const ActiveMapMarker = ({ item, map }: ActiveMapMarkerProps) => {
+const DefaultMapMarker = ({ item, map }: DefaultMapMarkerProps) => {
   const [isShow, setIsShow] = useState(false);
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userInfoState);
@@ -76,10 +76,10 @@ const ActiveMapMarker = ({ item, map }: ActiveMapMarkerProps) => {
       const isMyPost = await checkPostOwner(item.goodId, userInfo.userId);
 
       if (isMyPost) {
-        navigate(`/offer/${item.goodId}`);
+        return navigate(`/offer/${item.goodId}`);
       }
     }
-    navigate(`/taker/${item.goodId}`);
+    return navigate(`/taker/${item.goodId}`);
   };
 
   return (
@@ -98,4 +98,4 @@ const ActiveMapMarker = ({ item, map }: ActiveMapMarkerProps) => {
   );
 };
 
-export default ActiveMapMarker;
+export default DefaultMapMarker;

@@ -55,10 +55,6 @@ const KakaoMap = ({
   };
 
   useEffect(() => {
-    if (!isLoading && data) {
-      updateItems(data);
-    }
-
     const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
     const kakaoMap = new kakao.maps.Map($mapContainer!, {
       center: new kakao.maps.LatLng(userInfo.latitude, userInfo.longitude), // 지도의 중심좌표 (가입 시 유저정보 기준)
@@ -69,6 +65,12 @@ const KakaoMap = ({
     setMap(kakaoMap);
     searchItems(kakaoMap);
   }, []);
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      updateItems(data);
+    }
+  }, [data]);
 
   return (
     <>

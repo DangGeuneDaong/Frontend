@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ItemImageCarousel from "../ItemImageCarousel";
@@ -14,7 +13,6 @@ interface ItemProps {
 }
 
 const Item = ({itemInfo} : ItemProps) => {
-  const [location, setLocation] = useState<string>('');
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userInfoState);
   
@@ -23,22 +21,11 @@ const Item = ({itemInfo} : ItemProps) => {
       const isMyPost = await checkPostOwner(itemInfo.goodId, userInfo.userId);
 
       if (isMyPost) {
-        navigate(`/offer/${itemInfo.goodId}`);
+        return navigate(`/offer/${itemInfo.goodId}`);
       }
-    }
-    navigate(`/taker/${itemInfo.goodId}`);
+    } 
+    return navigate(`/taker/${itemInfo.goodId}`);
   };
-
-  // any -> any로 인해 발생할 수 있는 이상한 데이터는??
-  const coordToAddress = (result: any, status: any) => {
-    if (status === kakao.maps.services.Status.OK) {
-      setLocation(result[0].road_address.address_name);
-    }
-  };
-  
-  const geocoder = new kakao.maps.services.Geocoder();
-  const coord = new kakao.maps.LatLng(itemInfo.latitude, itemInfo.longitude);
-  geocoder.coord2Address(coord.getLng(), coord.getLat(), coordToAddress);
 
   return (
     <S.Container>
@@ -46,7 +33,7 @@ const Item = ({itemInfo} : ItemProps) => {
         <S.ItemStatus status={itemInfo.status}>{StatusType[itemInfo.status]}</S.ItemStatus>
         <S.ItemBasicInfo>
           <S.ItemTitle>{itemInfo.title}</S.ItemTitle>
-          <S.ItemLocation>{location}</S.ItemLocation>
+          <S.ItemLocation>{itemInfo.location}</S.ItemLocation>
         </S.ItemBasicInfo>
       </S.ItemSection>
       <ItemImageCarousel size={itemInfo.goodImages.length} images={itemInfo.goodImages} />

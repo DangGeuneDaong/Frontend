@@ -24,22 +24,21 @@ export const ChatHeaderContainer = styled.div`
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom: 3px solid ${(props) => props.theme.color.primary};
+`;
+export const Button = styled.button`
+  width: 30px;
+  height: 30px;
 
-  > button {
-    width: 30px;
-    height: 30px;
+  margin: 0 5px 0;
 
-    margin: 0 5px 0;
-
-    background-color: ${(props) => props.theme.color.gray};
-    border-radius: 50%;
-  }
-`
+  background-color: ${(props) => props.theme.color.gray};
+  border-radius: 50%;
+`;
 
 export const ProfileContainer = styled.div`
   display: flex;
   justify-content: center;
-`
+`;
 
 export const PictureContainer = styled.div`
   width: 75px;
@@ -48,7 +47,7 @@ export const PictureContainer = styled.div`
 
   background-color: ${(props) => props.theme.color.red};
   border-radius: 50%;
-`
+`;
 
 export const NameDistanceContainer = styled.div`
   display: flex;
@@ -61,7 +60,7 @@ export const NameDistanceContainer = styled.div`
   > span:last-child {
     ${(props) => props.theme.font.contents}
   }
-`
+`;
 
 export const ChatBodyContainer = styled.div`
   height: calc(100% - 100px - 50px);
@@ -71,14 +70,14 @@ export const ChatBodyContainer = styled.div`
 
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-`
+`;
 
 export const TakerContainer = styled.div`
   display: flex;
   align-items: center;
 
   margin-top: 5px;
-`
+`;
 
 export const TakerProfile = styled.div`
   width: 50px;
@@ -88,7 +87,7 @@ export const TakerProfile = styled.div`
 
   background-color: ${(props) => props.theme.color.red};
   border-radius: 50%;
-`
+`;
 
 export const ChatContent = styled.div`
   width: 250px;
@@ -99,7 +98,7 @@ export const ChatContent = styled.div`
   border: 1px solid ${(props) => props.theme.color.gray};
   border-radius: 10px;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
-`
+`;
 
 export const OfferContainer = styled.div`
   display: flex;
@@ -114,7 +113,7 @@ export const OfferContainer = styled.div`
   > div:last-child {
     margin-right: 5px;
   }
-`
+`;
 
 export const ChatFooterContainer = styled.div`
   height: 50px;
@@ -133,7 +132,7 @@ export const ChatFooterContainer = styled.div`
 
     font-size: 12px;
   }
-`
+`;
 
 export const ChatInputContainer = styled.div`
   > input {
@@ -142,4 +141,4 @@ export const ChatInputContainer = styled.div`
     border: 1px solid ${(props) => props.theme.color.gray};
     border-radius: 10px;
   }
-`
+`;

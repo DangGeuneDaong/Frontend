@@ -1,18 +1,11 @@
-import { instance } from '../../apis/auth/api';
+import S3 from 'aws-sdk/clients/s3';
+
 import { useEffect, useState } from 'react';
-import { userState } from '../../states/userInfo';
-import { useRecoilState } from 'recoil';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { set, useForm } from 'react-hook-form';
 
-import {
-  addPost,
-  editPost,
-  fetchPost,
-  uploadImage,
-  useFetchPost,
-} from '../../apis/good';
+import { addPost, editPost, fetchPost, useFetchPost } from '../../apis/good';
 
 import MainTemplate from '../../components/template/MainTemplate';
 
@@ -24,7 +17,12 @@ import Dropdown from '../../components/Dropdown';
 import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
-import axiosInstance from '../../apis';
+
+const s3 = new S3({
+  accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
+  secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_ACCESS_KEY}`,
+  region: `${process.env.REACT_APP_AWS_REGION}`,
+});
 
 const categoryType = [
   { key: 'DOG', value: '강아지' },
@@ -53,11 +51,9 @@ function EditPage() {
   //   const param = useParams();
 
   // TODO : API 연동 시점에 param 값으로 post 데이터 가져오기
-  const param = '20';
+  const param = '31';
   const { post } = useFetchPost(param);
   console.log('불러온 데이터', post);
-
-  const [userInfo, setUserInfo] = useRecoilState<any>(userState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -102,21 +98,45 @@ function EditPage() {
     if (post) {
       console.log('post', post);
 
+      const getImageFromS3 = async (url: string) => {
+        const bucket = `${process.env.REACT_APP_AWS_BUCKET}/good`;
+        const key = url.substring(url.lastIndexOf('/') + 1);
+
+        try {
+          const response = await s3
+            .getObject({ Bucket: bucket, Key: key })
+            .promise();
+
+          if (response.Body === undefined) {
+            throw new Error('이미지 데이터가 없습니다.');
+          }
+
+          const blob = new Blob([response.Body as BlobPart], {
+            type: response.ContentType,
+          });
+
+          return blob;
+        } catch (error) {
+          console.error('S3에서 데이터를 불러오는 데 실패했습니다.', error);
+          throw error;
+        }
+      };
+
       const createFileObjects = async (imageUrls: string[]) => {
         try {
           const imageFilesPromises = imageUrls.map(async (url: string) => {
-            const response = await instance.get(url, { responseType: 'blob' });
-            const data = response.data;
+            const response = await getImageFromS3(url);
             const filename = url.split('/').pop();
-            const metadata = { type: data.type };
+            const metadata = { type: response.type };
 
-            return new File([data], filename!, metadata);
+            console.log('response', response);
+            return new File([response], filename!, metadata);
           });
 
           const imageFiles = await Promise.all(imageFilesPromises);
           setSelectedFiles(imageFiles);
         } catch (error) {
-          console.error('Failed to create file objects:', error);
+          console.error('파일 객체 생성에 실패했습니다:', error);
         }
       };
 
@@ -196,7 +216,7 @@ function EditPage() {
       const subCategoryKey = subCategory ? subCategory.key : undefined;
 
       const postData = {
-        userId: userInfo.userId,
+        goodId: param,
         mainCategory: mainCategoryKey,
         subCategory: subCategoryKey,
         title: data.title,
@@ -310,7 +330,7 @@ function EditPage() {
           title={alertMessage.title}
           message={alertMessage.message}
           alignType="top"
-          onConfirm={() => setShowAlert(false)}
+          onConfirm={() => navigate('/')}
         />
       )}
 
