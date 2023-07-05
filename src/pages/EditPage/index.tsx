@@ -1,17 +1,11 @@
-import AWS from 'aws-sdk';
+import S3 from 'aws-sdk/clients/s3';
 
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { set, useForm } from 'react-hook-form';
 
-import {
-  addPost,
-  editPost,
-  fetchPost,
-  uploadImage,
-  useFetchPost,
-} from '../../apis/good';
+import { addPost, editPost, fetchPost, useFetchPost } from '../../apis/good';
 
 import MainTemplate from '../../components/template/MainTemplate';
 
@@ -24,7 +18,7 @@ import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
 
-const s3 = new AWS.S3({
+const s3 = new S3({
   accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
   secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_ACCESS_KEY}`,
   region: `${process.env.REACT_APP_AWS_REGION}`,
