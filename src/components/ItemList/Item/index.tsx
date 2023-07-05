@@ -21,10 +21,10 @@ const Item = ({itemInfo} : ItemProps) => {
       const isMyPost = await checkPostOwner(itemInfo.goodId, userInfo.userId);
 
       if (isMyPost) {
-        navigate(`/offer/${itemInfo.goodId}`);
+        return navigate(`/offer/${itemInfo.goodId}`);
       }
-    }
-    navigate(`/taker/${itemInfo.goodId}`);
+    } 
+    return navigate(`/taker/${itemInfo.goodId}`);
   };
 
   return (

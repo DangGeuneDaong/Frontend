@@ -76,10 +76,10 @@ const DefaultMapMarker = ({ item, map }: DefaultMapMarkerProps) => {
       const isMyPost = await checkPostOwner(item.goodId, userInfo.userId);
 
       if (isMyPost) {
-        navigate(`/offer/${item.goodId}`);
+        return navigate(`/offer/${item.goodId}`);
       }
     }
-    navigate(`/taker/${item.goodId}`);
+    return navigate(`/taker/${item.goodId}`);
   };
 
   return (
