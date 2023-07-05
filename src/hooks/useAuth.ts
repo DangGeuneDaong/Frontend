@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { userInfoState } from '../states/userInfo';
+import { userState } from '../states/userInfo';
 import { LoginPageProps } from '../pages/LoginPage';
 import { JoinPageProps } from '../pages/JoinPage';
 import {
@@ -25,7 +25,7 @@ export function useAuth<T extends { [key: string]: any }>() {
     undefined
   );
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [user, setUser] = useRecoilState(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userState);
 
   //회원가입 함수
   const handleRegister = async (data: JoinPageProps) => {
@@ -71,7 +71,6 @@ export function useAuth<T extends { [key: string]: any }>() {
     setError(null);
     try {
       const response = await loginRequest(data);
-      console.log(`응답 : `, response);
       if (response.data) {
         localStorage.setItem('accessToken', response.data.substr(1));
         console.log(`accessToken : `, response.data.accessToken);
@@ -79,7 +78,7 @@ export function useAuth<T extends { [key: string]: any }>() {
         console.log(`userId : `, data.userId);
         //유저 정보 가져와 상태로 관리
         const userInfo = await getUserProfile(data.userId);
-        setUser(userInfo);
+        setUserInfo(userInfo);
         navigate('/');
       }
     } catch (error: any) {
@@ -128,63 +127,27 @@ export function useAuth<T extends { [key: string]: any }>() {
       localStorage.removeItem('userId');
 
       //상태 삭제
-      setUser(null);
+      setUserInfo(null);
     } catch (error: any) {
       console.error(error);
     }
   };
 
   //추가 정보 제출
-  const handleInfoSubmit = async (data: AddInfoProps, profileUrl: string) => {
+  const handleInfoSubmit = async (
+    data: AddInfoProps,
+    profileFile: File | null
+  ): Promise<string | void> => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await addInfoRequest(data, profileUrl);
+      const response = await addInfoRequest(data, profileFile);
       if (response.status === 200) {
         const accessToken = localStorage.getItem('accessToken');
         if (accessToken) {
           const userProfileResponse = await getSocialUserProfile(accessToken);
           if (userProfileResponse.status === 200) {
-            setUser(userProfileResponse.data);
-          }
-        }
-      }
-    } catch (error: any) {
-      if (error.response && error.response.data.message) {
-        switch (error.response.data.message) {
-          case 'Duplicate nickname':
-            setError({
-              field: 'nickname',
-              message: '닉네임이 중복되었습니다.',
-            });
-            break;
-          default:
-            setAlertMessage(
-              '정보입력 중 오류가 발생하였습니다. 다시 시도해주세요.'
-            );
-            setShowModal(true);
-        }
-      } else {
-        setAlertMessage('서버에 연결할 수 없습니다. 다시 시도해주세요.');
-        setShowModal(true);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  //프로필 수정 함수
-  const handleEditProfile = async (data: AddInfoProps, profileUrl: string) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await addInfoRequest(data, profileUrl);
-      if (response.status === 200) {
-        const accessToken = localStorage.getItem('accessToken');
-        if (accessToken) {
-          const userProfileResponse = await getSocialUserProfile(accessToken);
-          if (userProfileResponse.status === 200) {
-            setUser(userProfileResponse.data);
+            setUserInfo(userProfileResponse.data);
           }
         }
       }
@@ -217,7 +180,6 @@ export function useAuth<T extends { [key: string]: any }>() {
     handleRegister,
     handleLogout,
     handleInfoSubmit,
-    handleEditProfile,
     getUserProfile,
     getSocialUserProfile,
     isLoading,
