@@ -105,7 +105,6 @@ function EditPage() {
       console.log('post', post);
 
       const getImageFromS3 = async (url: string) => {
-        // const bucket = 'dgd-image-storage/good';
         const bucket = `${process.env.REACT_APP_AWS_BUCKET}/good`;
         const key = url.substring(url.lastIndexOf('/') + 1);
 
