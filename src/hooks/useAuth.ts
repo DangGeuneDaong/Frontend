@@ -173,11 +173,51 @@ export function useAuth<T extends { [key: string]: any }>() {
     }
   };
 
+  //프로필 수정 함수
+  const handleEditProfile = async (data: AddInfoProps, profileUrl: string) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await addInfoRequest(data, profileUrl);
+      if (response.status === 200) {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+          const userProfileResponse = await getSocialUserProfile(accessToken);
+          if (userProfileResponse.status === 200) {
+            setUser(userProfileResponse.data);
+          }
+        }
+      }
+    } catch (error: any) {
+      if (error.response && error.response.data.message) {
+        switch (error.response.data.message) {
+          case 'Duplicate nickname':
+            setError({
+              field: 'nickname',
+              message: '닉네임이 중복되었습니다.',
+            });
+            break;
+          default:
+            setAlertMessage(
+              '정보입력 중 오류가 발생하였습니다. 다시 시도해주세요.'
+            );
+            setShowModal(true);
+        }
+      } else {
+        setAlertMessage('서버에 연결할 수 없습니다. 다시 시도해주세요.');
+        setShowModal(true);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     handleLogin,
     handleRegister,
     handleLogout,
     handleInfoSubmit,
+    handleEditProfile,
     getUserProfile,
     getSocialUserProfile,
     isLoading,

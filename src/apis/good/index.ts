@@ -156,7 +156,7 @@ export const editPost = async (data: any) => {
 };
 
 interface GetPostModel {
-  responseList: ItemType[];
+  responseLists: ItemType[];
   totalPage: number;
 }
 
@@ -164,8 +164,8 @@ export const getPosts = async (requestURL: string) => {
   try {
     const response = await instance.get(`http://13.209.220.63${requestURL}`);
     if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
-    const data: GetPostModel = response.data;
-    return data.responseList;
+    const responseData: GetPostModel = response.data;
+    return responseData.responseLists;
   } catch (error) {
     console.log('getPosts error : ', error);
   }
@@ -173,7 +173,7 @@ export const getPosts = async (requestURL: string) => {
 
 export const checkPostOwner = async (goodId: number, userId: number) => {
   try {
-    const response = await instance.get(`http://13.209.220.63/good/match?userId=${userId}&goodId=${goodId}`);
+    const response = await instance.get(`http://13.209.220.63/good/offer/match?userId=${userId}&goodId=${goodId}`);
     return response.data;
   } catch (error) {
     console.log('checkPostOwner error : ', error);
