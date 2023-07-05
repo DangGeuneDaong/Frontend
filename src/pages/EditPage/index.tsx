@@ -17,6 +17,7 @@ import Dropdown from '../../components/Dropdown';
 import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
+import Loader from '../../components/Loader';
 
 const s3 = new S3({
   accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
@@ -48,12 +49,12 @@ const getProductValueByKey = (key: string) => {
 
 function EditPage() {
   const navigate = useNavigate();
-  //   const param = useParams();
+  const param = useParams();
 
-  // TODO : API 연동 시점에 param 값으로 post 데이터 가져오기
-  const param = '31';
-  const { post } = useFetchPost(param);
-  console.log('불러온 데이터', post);
+  const postID = param.id as string;
+  const { post } = useFetchPost(postID);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -81,17 +82,17 @@ function EditPage() {
   } = useForm({ mode: 'onBlur' });
 
   // 디버깅용 코드
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) =>
+  //     console.log(value, name, type)
+  //   );
 
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
 
-  useEffect(() => {
-    console.log('선택된 파일', selectedFiles);
-  }, [selectedFiles]);
+  // useEffect(() => {
+  //   console.log('선택된 파일', selectedFiles);
+  // }, [selectedFiles]);
 
   // 수정 페이지 진입 시점에서, post 데이터가 존재하면 폼에 데이터 정보 삽입
   useEffect(() => {
@@ -155,18 +156,6 @@ function EditPage() {
     }
   }, [post, setValue]);
 
-  // 하위 컴포넌트 MultiUploader에서 파일 길이 체크해서 alert 띄우기
-  const handleFileLengthCheck = (files: File[]) => {
-    if (files.length > 5) {
-      setError('files', {
-        type: 'validate',
-        message: '파일은 최대 5개까지 업로드 가능합니다.',
-      });
-    } else {
-      setSelectedFiles(files);
-    }
-  };
-
   // 엔터 입력 시 포커스가 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
@@ -185,6 +174,9 @@ function EditPage() {
 
   // 폼 전송
   const { mutate: editPostMutation } = useMutation(editPost, {
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onSuccess: () => {
       setAlertMessage({
         title: '나눔글 수정',
@@ -200,11 +192,16 @@ function EditPage() {
       setShowAlert(true);
       console.log(error);
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   const onSubmit = async (data: any) => {
     try {
       // TODO : REFACOTRING
+      setIsLoading(true);
+
       const mainCategory = categoryType.find(
         (item) => item.value === selectedCategory
       );
@@ -228,6 +225,7 @@ function EditPage() {
       editPostMutation(postData);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -298,7 +296,7 @@ function EditPage() {
                   required: '내용을 입력해주세요',
                 })}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.keyCode === 13 && e.nativeEvent.keyCode !== 229) {
                     e.preventDefault();
                     setValue('description', `${watch('description')}\n`);
                   }
@@ -317,8 +315,13 @@ function EditPage() {
                 취소
               </Button>
 
-              <Button width="128px" borderRadius="20px">
-                완료
+              <Button
+                width="128px"
+                borderRadius="20px"
+                styleType={isLoading ? 'disabled' : 'primary'}
+                style={{ position: 'relative' }}
+              >
+                {isLoading ? <Loader width={30} height={30} /> : '완료'}
               </Button>
             </S.ButtonContainer>
           </S.Inner>
