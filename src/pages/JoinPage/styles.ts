@@ -28,6 +28,13 @@ export const SubContainer = styled.div`
   }
 `;
 
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const H1 = styled.h1`
   display: flex;
   align-items: center;
