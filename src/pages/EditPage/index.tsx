@@ -18,6 +18,8 @@ import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
 import Loader from '../../components/Loader';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../states/userInfo';
 
 const s3 = new S3({
   accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
@@ -54,7 +56,12 @@ function EditPage() {
   const postID = param.id as string;
   const { post } = useFetchPost(postID);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPostLoading, setIsPostLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [userInfo, _setUserInfo] = useRecoilState<any>(userState);
+
+  console.log(post);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -95,6 +102,7 @@ function EditPage() {
   // }, [selectedFiles]);
 
   // 수정 페이지 진입 시점에서, post 데이터가 존재하면 폼에 데이터 정보 삽입
+
   useEffect(() => {
     if (post) {
       console.log('post', post);
@@ -154,7 +162,14 @@ function EditPage() {
         createFileObjects(post.goodImageList);
       }
     }
+    setIsLoading(false);
   }, [post, setValue]);
+
+  if (!isLoading && post && userInfo) {
+    if (post.offerNickName !== userInfo.nickName) {
+      navigate('/');
+    }
+  }
 
   // 엔터 입력 시 포커스가 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -175,7 +190,7 @@ function EditPage() {
   // 폼 전송
   const { mutate: editPostMutation } = useMutation(editPost, {
     onMutate: () => {
-      setIsLoading(true);
+      setIsPostLoading(true);
     },
     onSuccess: () => {
       setAlertMessage({
@@ -193,14 +208,14 @@ function EditPage() {
       console.log(error);
     },
     onSettled: () => {
-      setIsLoading(false);
+      setIsPostLoading(false);
     },
   });
 
   const onSubmit = async (data: any) => {
     try {
       // TODO : REFACOTRING
-      setIsLoading(true);
+      setIsPostLoading(true);
 
       const mainCategory = categoryType.find(
         (item) => item.value === selectedCategory
@@ -225,7 +240,7 @@ function EditPage() {
       editPostMutation(postData);
     } catch (error) {
       console.log(error);
-      setIsLoading(false);
+      setIsPostLoading(false);
     }
   };
 
@@ -318,10 +333,10 @@ function EditPage() {
               <Button
                 width="128px"
                 borderRadius="20px"
-                styleType={isLoading ? 'disabled' : 'primary'}
+                styleType={isPostLoading ? 'disabled' : 'primary'}
                 style={{ position: 'relative' }}
               >
-                {isLoading ? <Loader width={30} height={30} /> : '완료'}
+                {isPostLoading ? <Loader width={30} height={30} /> : '완료'}
               </Button>
             </S.ButtonContainer>
           </S.Inner>

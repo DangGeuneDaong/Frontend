@@ -144,7 +144,7 @@ function UploadPage() {
 
       const id = localStorage.getItem('userId');
       const postData = {
-        userId: 'test',
+        userId: userInfo.userId,
         mainCategory: mainCategoryKey,
         subCategory: subCategoryKey,
         title: data.title,
