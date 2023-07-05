@@ -1,66 +1,232 @@
 // 230702 (4)
-import React from 'react';
+import * as S from './styles';
+
+import { useState, useEffect, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import webstomp from 'webstomp-client';
-
 import { AxiosInstance } from 'axios';
+
 import axiosInstance from '../../apis';
+import Message from './Message/Message';
+import Input from '../Form/Input';
+import Button from '../Button';
 
 interface OfferPageProps {
-  roomId?: any;
+  roomId: number;
+  userId: string;
 }
 
-function Chat({ roomId }: OfferPageProps) {
+function Chat({ roomId, userId }: OfferPageProps) {
   let stomp: any;
 
+  const [messages, setMessages] = useState(
+    [] as {
+      message: string;
+      userId: string;
+      // sendAt: string;
+      // messageType: string;
+    }[]
+  );
+  const [message, setMessage] = useState('');
+  // const [userId, setUserId] = useState('');
+  const [sendAt, setSendAt] = useState('');
+  const [messageType, setMessageType] = useState('');
+
+  let sockjsClient = useRef();
   const SERVER_URL = 'http://13.209.220.63';
   // const SERVER_URL = 'http://localhost:5000';
 
-  document.addEventListener('DOMContentLoaded', function () {
+  useEffect(() => {
     // ["websocket", "xhr-streaming", "xhr-polling"]
     const sock = new SockJS(`${SERVER_URL}`, null, {
       transports: ['websocket'],
     });
     stomp = webstomp.over(sock);
     // Chat 서버 연결
-    stomp.connect('/websocket', function (frame: any) {
-      console.log('Connected!!');
+    // stomp.connect('/websocket', function (frame: any) {
+    //   console.log('Connected!!');
+    // });
+    sockjsClient = stomp.connect('/websocket');
 
-      // subscribe로 메시지 받기
-      stomp.subscribe(`/websocket/sub/${roomId}`, function (frame: any) {
-        // `/websocket/sub/${roomId}` 차후 변경
-        const messages = document.querySelector('#messages') as HTMLDivElement;
-        const message = document.createElement('li');
-        message.innerText = frame.body;
-        messages.appendChild(message);
+    // subscribe로 메시지 받기
+    stomp.subscribe(
+      `/websocket/sub/${roomId}`,
+      (messages: {
+        message: string;
+        userId: string;
+        // sendAt: string;
+        // messageType: string;
+      }) => {
+        // const messages = document.querySelector('#messages') as HTMLDivElement;
+        // const message = document.createElement('li');
+        // message.innerText = frame.body;
+        // messages.appendChild(message);
+        setMessages((prev) => [...prev, messages]);
+      }
+    );
+  }, []);
+  // document.addEventListener('DOMContentLoaded', function () {
+  //   // ["websocket", "xhr-streaming", "xhr-polling"]
+  //   const sock = new SockJS(`${SERVER_URL}`, null, {
+  //     transports: ['websocket'],
+  //   });
+  //   stomp = webstomp.over(sock);
+  //   // Chat 서버 연결
+  //   // stomp.connect('/websocket', function (frame: any) {
+  //   //   console.log('Connected!!');
+  //   // });
+  //   sockjsClient = stomp.connect('/websocket');
+
+  //   // subscribe로 메시지 받기
+  //   stomp.subscribe(
+  //     `/websocket/sub/${roomId}`,
+  //     (messages: {
+  //       message: string;
+  //       userId: string;
+  //       // sendAt: string;
+  //       // messageType: string;
+  //     }) => {
+  //       // const messages = document.querySelector('#messages') as HTMLDivElement;
+  //       // const message = document.createElement('li');
+  //       // message.innerText = frame.body;
+  //       // messages.appendChild(message);
+  //       setMessages((prev) => [...prev, messages]);
+  //     }
+  //   );
+  // });
+
+  // const sendHandler = () => {
+  //   const message = document.querySelector('.message') as HTMLInputElement;
+  //   // send로 메시지 보내기
+  //   stomp.send(`/websocket/pub/message/${roomId}`, message.value);
+  //   message.value = '';
+  // };
+
+  // setUserId로 UserId값 가져오기
+
+  // 메시지 발송 handler
+  const handleSendMessage = () => {
+    // 1. 새로고침 없애기(error 발생으로 생략)
+    // e.preventDefault();
+    // 2. 메시지 발송하기
+    if (sockjsClient.current) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          message,
+          userId,
+          // sendAt,
+          // messageType
+        },
+      ]);
+      // sockjsClient.current.emit('message', {
+      //   message,
+      //   userId,
+      //   // sendAt,
+      //   // messageType,
+      // });
+      stomp.send(`/websocket/pub/message/${roomId}`, {
+        message,
+        userId,
+        // sendAt,
+        // messageType,
       });
-    });
-  });
-
-  const sendHandler = () => {
-    const message = document.querySelector('.message') as HTMLInputElement;
-    // send로 메시지 보내기
-    stomp.send(`/websocket/pub/message/${roomId}`, message.value); // `/websocket/pub/message/${roomId}`
-    message.value = '';
+      setMessage('');
+    }
+    // const message = document.querySelector('.message') as HTMLInputElement;
+    // stomp.send(`/websocket/pub/message/${roomId}`, message.value);
+    // message.value = '';
   };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm();
+  setValue('message', message);
 
   return (
     <>
       <div className="messages">
+        <ul id="messages">
+          {messages.map((message, i) => (
+            <Message
+              key={i + message.userId}
+              message={message}
+              messageReceived={
+                message.userId !== userId
+                  ? 'message received'
+                  : 'message sended'
+              }
+            />
+          ))}
+        </ul>
+
+        {/* <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSendMessage();
+        }}
+      >
+        <input
+          type="type"
+          placeholder="메시지를 입력해주세요!"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required={true}
+        />
+        <button type="submit">보내기</button>
+      </form> */}
+        <div>
+          <S.Form onSubmit={handleSubmit(handleSendMessage)}>
+            <Input
+              // className="message"
+              placeholder={'메시지를 입력해주세요!'}
+              errors={errors}
+              containerType="content"
+              {...register('message', { required: '메시지가 없습니다!' })}
+              // required={true}
+            />
+            <Button
+            // onClick={sendHandler}
+            // className="send-btn"
+            >
+              보내기
+            </Button>
+          </S.Form>
+        </div>
+        {/* <div className="messages">
         <ul id="messages"></ul>
       </div>
       <div>
-        <input type="text" className="message" />
-        <button onClick={sendHandler} className="send-btn">
-          보내기
-        </button>
+        <input type='text' className='message' />
+        <button onClick='send()' className='send-btn'>보내기</button>
+      </div> */}
       </div>
+      {/* <Messages
+        handleSendMessage={() => handleSendMessage()}
+        setMessage={setMessage}
+        messages={messages}
+        message={message}
+        userId={userId}
+      /> */}
     </>
   );
 }
 
 export default Chat;
 
+function useForm(): {
+  register: any;
+  handleSubmit: any;
+  formState: { errors: any };
+  watch: any;
+  setValue: any;
+} {
+  throw new Error('Function not implemented.');
+}
 // 230701 (3)
 // import { useEffect, useState } from 'react';
 // import SockJS from 'sockjs-client';
@@ -246,14 +412,17 @@ export default Chat;
 
 // export default Chat;
 
-// 230630
-// import { useState, useEffect, useRef } from 'react';
+// 230630;
+// // import { useState, useEffect, useRef } from 'react';
 
-// import { AxiosInstance } from 'axios';
-// import axiosInstance from '../../apis';
+// // import { AxiosInstance } from 'axios';
+// // import axiosInstance from '../../apis';
 // import io from 'socket.io-client';
 
-// import Messages from './Messages/Messages';
+// // import Messages from './Messages/Messages';
+// import Input from '../Form/Input';
+// import { useForm } from 'react-hook-form';
+// import Button from '../Button';
 
 // function Chat() {
 //   const [username, setUsername] = useState('');
@@ -285,14 +454,13 @@ export default Chat;
 
 //   const SERVER_URL = 'http://localhost:6000';
 //   // Username 받아오기(setUsername)
-//   // const getUsername = async () => {
-//   //   const sendMessage = await instance.get(
-//   //     `${SERVER_URL}/websocket/pub/message/${roomId}`
-//   //   );
-//   //   setUsername(sendMessage.userId);
-//   // };
-//   const userId = '임경락';
-//   setUsername(userId);
+//   const getUsername = async () => {
+//     const sendMessage = await instance.get(
+//       `${SERVER_URL}/websocket/pub/message/${roomId}`
+//     );
+//     setUsername(sendMessage.userId);
+//   };
+
 //   // 메시지 발송 handler
 //   const handleSendMessage = () => {
 //     if (socketClient.current) {

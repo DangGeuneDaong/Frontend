@@ -85,7 +85,7 @@ function CommentArea() {
     setChangeButton(false);
   };
 
-  const [checkRoomId, setCheckRoomId] = useState([]);
+  const [checkRoomId, setCheckRoomId] = useState<number>(-1);
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
   // const [getUserData, setGetUserData] = useRecoilState<any>(userState);
@@ -98,6 +98,7 @@ function CommentArea() {
       const { data } = await instance.get(`/chat/enter`);
       console.log(`chatData1: `, data);
       setCheckChatStatus(data.isOpened);
+      setCheckRoomId(data.roomId);
     };
     checkChatStatus();
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
@@ -151,7 +152,7 @@ function CommentArea() {
         // checkChatStatus?.isOpened && (
         // roomId={checkChatStatus?.roomId}
         <ChatRoomArea>
-          <Chat />
+          <Chat roomId={checkRoomId.roomId} userId={String(userId)} />
         </ChatRoomArea>
       )}
     </S.Container>

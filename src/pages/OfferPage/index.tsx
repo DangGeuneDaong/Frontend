@@ -15,10 +15,10 @@ import Chat from '../../components/Chat/Chat';
 import { instance } from '../../apis/auth/api';
 
 interface DataProps {
-  sharingId?: number;
-  takerId?: string;
-  distance?: string;
-  roomId?: number;
+  sharingId: number;
+  takerId: string;
+  distance: string;
+  roomId: number;
 }
 
 interface PostsProps {
@@ -93,6 +93,7 @@ function OfferPage() {
       const enterChatData = await instance.get(`/chat/enter`, getData);
       console.log('enterChatData: ', enterChatData);
       // setShowRoomlists(result_roomlists.data);
+
       return enterChatData.roomId;
     } catch (e) {
       console.log(e);
@@ -104,16 +105,16 @@ function OfferPage() {
   }, []);
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
-    sharingId: undefined,
+    sharingId: -1,
     takerId: '',
     distance: '',
-    roomId: undefined,
+    roomId: -1,
   });
 
   const showChange = (
     sharingId: number,
-    userId?: string,
-    distance?: string,
+    userId: string,
+    distance: string,
     content?: string
   ) => {
     const offerId = localStorage.getItem('userId');
@@ -133,7 +134,7 @@ function OfferPage() {
     // map으로 보낸 데이터 저장
     const data = {
       sharingId: sharingId,
-      userId: userId,
+      takerId: userId,
       distance: distance,
       roomId: roomId,
     };
@@ -229,12 +230,13 @@ function OfferPage() {
                   distance={distance}
                   content={content}
                   setProps={() => {
-                    showChange(sharingId, userId, distance);
+                    showChange(sharingId, userId, distance, content);
                     console.log(
                       'sharingApplication: ',
                       sharingId,
                       userId,
-                      distance
+                      distance,
+                      content
                     );
                   }}
                 >
@@ -262,7 +264,10 @@ function OfferPage() {
             roomId={selectedUserData?.roomId}
             sharingId={selectedUserData?.sharingId}
           >
-            <Chat roomId={selectedUserData?.roomId} />
+            <Chat
+              roomId={selectedUserData.roomId}
+              userId={selectedUserData.userId}
+            />
           </ChatRoomArea>
         )}
       </S.Container>
