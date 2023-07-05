@@ -51,13 +51,14 @@
 |          | React Query       | 3.39.3  |                              |
 |          | Styled Components | 5.3.10  |                              |
 |          | Socket.io         | 4.7.0   |                              |
-| Backend  | Spring Framework  |         | Spring Boot, Spring Security |
+| Backend  | Spring Framework  | 2.7.12  | Spring Boot, Spring Security |
 |          | JPA               |         |                              |
-|          | JWT               |         |                              |
+|          | JWT               |jjwt0.9.1|                              |
 |          | OAuth 2.0         |         |                              |
-|          | Redis             |         |                              |
-|          | MySQL             |         | Database                     |
+|          | Redis             | 7.0.11  |                              |
+|          | MySQL             | 8.0.33  | Database                     |
 |          | AWS EC2 , AWS S3  |         | Storage                      |
+|          | WebSocket         | 2.7.12  |                              |
 
 ❗️상세 스택은 package.json을 참고해 주세요
 
@@ -111,6 +112,47 @@
 - 프로필 수정 페이지 - AWS S3 SDK 인증
 </details>
 
+<details open> 
+<summary>백엔드 개발 상세 내역</summary>
+
+### 회원가입 & 로그인 페이지
+
+- JWT 토큰 생성 / 필터 처리 구현
+    - Access 토큰 생성 후 api 호출 시 필터 처리
+    - Refresh 토큰 Redis 저장
+- 유저 주소 입력 시 위도, 경도 값 DB 저장
+- 소셜 로그인 구현
+  - 네이버 / 카카오 API 연동
+  - 소셜 로그인 이후, 소셜에서 제공한 유저 정보 기반 서버 DB 저장하여 회원 관리
+
+### 메인 페이지
+
+- 나눔 글 CRUD 구현
+- 상품 이미지 AWS S3 에 URL 값 String 저장 후 사용
+- 게시글 검색 필터 기능 구현 ( User 테이블 내 위,경도 값 기준 필터 / 카테고리 기준 필터 / 조회수 기준 정렬 )
+- 특정 글 상세 조회 구현
+  
+### 나눔글 페이지
+
+- <strong>상세 페이지</strong>
+  - 채팅 기능 구현 : WebSocket, STOMP 이용 Pub/{roomId} 로 메시지 전송 / Sub/{roomId} 로 메시지 수신
+    - 채팅방 생성, 입장, 삭제 기능
+  - (Taker) 나눔글 지원 시 Offer 와 Taker 유저 간 위,경도 값 이용하여 거리 표시
+  - (Offer) 나눔 상태 (나눔중, 나눔완료) 추가 / 지원 목록 조회 및 신청자 수락 기능 구현
+
+- <strong>업로드 페이지</strong>
+  - 다중 이미지 MultiPart File 기능 구현
+
+- <strong>수정 페이지</strong>
+  - 이미지 수정 이전 파밀 S3 bucket 에서 삭제
+  - 추가 파일은 다시 저장하면서 메모리 절약
+
+### 유저 페이지
+
+- 마이 페이지
+  - (내가 작성한 나눔글 / 완료된 나눔글 / 내가 신청한 나눔글) 조회 기능 구현
+
+</details>
 <br/>
 
 ## 미리보기
