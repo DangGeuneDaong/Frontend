@@ -337,7 +337,7 @@ function EditPage() {
           title={alertMessage.title}
           message={alertMessage.message}
           alignType="top"
-          onConfirm={() => setShowAlert(false)}
+          onConfirm={() => navigate('/')}
         />
       )}
 
