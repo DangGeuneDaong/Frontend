@@ -15,7 +15,7 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: isProduction ? '[name].[chunkhash:8].js' : '[name].js',
+    filename: '[name].[contenthash:8].js',
   },
   devServer: {
     port: 3000,
@@ -72,8 +72,8 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       linkType: false,
-      filename: '[name].[chunkhash].css',
-      chunkFilename: '[id].[chunkhash].css',
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[id].[contenthash].css',
     }),
     new Dotenv(),
   ],
