@@ -16,7 +16,7 @@ import ConfirmModal from '../../components/Modal/Confirm';
 import * as S from './styles';
 
 interface MyPostsProps {
-  id: number;
+  goodId: number;
   title: string;
   featuredImage: string; //가장 첫번째 이미지
   updatedAt: string;
@@ -173,13 +173,13 @@ function MyPage() {
             <S.List>
               {currentPagePosts ? (
                 currentPagePosts?.map((post) => (
-                  <S.Post key={post.id}>
+                  <S.Post key={post.goodId}>
                     <S.PostInfos>
-                      <S.PostImg src={post.featuredImage} />
+                      <S.PostImg src={post.featuredImage[0]} />
                       <S.Description>
                         <S.DescriptionUp>
                           <S.Title
-                            onClick={() => navigate(`/offer/${post.id}`)}
+                            onClick={() => navigate(`/offer/${post.goodId}`)}
                           >
                             {post.title}
                           </S.Title>
@@ -206,7 +206,7 @@ function MyPage() {
                             borderRadius="20px"
                             hoverStyle="background-color:"
                             onClickHandler={() => {
-                              setSelected(post.id);
+                              setSelected(post.goodId);
                               setIsShared(true);
                             }}
                           >
@@ -215,13 +215,13 @@ function MyPage() {
 
                           <S.PostInfo>
                             <S.UpdateBtn
-                              onClick={() => navigate(`/edit/${post.id}`)}
+                              onClick={() => navigate(`/edit/${post.goodId}`)}
                             >
                               수정
                             </S.UpdateBtn>
                             <S.UpdateBtn
                               onClick={() => {
-                                setSelected(post.id);
+                                setSelected(post.goodId);
                                 setIsDeleted(true);
                               }}
                             >
