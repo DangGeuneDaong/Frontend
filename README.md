@@ -1,89 +1,139 @@
-# Frontend
+# DangGeuneDaong
 
-댕근이다옹 (반려동물 물품 나눔 플랫폼)
+![DangGeuneDaong](https://github.com/DangGeuneDaong/Frontend/assets/110911811/9f3145c2-9698-434c-9866-ac6b2f9278e8)
 
-## Introduction
+## 개발 기간
 
-### **🧐 기획 배경**
+2023.05.25 - 2023.07.06 (6주)
 
-1인 가구의 확대, 저출산 및 고령화 등에 따라 반려동물을 보유한 가구가 증가하고 있습니다. 시장이 커지면서 반려동물 관련 물품에 대한 관심이 높아지고 있습니다.
+## 기획 배경
 
+1인 가구의 증가와 고령화 등의 사회 변화로 인해, 반려동물과 함께하는 가구가 증가하고 있습니다. 이에 따라 반려동물 시장은 계속해서 성장하는 추세에 있습니다.
 
-한국소비자원(Korea Consumer Agency)의 ‘반려동물 사료 유통 및 표시 실태조사’ 조사보고서(2021)에 따르면, (치료비를 제외한) 반려동물 양육비로 식비가 51.2%(사료비 33.4% + 간식비 17.8%)로 가장 큰 비중을 차지하고 있으며, 일용품이 11.1%로 그 뒤를 따른다고 합니다.
+한국소비자원(Korea Consumer Agency)의 ‘반려동물 사료 유통 및 표시 실태조사’ 조사보고서(2021)에 따르면, (치료비를 제외한) 반려동물 양육비로 식비가 51.2%(사료비 33.4% + 간식비 17.8%)로 가장 큰 비중을 차지하고 있으며, 일용품이 11.1%로 그 뒤를 잇고 있습니다.
 
+그러나 반려동물의 기호성에 따라 사용되지 않는 펫 용품이 많이 생기기도 합니다.<br/>
+웹 서비스 '댕근이다옹'은 이러한 문제를 해결하기 위해 고안되었습니다.
 
-반면, 펫 관련 식품의 경우, 미개봉 기준 2~3년, 개봉 기준 2~3일 내 섭취를 권장하고 있어, 반려동물의 식습관에 부합하지 않는 식사 등으로 인해 보호자가 원치 않는 불필요한 소비가 발생할 수 있습니다.
+## 해결 컨셉
 
-### **🤔 해결 컨셉**
+- ‘시장의 확대’와 ‘무분별한 구매 및 낭비’ 사이에서 발생하는 한계를 해결하기 위해 반려동물 중고 물품 거래 및 나눔 플랫폼을 고안했습니다.
+  - 식품에 국한하지 않고, 다양한 반려동물 중고 물품을 거래할 수 있도록 보편적인 플랫폼으로 설정했습니다.
 
-- ‘시장의 확대’와 ‘무분별한 구매 및 낭비’ 사이에서 발생하는 한계를 해결하기 위해 반려동물 중고 물품 거래 플랫폼을 고안했습니다.
-    
-    - 식품에 국한하지 않고, 다양한 반려동물 중고 물품을 거래할 수 있도록 보편적인 플랫폼으로 설정했습니다.
-
-
-### **💪 기대 효과**
+## 기대효과
 
 - 해당 서비스를 통해 반려동물 제품에 대한 무분별한 구매 및 낭비가 줄어들 것으로 기대됩니다.
 - 해당 서비스를 통해 반려동물을 효과적으로 관리할 수 있는 노하우를 공유하여 반려동물 생태계의 긍정적인 문화를 형성할 것으로 생각합니다.
 
-<br>
+<br/>
 
-## Preview
+# 프로젝트 소개
 
-|로그인|회원가입|
-|:---:|:---:|
-|||
+## 서비스 아키텍쳐
 
-|소셜 로그인(카카오)|소셜 로그인(네이버)|
-|:---:|:---:|
-|||
+<img width="824" alt="service" src="https://github.com/DangGeuneDaong/Frontend/assets/110911811/578ed772-8e09-4391-b84a-d9649b6709ac">
 
-|메인|나눔 글 작성|
-|:---:|:---:|
-|||
+## ERD
 
-|상세 페이지(신청자)|상세 페이지(작성자)|
-|:---:|:---:|
-|||
+![erd](https://github.com/DangGeuneDaong/Frontend/assets/110911811/ee4fb893-f2dd-426f-873f-463574780d1e)
 
+## 주요 개발 스택
 
-<br>
+| Category | Package Name      | Version | Remarks                      |
+| -------- | ----------------- | ------- | ---------------------------- |
+| Bundler  | Webpack           | 5.85.0  |                              |
+|          | Babel             | 7.22.1  |                              |
+| Frontend | React             | 18.2.0  |                              |
+|          | Typescript        | 5.1.3   |                              |
+|          | Axios             | 1.4.0   |                              |
+|          | React-Router      | 6.11.2  |                              |
+|          | Recoil            | 0.7.7   |                              |
+|          | React Query       | 3.39.3  |                              |
+|          | Styled Components | 5.3.10  |                              |
+|          | Socket.io         | 4.7.0   |                              |
+| Backend  | Spring Framework  |         | Spring Boot, Spring Security |
+|          | JPA               |         |                              |
+|          | JWT               |         |                              |
+|          | OAuth 2.0         |         |                              |
+|          | Redis             |         |                              |
+|          | MySQL             |         | Database                     |
+|          | AWS EC2 , AWS S3  |         | Storage                      |
 
-## Project Architecture
+❗️상세 스택은 package.json을 참고해 주세요
 
-<img width="824" alt="project architecture" src="https://github.com/DangGeuneDaong/Frontend/assets/73399004/3bfce02d-d669-493c-abbe-b22d41cea7d6">
+# 프로젝트 상세
 
+## 개발 내역
 
-<br>
+<details open> 
+<summary>프론트엔드 개발 상세 내역</summary>
 
-## Tech Stacks
+### 회원가입& 로그인 페이지
 
-### Frontend
-- React
-- TypeScript
-- Babel
-- Webpack
-- React Query
-- Recoil
-- Styled Components
+- JWT 인증 로직 구현
+- Form Validate - react-hook-form 라이브러리 연동
+- 주소 입력 - react-daum-postcode 라이브러리 연동
+- 소셜 로그인 구현
+  - 네이버 / 카카오 API 연동
+  - 소셜 로그인 이후, 추가 정보 입력 페이지로 리다이렉트
+    - AWS S3 SDK 인증
 
-<br>
+### 메인 페이지
 
-### Backend
-- Spring Framework (Spring Boot, Spring Security)
-- JPA
-- JWT
-- OAuth2.0
-- AWS EC2, AWS S3
-- MySQL
-- Redis
+- 이미지 스켈레톤 UI 적용
+- 나눔글 검색 기능
+  - 카테고리 필터 기능 구현
+  - (나눔 상태, 반려동물 유형) 필터 기능 구현
+- 페이지네이션 구현
+- 카카오 지도 API 연동
+  - 나눔글의 위, 경도 값을 기반으로 마커 생성
 
+### 나눔글 페이지
 
-<br>
+- <strong>상세 페이지</strong>
+  - 채팅 기능 구현 - Socket.io로 양방향 채팅 구현
+    - 채팅방 생성, 삭제 기능
+  - (Taker) 나눔글 지원, 지원 취소 기능
+  - (Offer) 지원 목록 조회 및 신청자 수락 기능
+  - 페이지네이션 구현
+- <strong>업로드 페이지</strong>
+  - 다중 이미지 업로드 & 이미지 썸네일 구현
+  - Form Validate - react-hook-form 라이브러리 연동
+- <strong>수정 페이지</strong>
+  - AWS S3 SDK 인증
+  - 다중 이미지 업로드 & 이미지 썸네일 구현
+  - Form Validate - react-hook-form 라이브러리 연동
 
-## Members
+### 유저 페이지
 
-|Frontend|Frontend|Frontend|Frontend|Backend|Backend|Backend|
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|<img src="https://avatars.githubusercontent.com/u/71238020?v=4" alt="Whale2200" width="80px">|<img src="https://avatars.githubusercontent.com/u/73399004?v=4" alt="minkyuu" width="80px">|<img src="https://avatars.githubusercontent.com/u/87015084?v=4" alt="eeseohyun" width="80px">|<img src="https://avatars.githubusercontent.com/u/110911811?v=4" alt="geniee1220" width="80px">|<img src="https://avatars.githubusercontent.com/u/122004333?v=4" alt="trsoo24" width="80px">|<img src="https://avatars.githubusercontent.com/u/56255240?v=4" alt="wpdbs1229" width="80px">|<img src="https://avatars.githubusercontent.com/u/86875215?v=4" alt="joony9393" width="80px">|
-|[Whale2200](https://github.com/Whale2200d)|[minkyuu](https://github.com/minkyuu)|[eeseohyun](https://github.com/eeseohyun)|[geniee1220](https://github.com/geniee1220)|[trsoo24](https://github.com/trsoo24)|[wpdbs1229](https://github.com/wpdbs1229)|[joony9393](https://github.com/joony9393)|
+- 마이 페이지
+  - (내가 작성한 나눔글 / 완료된 나눔글 / 내가 신청한 나눔글) 조회
+- 프로필 수정 페이지 - AWS S3 SDK 인증
+</details>
+
+<br/>
+
+## 미리보기
+
+| 로그인 | 회원가입 |
+| :----: | :------: |
+|        |          |
+
+| 소셜 로그인(카카오) | 소셜 로그인(네이버) |
+| :-----------------: | :-----------------: |
+|                     |                     |
+
+| 메인 | 나눔 글 작성 |
+| :--: | :----------: |
+|      |              |
+
+| 상세 페이지(신청자) | 상세 페이지(작성자) |
+| :-----------------: | :-----------------: |
+|                     |                     |
+
+<br/>
+
+|                                           Frontend                                            |                                          Frontend                                           |                                           Frontend                                            |                                            Frontend                                             |                                           Backend                                            |                                            Backend                                            |                                            Backend                                            |
+| :-------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/71238020?v=4" alt="Whale2200" width="80px"> | <img src="https://avatars.githubusercontent.com/u/73399004?v=4" alt="minkyuu" width="80px"> | <img src="https://avatars.githubusercontent.com/u/87015084?v=4" alt="eeseohyun" width="80px"> | <img src="https://avatars.githubusercontent.com/u/110911811?v=4" alt="geniee1220" width="80px"> | <img src="https://avatars.githubusercontent.com/u/122004333?v=4" alt="trsoo24" width="80px"> | <img src="https://avatars.githubusercontent.com/u/56255240?v=4" alt="wpdbs1229" width="80px"> | <img src="https://avatars.githubusercontent.com/u/86875215?v=4" alt="joony9393" width="80px"> |
+|                          [Whale2200](https://github.com/Whale2200d)                           |                            [minkyuu](https://github.com/minkyuu)                            |                           [eeseohyun](https://github.com/eeseohyun)                           |                           [geniee1220](https://github.com/geniee1220)                           |                            [trsoo24](https://github.com/trsoo24)                             |                           [wpdbs1229](https://github.com/wpdbs1229)                           |                           [joony9393](https://github.com/joony9393)                           |
