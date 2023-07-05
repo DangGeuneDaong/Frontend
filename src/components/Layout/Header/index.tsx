@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userInfoState } from '../../../states/userInfo';
+import { userState } from '../../../states/userInfo';
 import { useRecoilState } from 'recoil';
 import { useAuth } from '../../../hooks/useAuth';
 import PopLayer from '../../PopLayer';
@@ -16,7 +16,7 @@ function Header() {
   const [isLogged, setIsLogged] = useState<boolean>(
     !!localStorage.getItem('accessToken')
   );
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { handleLogout } = useAuth();
 
@@ -51,7 +51,7 @@ function Header() {
             title="로그아웃"
             message="로그아웃 하시겠습니까?"
             onCancel={() => setIsModalOpen(false)}
-            onConfirm={() => handleLogout()}
+            onConfirm={() => handleLogout}
           />
         )}
         <S.HeaderRightMenu>
@@ -60,8 +60,8 @@ function Header() {
               <S.UserProfileImage>
                 <img
                   src={
-                    userInfo.profile_url
-                      ? userInfo.profile_url
+                    userInfo.profileUrl
+                      ? userInfo.profileUurl
                       : 'https://www.thechooeok.com/common/img/default_profile.png'
                   }
                   alt="유저 프로필 이미지"
