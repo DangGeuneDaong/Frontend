@@ -26,8 +26,8 @@ interface PostsProps {
 }
 
 function TakerPage() {
-  // const param = useParams();
-  const param = '20';
+  const param = useParams();
+  // const param = '20';
   // console.log(`param: `, param);
 
   const [showPosts, setShowPosts] = useState<PostsProps>();

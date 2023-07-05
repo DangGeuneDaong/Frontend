@@ -37,8 +37,8 @@ interface PostsProps {
 }
 
 function OfferPage() {
-  // const param = useParams();
-  const param = 20;
+  const param = useParams();
+  // const param = 20;
 
   const [showPosts, setShowPosts] = useState<PostsProps>(); // 1개를 받아오기 때문에 배열 사용 X
   const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O

@@ -21,8 +21,8 @@ import { instance } from '../../apis/auth/api';
 // { userId }: TakerPageProps
 
 function CommentArea() {
-  // const param = useParams();
-  const param = '20';
+  const param = useParams();
+  // const param = '20';
 
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
@@ -90,7 +90,7 @@ function CommentArea() {
   // recoil로 user data
   // const [getUserData, setGetUserData] = useRecoilState<any>(userState);
   const userId = localStorage.getItem('userId');
-  const userData = instance.get(`/user/info?userId=${userId}`);
+  instance.get(`/user/info?userId=${userId}`);
   console.log(`userId: `, userId);
 
   useEffect(() => {
