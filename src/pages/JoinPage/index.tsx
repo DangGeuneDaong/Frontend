@@ -44,17 +44,13 @@ function JoinPage() {
       });
     }
   }, [error, setError]);
-  const onValid = async (data: JoinPageProps) => {
-    //비밀번호 확인은 따로 보내진않음.
-    handleRegister(data);
-  };
 
   return (
     <MainTemplate>
       <S.Container>
         <S.SubContainer>
           <S.H1>회원가입</S.H1>
-          <form onSubmit={handleSubmit(onValid)}>
+          <S.Form onSubmit={handleSubmit((data) => handleRegister(data))}>
             <Input
               label="닉네임"
               placeholder="닉네임 입력"
@@ -138,7 +134,7 @@ function JoinPage() {
             ) : (
               <S.InactiveJoinButton disabled>회원가입</S.InactiveJoinButton>
             )}
-          </form>
+          </S.Form>
         </S.SubContainer>
 
         {showModal && alertMessage === '회원가입이 완료되었습니다.' && (
