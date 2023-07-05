@@ -1,4 +1,5 @@
 import * as S from './styles';
+import Moment from 'react-moment';
 
 export interface MessageCSSProps {
   messageReceived?: 'message received' | 'message sended';
@@ -16,7 +17,7 @@ function Message({ message }: MessagesProps) {
     <S.MessageListContainer>
       <li>
         <span>{message.userId}</span>
-        <span>time</span>
+        <Moment format="MM/DD/YYYY h:mm:ss">{Date.now()}</Moment>
         <p>{message.message}</p>
       </li>
     </S.MessageListContainer>
