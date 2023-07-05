@@ -30,35 +30,13 @@ const ItemImageCarousel = ({size, images} : CarouselProps) => {
   const [curIdx, setCurIdx] = useState(0);
   const [curPosition, setCurPosition] = useState(0);
 
-  // console.log(`curIdx: ${curIdx} size: ${size}, position: ${curPosition}`);
-
   const imageList: ReactNode[] = [];
   images.forEach((imgUrl, idx) => {
-    if (idx % 4 === 0){
-      imageList.push(
-        <S.ImageContainer key={idx}>
-          <S.Image src={mockImg12 as string} width={IMG_WIDTH}/>
-        </S.ImageContainer>
-      );
-    } else if (idx % 4 === 1){
-      imageList.push(
-        <S.ImageContainer key={idx}>
-          <S.Image src={mockImg15 as string} width={IMG_WIDTH}/>
-        </S.ImageContainer>
-      );
-    } else if (idx % 4 === 2){
-      imageList.push(
-        <S.ImageContainer key={idx}>
-          <S.Image src={mockImg14 as string} width={IMG_WIDTH}/>
-        </S.ImageContainer>
-      );
-    } else if (idx % 4 === 3){
-      imageList.push(
-        <S.ImageContainer key={idx}>
-          <S.Image src={mockImg13 as string} width={IMG_WIDTH}/>
-        </S.ImageContainer>
-      );
-    }
+    imageList.push(
+      <S.ImageContainer key={idx}>
+        <S.Image src={imgUrl} width={IMG_WIDTH}/>
+      </S.ImageContainer>
+    );
   });
 
   const showPrevImage = () => {
@@ -77,8 +55,8 @@ const ItemImageCarousel = ({size, images} : CarouselProps) => {
         {imageList}
       </S.Window>
 
-      {curIdx !== 0 && <S.PrevButton onClick={showPrevImage} />}
-      {curIdx !== size - 2 && <S.NextButton onClick={showNextImage} />}
+      {curIdx > 0 && <S.PrevButton onClick={showPrevImage} />}
+      {curIdx < size - 2 && <S.NextButton onClick={showNextImage} />}
     </S.Container>
   );
 };

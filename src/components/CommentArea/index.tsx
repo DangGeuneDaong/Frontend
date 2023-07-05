@@ -21,9 +21,9 @@ import { instance } from '../../apis/auth/api';
 // { userId }: TakerPageProps
 
 function CommentArea() {
-  // const param = useParams();
-  const param = '20';
-  const userId = localStorage.getItem('userId');
+  const param = useParams();
+  // const param = '20';
+
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
@@ -51,6 +51,7 @@ function CommentArea() {
 
   // const SERVER_URL = 'http://localhost:5000';
   const postData = async (content: any) => {
+    // 서버에 content 데이터 post하기
     try {
       const data = {
         userId: userId,
@@ -65,47 +66,41 @@ function CommentArea() {
     } catch (e) {
       console.log(e);
     }
+
+    // Button 변경하기
+    setChangeButton(true);
   };
 
   const deleteData = async () => {
-    const result_comment = await instance.delete(
-      `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
-    );
-    setPostComment(result_comment.data.content);
-  };
-
-  const postCommentInfo = () => {
-    if (changeButton === false) {
-      setChangeButton(true);
-      // 1. textarea 데이터를 '신청하기'버튼 클릭 시 submit
-      const commentData = watch('postComment');
-      console.log('commentData: ', commentData);
-      postData({ commentData, userId });
-    } else {
-      setChangeButton(false);
-      // 2. 취소 버튼 클릭 시, Data delete
-      deleteData();
+    // 서버에 sharingApplication Delete하기
+    try {
+      await instance.delete(
+        `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
+      );
+    } catch (e) {
+      console.log(e);
     }
+
+    // Button 변경하기
+    setChangeButton(false);
   };
 
-  const [checkRoomId, setCheckRoomId] = useState([]);
+  const [checkRoomId, setCheckRoomId] = useState<number>(-1);
   const [checkChatStatus, setCheckChatStatus] = useState<boolean>();
   // recoil로 user data
-  const [getUserData, setGetUserData] = useRecoilState<any>(userState);
-  const userData = instance.get(`/user/info?userId=${userId}`);
+  // const [getUserData, setGetUserData] = useRecoilState<any>(userState);
+  const userId = localStorage.getItem('userId');
+  instance.get(`/user/info?userId=${userId}`);
   console.log(`userId: `, userId);
-  console.log(`getUserData1: `, getUserData);
 
   useEffect(() => {
     const checkChatStatus = async () => {
       const { data } = await instance.get(`/chat/enter`);
       console.log(`chatData1: `, data);
-      console.log(`getUserData2: `, getUserData);
       setCheckChatStatus(data.isOpened);
+      setCheckRoomId(data.roomId);
     };
     checkChatStatus();
-    console.log(`getUserData3: `, getUserData);
-    console.log(`getUserData.userId: `, getUserData.userId);
     // console.log(`checkChatStatus.takerId: `, checkChatStatus.takerId);
   }, []);
   console.log(`checkChatStatus: `, checkChatStatus);
@@ -142,7 +137,6 @@ function CommentArea() {
           <Button
             height={'90px'}
             borderRadius={'10px'}
-            onClickHandler={postCommentInfo}
             style={{
               backgroundColor: 'white',
               borderColor: `${theme.color.red}`,
@@ -153,13 +147,14 @@ function CommentArea() {
           </Button>
         </S.Form>
       )}
-      {/* {changeButton &&
-        checkChatStatus?.isOpened &&
-        checkChatStatus?.takerId === getUserData.userId && (
-          <ChatRoomArea>
-            <Chat roomId={checkChatStatus?.roomId} />
-          </ChatRoomArea>
-        )} */}
+      {changeButton && (
+        // checkChatStatus?.takerId === userId &&
+        // checkChatStatus?.isOpened && (
+        // roomId={checkChatStatus?.roomId}
+        <ChatRoomArea>
+          <Chat roomId={checkRoomId.roomId} userId={String(userId)} />
+        </ChatRoomArea>
+      )}
     </S.Container>
   );
 }

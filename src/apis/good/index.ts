@@ -7,34 +7,6 @@ import { useQuery } from 'react-query';
 import { useEffect } from 'react';
 import { ItemType } from '../../components/KakaoMapContainer/itemType';
 
-// 이미지 업로드
-export const uploadImage = async (selectedFiles: File[]) => {
-  const formData = new FormData();
-
-  // 업로드 한 이미지가 없다면 빈 배열을 return
-  if (selectedFiles.length === 0) return [];
-
-  try {
-    console.log('파일 업로드 시작');
-
-    //selectedItem의 각 아이템을 formData로 가공
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append(`image${i}`, selectedFiles[i]);
-    }
-
-    // S3에서 각각의 이미지에 대해 String 값으로 return
-    const response = await instance.post(
-      'http://13.209.220.63/img/upload',
-      formData
-    );
-
-    return response;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
-
 // 개별글 조회
 export const fetchPost = async (postId: string) => {
   try {
@@ -121,7 +93,7 @@ export const editPost = async (data: any) => {
 
   try {
     const requestObject = {
-      userId: data.userId,
+      goodId: data.goodId,
       mainCategory: data.mainCategory,
       subCategory: data.subCategory,
       title: data.title,
@@ -156,7 +128,7 @@ export const editPost = async (data: any) => {
 };
 
 interface GetPostModel {
-  responseList: ItemType[];
+  responseLists: ItemType[];
   totalPage: number;
 }
 
@@ -164,8 +136,8 @@ export const getPosts = async (requestURL: string) => {
   try {
     const response = await instance.get(`http://13.209.220.63${requestURL}`);
     if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
-    const data: GetPostModel = response.data;
-    return data.responseList;
+    const responseData: GetPostModel = response.data;
+    return responseData.responseLists;
   } catch (error) {
     console.log('getPosts error : ', error);
   }
@@ -173,7 +145,10 @@ export const getPosts = async (requestURL: string) => {
 
 export const checkPostOwner = async (goodId: number, userId: number) => {
   try {
-    const response = await instance.get(`http://13.209.220.63/good/match?userId=${userId}&goodId=${goodId}`);
+    const response = await instance.get(
+      `http://13.209.220.63/good/offer/match?userId=${userId}&goodId=${goodId}`
+    );
+
     return response.data;
   } catch (error) {
     console.log('checkPostOwner error : ', error);

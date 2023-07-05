@@ -8,16 +8,20 @@ import dogMarkerImg from '../../../../assets/imgs/dog.png';
 import catMarkerImg from '../../../../assets/imgs/cat.png';
 
 import * as S from './styles';
+import { useRecoilValue } from 'recoil';
+import { userInfoState } from '../../../../states/userInfo';
+import { checkPostOwner } from '../../../../apis/good';
 
-interface ActiveMapMarkerProps {
+interface DefaultMapMarkerProps {
   key: string;
   item: ItemType;
   map: kakao.maps.Map;
 }
 
-const ActiveMapMarker = ({ item, map }: ActiveMapMarkerProps) => {
+const DefaultMapMarker = ({ item, map }: DefaultMapMarkerProps) => {
   const [isShow, setIsShow] = useState(false);
   const navigate = useNavigate();
+  const userInfo = useRecoilValue(userInfoState);
   const $markerContainer = document.createElement('div');  
   $markerContainer.style.position = 'absolute';
   $markerContainer.style.zIndex = '1';
@@ -44,7 +48,7 @@ const ActiveMapMarker = ({ item, map }: ActiveMapMarkerProps) => {
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(item.latitude, item.longitude),
       image: new kakao.maps.MarkerImage(
-        item.main_category === 'dog' ? dogMarkerImg : catMarkerImg,
+        item.mainCategory === 'dog' ? dogMarkerImg : catMarkerImg,
         new kakao.maps.Size(18, 18),
       )
     });
@@ -67,33 +71,31 @@ const ActiveMapMarker = ({ item, map }: ActiveMapMarkerProps) => {
     }
   },[]);
 
-  const moveDetailPage = () => {
-    if (localStorage.getItem('access_token')){
-      // 유저 id 가져오는 로직 + 해당 유저가 작성한 글인지 확인하는 로직
-      // const { isMyPost } = await axios.get('http://localhost:8081/good/checkWriter');
+  const moveDetailPage = async () => {
+    if (userInfo) {
+      const isMyPost = await checkPostOwner(item.goodId, userInfo.userId);
 
-
-      // if (해당 유저가 작성한 글이라면= true) {
-        // navigate(`/good/offer/info?goodId=${itemInfo.id}`);
-      // }
+      if (isMyPost) {
+        return navigate(`/offer/${item.goodId}`);
+      }
     }
-    navigate(`/good/taker/info?goodId=${item.id}`);
+    return navigate(`/taker/${item.goodId}`);
   };
 
   return (
     $markerContainer
       && createPortal(
         <S.Container onClick={moveDetailPage} isShow={isShow}>
-          {item.main_category === 'dog' 
+          {item.mainCategory === 'dog' 
             ? <S.MarkerImage src={dogMarkerImg} alt='강아지'/>
             : <S.MarkerImage src={catMarkerImg} alt='고양이'/>}
           <S.ItemInfo>
             <S.Title>{item.title}</S.Title>
-            <S.Category>{CategoryType[item.category]}</S.Category>
+            <S.Category>{CategoryType[item.subCategory]}</S.Category>
           </S.ItemInfo>
         </S.Container>
         , $markerContainer)
   );
 };
 
-export default ActiveMapMarker;
+export default DefaultMapMarker;

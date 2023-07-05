@@ -13,45 +13,84 @@ import axios from 'axios';
 
 import Input from '../Form/Input';
 import Button from '../Button';
+import PopLayer from '../PopLayer';
+import Confirm from '../Modal/Confirm';
+import { instance } from '../../apis/auth/api';
 // import Chat from '../Chat/Chat';
 
 interface OfferPageProps {
   // getBack: () => void;
+  onHide?: () => void;
   id?: number;
-  nickname?: string;
+  takerId?: string;
   distance?: string;
-  onClose?: () => void;
   children?: React.ReactNode;
+  // onClickDeleteChatRoomId?: () => void;
+  roomId?: number;
+  sharingId?: number;
 }
 
 function ChatRoomArea({
   id,
-  nickname,
+  takerId,
   distance,
-  onClose,
+  onHide,
   children,
+  roomId,
+  sharingId,
 }: OfferPageProps) {
-  const [showTakerlists, setShowTakerlists] = useState([]);
-
   const theme = useTheme();
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const chatMenuList = [
+    {
+      name: '대화 종료',
+      onClickHandler: () => {
+        setIsModalOpen(true);
+      },
+      itemStyle: { color: 'red' },
+    },
+  ];
+
+  // (대화 종료) 채팅창 Delete, SharingApplication Table Delete 요청
+  const handleDeleteChat = async () => {
+    // 1. 해당 Taker와의 채팅창 Delete하기
+    // await instance.delete(`/chat/leave?roomId=${roomId}`);
+    // 2. 해당 Taker의 SharingApplication Table Delete하기
+    // await instance.delete(
+    //   `/sharing/application?sharingApplicationId=${sharingId}`
+    // );
+  };
 
   return (
     <S.Container>
       <S.ChatHeaderContainer>
-        <button onClick={onClose}>
+        <S.Button onClick={onHide}>
           <AiOutlineArrowLeft />
-        </button>
+        </S.Button>
         <S.ProfileContainer>
           <S.PictureContainer></S.PictureContainer>
           <S.NameDistanceContainer>
             <span>{id}</span>
-            <span>{nickname}</span>
+            <span>{takerId}</span>
             <span>거리 약 {distance}km</span>
           </S.NameDistanceContainer>
         </S.ProfileContainer>
-        <button>
-          <AiOutlineMenu />
-        </button>
+        <PopLayer itemList={chatMenuList}>
+          <S.Button>
+            <AiOutlineMenu />
+          </S.Button>
+        </PopLayer>
+        {isModalOpen && (
+          <Confirm
+            title={'대화를 종료하시겠습니까?'}
+            message={
+              '지금 대화를 종료하실 경우, 해당 Taker와는 더 이상 대화하실 수 없습니다.'
+            }
+            onConfirm={() => handleDeleteChat()}
+            onCancel={() => setIsModalOpen(false)}
+          />
+        )}
       </S.ChatHeaderContainer>
       <S.ChatBodyContainer>
         {/* <S.OfferContainer>

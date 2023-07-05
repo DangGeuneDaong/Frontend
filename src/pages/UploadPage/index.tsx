@@ -246,10 +246,7 @@ function UploadPage() {
           title={alertMessage.title}
           message={alertMessage.message}
           alignType="top"
-          onConfirm={() => {
-            setShowAlert(false);
-            navigate('/');
-          }}
+          onConfirm={() => navigate('/')}
         />
       )}
 

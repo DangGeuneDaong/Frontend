@@ -3,8 +3,6 @@ import { JoinPageProps } from '../../pages/JoinPage';
 import { LoginPageProps } from '../../pages/LoginPage';
 import { AddInfoProps } from '../../pages/RedirectPage/AddInfoPage';
 
-const REFRESH_URL = `${process.env.REACT_APP_SERVER_URL}/user/token`;
-
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
   headers: { 'Content-Type': 'application/json' },
@@ -24,12 +22,10 @@ instance.interceptors.request.use((config) => {
 
 const getAccessToken = async (): Promise<string | void> => {
   try {
-    const {
-      data: { accessToken },
-    } = await axios.get<{ accessToken: string }>(REFRESH_URL);
-    localStorage.setItem('accessToken', accessToken);
+    const response = await instance.post(`/user/token`);
+    localStorage.setItem('accessToken', response.data.substr(1));
 
-    return accessToken;
+    return response.data.substr(1);
   } catch (e) {
     localStorage.removeItem('accessToken');
     window.location.href = '/signin';
@@ -45,7 +41,7 @@ instance.interceptors.response.use(
     } = error;
 
     //요청을 반복해서 무한루프에 빠지는 걸 방지
-    if (config.url === REFRESH_URL || config._retry) {
+    if (config.url === '/user/token' || config._retry) {
       return Promise.reject(error);
     }
 
@@ -82,7 +78,7 @@ export function socialUserProfileRequest(accessToken: string) {
   return instance.get(`/user/payload?accessToken=${accessToken}`);
 }
 
-//추가정보 입력
+//유저 정보 입력
 export function addInfoRequest(data: AddInfoProps, profileUrl: string) {
-  return instance.post('/user/update', { ...data, profile_url: profileUrl });
+  return instance.put('/user/change', { ...data, profile_url: profileUrl });
 }
