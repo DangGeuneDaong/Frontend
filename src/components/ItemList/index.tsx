@@ -46,7 +46,7 @@ const ItemList = ({
     if (!isLoading && data) {
       setCurrentPageItems(data);
     }
-  }, []);
+  }, [data]);
 
   const itemList = currentPageItems && currentPageItems.map((item) => {
     return <Item itemInfo={item} key={item.goodId} />;
