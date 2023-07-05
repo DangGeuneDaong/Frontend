@@ -121,7 +121,7 @@ export const editPost = async (data: any) => {
 
   try {
     const requestObject = {
-      userId: data.userId,
+      goodId: data.goodId,
       mainCategory: data.mainCategory,
       subCategory: data.subCategory,
       title: data.title,
@@ -173,7 +173,10 @@ export const getPosts = async (requestURL: string) => {
 
 export const checkPostOwner = async (goodId: number, userId: number) => {
   try {
-    const response = await instance.get(`http://13.209.220.63/good/offer/match?userId=${userId}&goodId=${goodId}`);
+    const response = await instance.get(
+      `http://13.209.220.63/good/offer/match?userId=${userId}&goodId=${goodId}`
+    );
+
     return response.data;
   } catch (error) {
     console.log('checkPostOwner error : ', error);
