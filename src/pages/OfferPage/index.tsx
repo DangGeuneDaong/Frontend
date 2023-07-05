@@ -15,9 +15,10 @@ import Chat from '../../components/Chat/Chat';
 import { instance } from '../../apis/auth/api';
 
 interface DataProps {
-  id?: number;
-  nickname?: string;
+  sharingId?: number;
+  takerId?: string;
   distance?: string;
+  roomId?: number;
 }
 
 interface PostsProps {
@@ -64,23 +65,35 @@ function OfferPage() {
       const result_takerlists = await instance.get(
         `/sharing/application?goodId=${param}`
       );
+      console.log('result_takerlists: ', result_takerlists);
       setShowTakerlists(result_takerlists.data);
     } catch (e) {
       console.log(e);
     }
   };
 
-  const userId = localStorage.getItem('userId');
-  const postData = async (id: any) => {
+  const postChatData = async (sharingId: any, userId: any, offerId?: any) => {
     try {
       // 3. 채팅방 개설 및 입장
-      const data = {
+      const postData = {
+        offerId: offerId,
         takerId: userId,
-        sharingApplicationId: id,
+        sharingApplicationId: sharingId,
       };
-      await instance.post(`/chat/create`, data);
-      await instance.get(`/chat/enter`);
+      console.log('postData: ', postData);
+      const createChatData = await instance.post(`/chat/create`, postData);
+      console.log('createChatData: ', createChatData);
+
+      const getData = {
+        roomId: createChatData.data.id,
+        takerId: userId,
+        offerId: offerId,
+      };
+      console.log('getData: ', getData);
+      const enterChatData = await instance.get(`/chat/enter`, getData);
+      console.log('enterChatData: ', enterChatData);
       // setShowRoomlists(result_roomlists.data);
+      return enterChatData.roomId;
     } catch (e) {
       console.log(e);
     }
@@ -91,28 +104,38 @@ function OfferPage() {
   }, []);
 
   const [selectedUserData, setSelectedUserData] = useState<DataProps>({
-    id: -1,
-    nickname: '',
+    sharingId: undefined,
+    takerId: '',
     distance: '',
+    roomId: undefined,
   });
 
-  const showChange = (id: number, nickname?: string, distance?: string) => {
-    postData(id);
-    console.log(id);
+  const showChange = (
+    sharingId: number,
+    userId?: string,
+    distance?: string,
+    content?: string
+  ) => {
+    const offerId = localStorage.getItem('userId');
+    console.log('sharingId: ', sharingId);
+    console.log('userId: ', userId);
+    console.log('distance: ', distance);
+
     // 만약 버튼을 클릭했을 때, 현재 유저와 같은 유저라면 채팅창 닫기(초기화)
-    if (selectedButtonId === id) {
+    if (selectedButtonId === sharingId) {
       setSelectedButtonId(null);
       setIsOpenChat(false);
     } else {
-      setSelectedButtonId(id);
+      setSelectedButtonId(sharingId);
       setIsOpenChat(true);
     }
-
+    const roomId = postChatData(sharingId, userId, offerId);
     // map으로 보낸 데이터 저장
     const data = {
-      id: id,
-      nickname: nickname,
+      sharingId: sharingId,
+      userId: userId,
       distance: distance,
+      roomId: roomId,
     };
     // data 내 저장한 값을 외부에서 사용
     setSelectedUserData(data);
@@ -198,16 +221,24 @@ function OfferPage() {
           <S.ListTitleContainer>Taker 목록</S.ListTitleContainer>
           {showTakerlists
             .slice(offset, offset + LIMIT)
-            .map(({ id, nickname, distance, content }) => (
+            .map(({ sharingId, userId, distance, content }) => (
               <>
                 <TakerListArea
-                  key={id}
-                  nickname={nickname}
+                  key={sharingId}
+                  nickname={userId}
                   distance={distance}
                   content={content}
-                  setProps={() => showChange(id, nickname, distance)}
+                  setProps={() => {
+                    showChange(sharingId, userId, distance);
+                    console.log(
+                      'sharingApplication: ',
+                      sharingId,
+                      userId,
+                      distance
+                    );
+                  }}
                 >
-                  {selectedButtonId === id ? '숨기기' : '채팅하기'}
+                  {selectedButtonId === sharingId ? '숨기기' : '채팅하기'}
                 </TakerListArea>
               </>
             ))}
@@ -222,14 +253,16 @@ function OfferPage() {
 
         {isOpenChat && (
           <ChatRoomArea
-            onClose={() => {
+            onHide={() => {
               setIsOpenChat(false);
               setSelectedButtonId(null);
             }}
-            nickname={selectedUserData.nickname}
+            takerId={selectedUserData.takerId}
             distance={selectedUserData.distance}
+            roomId={selectedUserData?.roomId}
+            sharingId={selectedUserData?.sharingId}
           >
-            <Chat roomId={showRoomId} />
+            <Chat roomId={selectedUserData?.roomId} />
           </ChatRoomArea>
         )}
       </S.Container>
