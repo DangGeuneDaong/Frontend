@@ -20,7 +20,7 @@ interface PageMapMarkerProps {
 const PageMapMarker = ({ item, map }: PageMapMarkerProps) => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userState);
-  const $markerContainer = document.createElement('div');
+  const $markerContainer = document.createElement('div');  
   $markerContainer.style.position = 'absolute';
   $markerContainer.style.zIndex = '1';
   $markerContainer.style.left = '-26px';

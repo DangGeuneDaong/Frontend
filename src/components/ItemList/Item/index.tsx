@@ -4,9 +4,9 @@ import ItemImageCarousel from '../ItemImageCarousel';
 import { ItemType, StatusType } from '../../KakaoMapContainer/itemType';
 
 import * as S from './styles';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../../../states/userInfo';
-import { checkPostOwner } from '../../../apis/good';
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../states/userInfo";
+import { checkPostOwner } from "../../../apis/good";
 
 interface ItemProps {
   itemInfo: ItemType;
@@ -15,7 +15,6 @@ interface ItemProps {
 const Item = ({ itemInfo }: ItemProps) => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userState);
-
   const moveDetailPage = async () => {
     if (userInfo) {
       const isMyPost = await checkPostOwner(itemInfo.goodId, userInfo.userId);
