@@ -59,7 +59,7 @@ const DefaultMapMarker = ({ item, map }: DefaultMapMarkerProps) => {
     });
 
     kakao.maps.event.addListener(marker, 'mouseout', () => {
-      setIsShow(false);
+      setTimeout(() => setIsShow(false), 500);
     });
 
     kakao.maps.event.addListener(marker, 'click', () => {
