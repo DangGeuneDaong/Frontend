@@ -189,47 +189,53 @@ function MyPage() {
                         <S.DescriptionDown>
                           <S.Nums>{post.location}</S.Nums>
                           <S.Nums>
-                            <FaUser /> {post.sharingApplicatonNum}
+                            <FaUser />{' '}
+                            {post.sharingApplicatonNum === 0
+                              ? 0
+                              : post.sharingApplicatonNum}
                           </S.Nums>
                         </S.DescriptionDown>
                       </S.Description>
                     </S.PostInfos>
 
                     <S.UpdatePost>
-                      {filter === 'shared' && (
-                        <>
-                          <Button
-                            type="button"
-                            styleType={
-                              post.status === 'SHARING' ? 'primary' : 'disabled'
-                            }
-                            borderRadius="20px"
-                            hoverStyle="background-color:"
-                            onClickHandler={() => {
-                              setSelected(post.goodId);
-                              setIsShared(true);
-                            }}
-                          >
-                            나눔완료
-                          </Button>
-
-                          <S.PostInfo>
-                            <S.UpdateBtn
-                              onClick={() => navigate(`/edit/${post.goodId}`)}
-                            >
-                              수정
-                            </S.UpdateBtn>
-                            <S.UpdateBtn
-                              onClick={() => {
+                      {filter === 'all' ||
+                        (filter === 'shared' && (
+                          <>
+                            <Button
+                              type="button"
+                              styleType={
+                                post.status === 'SHARING'
+                                  ? 'primary'
+                                  : 'disabled'
+                              }
+                              borderRadius="20px"
+                              hoverStyle="background-color:"
+                              onClickHandler={() => {
                                 setSelected(post.goodId);
-                                setIsDeleted(true);
+                                setIsShared(true);
                               }}
                             >
-                              삭제
-                            </S.UpdateBtn>
-                          </S.PostInfo>
-                        </>
-                      )}
+                              나눔완료
+                            </Button>
+
+                            <S.PostInfo>
+                              <S.UpdateBtn
+                                onClick={() => navigate(`/edit/${post.goodId}`)}
+                              >
+                                수정
+                              </S.UpdateBtn>
+                              <S.UpdateBtn
+                                onClick={() => {
+                                  setSelected(post.goodId);
+                                  setIsDeleted(true);
+                                }}
+                              >
+                                삭제
+                              </S.UpdateBtn>
+                            </S.PostInfo>
+                          </>
+                        ))}
                     </S.UpdatePost>
                   </S.Post>
                 ))
@@ -238,14 +244,13 @@ function MyPage() {
                   <h3>게시물이 존재하지 않습니다.</h3>
                 </S.Empty>
               )}
-
-              <Pagination
-                total={totalPosts?.length || 0}
-                limit={3}
-                page={5}
-                setPage={setPage}
-              />
             </S.List>
+            <Pagination
+              total={totalPosts?.length || 0}
+              limit={3}
+              page={page}
+              setPage={setPage}
+            />
           </S.ListContainer>
         </S.SubContainer>
       </S.Container>
