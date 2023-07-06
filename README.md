@@ -31,7 +31,7 @@
 
 ## 서비스 아키텍쳐
 
-<img width="824" alt="service" src="https://github.com/DangGeuneDaong/Frontend/assets/110911811/578ed772-8e09-4391-b84a-d9649b6709ac">
+<img width="710" alt="project architecture" src="https://github.com/DangGeuneDaong/Frontend/assets/73399004/9c685314-82d8-41e5-ab30-f47d5502d7db">
 
 ## ERD
 
@@ -83,13 +83,16 @@
 
 ### 메인 페이지
 
-- 이미지 스켈레톤 UI 적용
+- 카카오 지도 API 기반으로 페이지 구현
+  - 유저의 주소 정보를 이용하여 지도 생성
+  - 나눔글의 위/경도 값을 이용하여 마커 생성
+    
 - 나눔글 검색 기능
-  - 카테고리 필터 기능 구현
-  - (나눔 상태, 반려동물 유형) 필터 기능 구현
+  - 검색 필터 기능 구현 (카테고리, 나눔 상태, 반려동물 유형, 현 지도의 위/경도)
+
 - 페이지네이션 구현
-- 카카오 지도 API 연동
-  - 나눔글의 위, 경도 값을 기반으로 마커 생성
+- Skeleton UI, Loader 적용
+
 
 ### 나눔글 페이지
 
@@ -146,7 +149,7 @@
   - 다중 이미지 MultiPart File 기능 구현
 
 - <strong>수정 페이지</strong>
-  - 이미지 수정 이전 파밀 S3 bucket 에서 삭제
+  - 이미지 수정 이전 파일 S3 bucket 에서 삭제
   - 추가 파일은 다시 저장하면서 메모리 절약
 
 ### 유저 페이지
