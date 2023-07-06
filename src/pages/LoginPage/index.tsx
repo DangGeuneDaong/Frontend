@@ -27,8 +27,14 @@ function LoginPage() {
     setError,
     handleSubmit,
   } = useForm<LoginPageProps>({ mode: 'onBlur' });
-  const { handleLogin, isLoading, error, alertMessage, showModal } =
-    useAuth<LoginPageProps>();
+  const {
+    handleLogin,
+    isLoading,
+    error,
+    alertMessage,
+    showModal,
+    setShowModal,
+  } = useAuth<LoginPageProps>();
   useEffect(() => {
     if (error) {
       setError(error.field, {
@@ -111,7 +117,7 @@ function LoginPage() {
                 title="로그인"
                 message="가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?"
                 confirmType="confirm"
-                onCancel={() => navigate('/signin')}
+                onCancel={() => setShowModal(false)}
                 onConfirm={() => navigate('/signup')}
               />
             )}
