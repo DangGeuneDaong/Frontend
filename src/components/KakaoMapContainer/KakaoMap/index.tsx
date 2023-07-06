@@ -55,7 +55,7 @@ const KakaoMap = ({
       setMapBoundsInfo(bounds);
     }
   };
-  console.log('userInfo2222: ', userInfo);
+  
   useEffect(() => {
     const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
     const kakaoMap = new kakao.maps.Map($mapContainer!, {
