@@ -17,17 +17,15 @@ export const getUserInfo = async (userId: string) => {
 export const userFetchInfo = async (userId: string) => {
   const [userInfo, setUserInfo] = useRecoilState(userState);
 
-  useEffect(() => {
-    if (userId) {
-      const query = useQuery(['userInfo', userId], () => getUserInfo(userId), {
-        refetchOnWindowFocus: false,
-      });
+  const query = useQuery(['userInfo', userId], () => getUserInfo(userId), {
+    refetchOnWindowFocus: false,
+  });
 
-      if (query.data) {
-        setUserInfo(query.data);
-      }
+  useEffect(() => {
+    if (query.data) {
+      setUserInfo(query.data);
     }
-  }, [userId, setUserInfo]);
+  }, [query.data, setUserInfo]);
 
   console.log('userInfo : ', userInfo);
 
