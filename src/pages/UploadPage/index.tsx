@@ -194,7 +194,7 @@ function UploadPage() {
 
               <S.DropdownContainer>
                 <Dropdown
-                  listData={['사료', '의류', '간식', '배변용품']}
+                  listData={['사료', '의류', '간식', '용품']}
                   selectedItem={selectedProduct}
                   onSelectItem={(item) => setSelectedProduct(item)}
                 ></Dropdown>
