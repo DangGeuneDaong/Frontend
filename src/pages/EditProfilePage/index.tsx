@@ -47,7 +47,6 @@ function EditProfilePage() {
     const file = e.target.files?.[0];
     if (file) {
       //file => URL
-      console.log(file);
       setProfileFile(file);
       const url = URL.createObjectURL(file);
       setThumbnail(url);
@@ -81,6 +80,14 @@ function EditProfilePage() {
               handleProfileSubmit(data, profileFile)
             )}
           >
+            {userInfo.profileUrl ? (
+              <S.ProfileImg
+                src={userInfo.profileUrl}
+                alt="유저 프로필 이미지"
+              />
+            ) : (
+              <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
+            )}
             <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
             {thumbnail !== userInfo.profileUrl ? (
               <S.CancelButton onClick={resetImg}>
