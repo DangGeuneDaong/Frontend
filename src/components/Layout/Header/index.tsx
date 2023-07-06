@@ -46,6 +46,15 @@ function Header() {
   return (
     <S.HeaderContainer>
       <S.HeaderInner>
+        <img
+          src="https://github.com/DangGeuneDaong/Frontend/assets/110911811/5e6c9fbc-6154-4482-82f3-11a6625ed781"
+          alt="Logo"
+          width={50}
+          height={50}
+          onClick={() => navigate('/')}
+          style={{ cursor: 'pointer' }}
+        />
+
         {isModalOpen && (
           <ConfirmModal
             title="로그아웃"
