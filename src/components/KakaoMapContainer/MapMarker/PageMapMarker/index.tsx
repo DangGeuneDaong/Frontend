@@ -41,7 +41,6 @@ const PageMapMarker = ({ item, map }: PageMapMarkerProps) => {
 
   customOverlay.setMap(map);
 
-
   const moveDetailPage = async () => {
     if (userInfo) {
       const isMyPost = await checkPostOwner(item.goodId, userInfo.userId);
@@ -54,18 +53,21 @@ const PageMapMarker = ({ item, map }: PageMapMarkerProps) => {
   };
 
   return (
-    $markerContainer
-      && createPortal(
-        <S.Container onClick={moveDetailPage}>
-          {item.mainCategory === 'dog' 
-            ? <S.MarkerImage src={dogMarkerImg} alt='강아지'/>
-            : <S.MarkerImage src={catMarkerImg} alt='고양이'/>}
-          <S.ItemInfo>
-            <S.Title>{item.title}</S.Title>
-            <S.Category>{CategoryType[item.subCategory]}</S.Category>
-          </S.ItemInfo>
-        </S.Container>
-        , $markerContainer)
+    $markerContainer &&
+    createPortal(
+      <S.Container onClick={moveDetailPage}>
+        {item.mainCategory === 'dog' ? (
+          <S.MarkerImage src={dogMarkerImg} alt="강아지" />
+        ) : (
+          <S.MarkerImage src={catMarkerImg} alt="고양이" />
+        )}
+        <S.ItemInfo>
+          <S.Title>{item.title}</S.Title>
+          <S.Category>{CategoryType[item.subCategory]}</S.Category>
+        </S.ItemInfo>
+      </S.Container>,
+      $markerContainer
+    )
   );
 };
 

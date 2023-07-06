@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { userInfoState, userState } from '../../../states/userInfo';
+import { userState } from '../../../states/userInfo';
 import { keyValueType, usePosts } from '../../../hooks/usePosts';
 
 import MapMarkerController from '../MapMarkerController';
@@ -18,7 +18,9 @@ interface KakaoMapProps {
   condition: ItemFilterProps;
   updateItems: Dispatch<SetStateAction<ItemType[]>>;
   currentPageItems: ItemType[];
-  setMapBoundsInfo: Dispatch<SetStateAction<kakao.maps.LatLngBounds | undefined>>;
+  setMapBoundsInfo: Dispatch<
+    SetStateAction<kakao.maps.LatLngBounds | undefined>
+  >;
 }
 
 const KakaoMap = ({
@@ -28,7 +30,7 @@ const KakaoMap = ({
   condition,
   updateItems,
   currentPageItems,
-  setMapBoundsInfo
+  setMapBoundsInfo,
 }: KakaoMapProps) => {
   const [map, setMap] = useState<kakao.maps.Map>();
   const userInfo = useRecoilValue(userState);
@@ -48,12 +50,12 @@ const KakaoMap = ({
   const { isLoading, data } = usePosts(queryParameters);
 
   const searchItems = (kakaoMap: kakao.maps.Map) => {
-    if (kakaoMap){
+    if (kakaoMap) {
       const bounds = kakaoMap.getBounds();
       setMapBoundsInfo(bounds);
     }
   };
-
+  console.log('userInfo2222: ', userInfo);
   useEffect(() => {
     const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
     const kakaoMap = new kakao.maps.Map($mapContainer!, {
@@ -75,14 +77,17 @@ const KakaoMap = ({
   return (
     <>
       <S.Container>
-        {map && <MapMarkerController mapItems={mapItems} currentPageItems={currentPageItems} map={map} />}
+        {map && (
+          <MapMarkerController
+            mapItems={mapItems}
+            currentPageItems={currentPageItems}
+            map={map}
+          />
+        )}
 
         {map && (
           <>
-            <S.SearchItemButton
-              type="button"
-              onClick={() => searchItems(map)}
-            >
+            <S.SearchItemButton type="button" onClick={() => searchItems(map)}>
               현 지도에서 검색
             </S.SearchItemButton>
             <S.UploadPost to="/upload">
