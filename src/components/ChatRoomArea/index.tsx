@@ -23,7 +23,7 @@ interface OfferPageProps {
   onHide?: () => void;
   id?: number;
   takerId?: string;
-  distance?: string;
+  distance?: number;
   children?: React.ReactNode;
   // onClickDeleteChatRoomId?: () => void;
   roomId?: number;

@@ -83,7 +83,7 @@ function TakerPage() {
               setSelectedButtonId(null);
             }}
             takerId={'test1234'}
-            distance={String(10007.541864499188)}
+            distance={Math.floor(10007.541864499188)}
             roomId={1}
             sharingId={1}
           >
