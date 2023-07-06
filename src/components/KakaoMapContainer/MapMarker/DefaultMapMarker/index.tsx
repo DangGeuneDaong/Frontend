@@ -9,7 +9,7 @@ import catMarkerImg from '../../../../assets/imgs/cat.png';
 
 import * as S from './styles';
 import { useRecoilValue } from 'recoil';
-import { userInfoState } from '../../../../states/userInfo';
+import { userState } from '../../../../states/userInfo';
 import { checkPostOwner } from '../../../../apis/good';
 
 interface DefaultMapMarkerProps {
@@ -21,7 +21,7 @@ interface DefaultMapMarkerProps {
 const DefaultMapMarker = ({ item, map }: DefaultMapMarkerProps) => {
   const [isShow, setIsShow] = useState(false);
   const navigate = useNavigate();
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(userState);
   const $markerContainer = document.createElement('div');  
   $markerContainer.style.position = 'absolute';
   $markerContainer.style.zIndex = '1';

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { userInfoState } from '../../../states/userInfo';
+import { userInfoState, userState } from '../../../states/userInfo';
 import { keyValueType, usePosts } from '../../../hooks/usePosts';
 
 import MapMarkerController from '../MapMarkerController';
@@ -31,7 +31,7 @@ const KakaoMap = ({
   setMapBoundsInfo
 }: KakaoMapProps) => {
   const [map, setMap] = useState<kakao.maps.Map>();
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(userState);
 
   // Data Fetch - 전체 데이터 (page제외, Lat/Lng 필수) + fetch후 updateItems(= setMapItemList)
   const queryParameters: keyValueType = {

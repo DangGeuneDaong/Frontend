@@ -9,7 +9,7 @@ import catMarkerImg from '../../../../assets/imgs/cat.png';
 import * as S from './styles';
 import { checkPostOwner } from '../../../../apis/good';
 import { useRecoilValue } from 'recoil';
-import { userInfoState } from '../../../../states/userInfo';
+import { userState } from '../../../../states/userInfo';
 
 interface PageMapMarkerProps {
   key: string;
@@ -19,7 +19,7 @@ interface PageMapMarkerProps {
 
 const PageMapMarker = ({ item, map }: PageMapMarkerProps) => {
   const navigate = useNavigate();
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(userState);
   const $markerContainer = document.createElement('div');  
   $markerContainer.style.position = 'absolute';
   $markerContainer.style.zIndex = '1';

@@ -5,7 +5,7 @@ import { ItemType, StatusType } from "../../KakaoMapContainer/itemType";
 
 import * as S from './styles';
 import { useRecoilValue } from "recoil";
-import { userInfoState } from "../../../states/userInfo";
+import { userState } from "../../../states/userInfo";
 import { checkPostOwner } from "../../../apis/good";
 
 interface ItemProps {
@@ -14,7 +14,7 @@ interface ItemProps {
 
 const Item = ({itemInfo} : ItemProps) => {
   const navigate = useNavigate();
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(userState);
   
   const moveDetailPage = async () => {
     if (userInfo) {
