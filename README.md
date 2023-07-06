@@ -50,7 +50,8 @@
 |          | Recoil            | 0.7.7   |                              |
 |          | React Query       | 3.39.3  |                              |
 |          | Styled Components | 5.3.10  |                              |
-|          | Socket.io         | 4.7.0   |                              |
+|          | SockJS-Client     | 4.7.0   |                              |
+|          | Webstomp-Client   | 4.7.0   |                              |
 | Backend  | Spring Framework  | 2.7.12  | Spring Boot, Spring Security |
 |          | JPA               |         |                              |
 |          | JWT               |jjwt0.9.1|                              |
@@ -59,6 +60,7 @@
 |          | MySQL             | 8.0.33  | Database                     |
 |          | AWS EC2 , AWS S3  |         | Storage                      |
 |          | WebSocket         | 2.7.12  |                              |
+|          | Stomp             | 2.7.12  |                              |
 
 ❗️상세 스택은 package.json을 참고해 주세요
 
