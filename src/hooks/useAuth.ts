@@ -186,5 +186,6 @@ export function useAuth<T extends { [key: string]: any }>() {
     error,
     alertMessage,
     showModal,
+    setShowModal,
   };
 }

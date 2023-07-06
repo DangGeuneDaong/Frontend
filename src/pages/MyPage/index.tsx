@@ -16,7 +16,7 @@ import ConfirmModal from '../../components/Modal/Confirm';
 import * as S from './styles';
 
 interface MyPostsProps {
-  id: number;
+  goodId: number;
   title: string;
   featuredImage: string; //가장 첫번째 이미지
   updatedAt: string;
@@ -173,13 +173,13 @@ function MyPage() {
             <S.List>
               {currentPagePosts ? (
                 currentPagePosts?.map((post) => (
-                  <S.Post key={post.id}>
+                  <S.Post key={post.goodId}>
                     <S.PostInfos>
-                      <S.PostImg src={post.featuredImage} />
+                      <S.PostImg src={post.featuredImage[0]} />
                       <S.Description>
                         <S.DescriptionUp>
                           <S.Title
-                            onClick={() => navigate(`/offer/${post.id}`)}
+                            onClick={() => navigate(`/offer/${post.goodId}`)}
                           >
                             {post.title}
                           </S.Title>
@@ -189,47 +189,53 @@ function MyPage() {
                         <S.DescriptionDown>
                           <S.Nums>{post.location}</S.Nums>
                           <S.Nums>
-                            <FaUser /> {post.sharingApplicatonNum}
+                            <FaUser />{' '}
+                            {post.sharingApplicatonNum === 0
+                              ? 0
+                              : post.sharingApplicatonNum}
                           </S.Nums>
                         </S.DescriptionDown>
                       </S.Description>
                     </S.PostInfos>
 
                     <S.UpdatePost>
-                      {filter === 'shared' && (
-                        <>
-                          <Button
-                            type="button"
-                            styleType={
-                              post.status === 'SHARING' ? 'primary' : 'disabled'
-                            }
-                            borderRadius="20px"
-                            hoverStyle="background-color:"
-                            onClickHandler={() => {
-                              setSelected(post.id);
-                              setIsShared(true);
-                            }}
-                          >
-                            나눔완료
-                          </Button>
-
-                          <S.PostInfo>
-                            <S.UpdateBtn
-                              onClick={() => navigate(`/edit/${post.id}`)}
-                            >
-                              수정
-                            </S.UpdateBtn>
-                            <S.UpdateBtn
-                              onClick={() => {
-                                setSelected(post.id);
-                                setIsDeleted(true);
+                      {filter === 'all' ||
+                        (filter === 'shared' && (
+                          <>
+                            <Button
+                              type="button"
+                              styleType={
+                                post.status === 'SHARING'
+                                  ? 'primary'
+                                  : 'disabled'
+                              }
+                              borderRadius="20px"
+                              hoverStyle="background-color:"
+                              onClickHandler={() => {
+                                setSelected(post.goodId);
+                                setIsShared(true);
                               }}
                             >
-                              삭제
-                            </S.UpdateBtn>
-                          </S.PostInfo>
-                        </>
-                      )}
+                              나눔완료
+                            </Button>
+
+                            <S.PostInfo>
+                              <S.UpdateBtn
+                                onClick={() => navigate(`/edit/${post.goodId}`)}
+                              >
+                                수정
+                              </S.UpdateBtn>
+                              <S.UpdateBtn
+                                onClick={() => {
+                                  setSelected(post.goodId);
+                                  setIsDeleted(true);
+                                }}
+                              >
+                                삭제
+                              </S.UpdateBtn>
+                            </S.PostInfo>
+                          </>
+                        ))}
                     </S.UpdatePost>
                   </S.Post>
                 ))
@@ -238,14 +244,13 @@ function MyPage() {
                   <h3>게시물이 존재하지 않습니다.</h3>
                 </S.Empty>
               )}
-
-              <Pagination
-                total={totalPosts?.length || 0}
-                limit={3}
-                page={5}
-                setPage={setPage}
-              />
             </S.List>
+            <Pagination
+              total={totalPosts?.length || 0}
+              limit={3}
+              page={page}
+              setPage={setPage}
+            />
           </S.ListContainer>
         </S.SubContainer>
       </S.Container>

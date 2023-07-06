@@ -17,8 +17,7 @@ function Header() {
     !!localStorage.getItem('accessToken')
   );
   const [userInfo, setUserInfo] = useRecoilState(userState);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { handleLogout } = useAuth();
+  const { handleLogout, showModal, setShowModal } = useAuth();
 
   // 경로 변경 함수
   const routeChange = (routePath: string) => {
@@ -37,7 +36,7 @@ function Header() {
     {
       name: '로그아웃',
       onClickHandler: () => {
-        setIsModalOpen(true);
+        setShowModal(true);
       },
       itemStyle: { color: 'red' },
     },
@@ -46,12 +45,21 @@ function Header() {
   return (
     <S.HeaderContainer>
       <S.HeaderInner>
-        {isModalOpen && (
+        <img
+          src="https://github.com/DangGeuneDaong/Frontend/assets/110911811/5e6c9fbc-6154-4482-82f3-11a6625ed781"
+          alt="Logo"
+          width={50}
+          height={50}
+          onClick={() => navigate('/')}
+          style={{ cursor: 'pointer' }}
+        />
+
+        {showModal && (
           <ConfirmModal
             title="로그아웃"
             message="로그아웃 하시겠습니까?"
-            onCancel={() => setIsModalOpen(false)}
-            onConfirm={() => handleLogout}
+            onCancel={() => setShowModal(false)}
+            onConfirm={() => handleLogout()}
           />
         )}
         <S.HeaderRightMenu>

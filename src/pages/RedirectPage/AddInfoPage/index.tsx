@@ -66,7 +66,6 @@ function AddInfoPage() {
     const file = e.target.files?.[0];
     if (file) {
       //file => URL
-      console.log(file);
       setProfileFile(file);
       const url = URL.createObjectURL(file);
       setThumbnail(url);
@@ -100,7 +99,11 @@ function AddInfoPage() {
               handleInfoSubmit(data, profileFile)
             )}
           >
-            <S.ProfileImg src={thumbnail} />
+            {initialProfile ? (
+              <S.ProfileImg src={initialProfile} alt="유저 프로필 이미지" />
+            ) : (
+              <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
+            )}
             {thumbnail !== initialProfile ? (
               <S.CancelButton onClick={resetImg}>
                 프로필 이미지 변경 취소
