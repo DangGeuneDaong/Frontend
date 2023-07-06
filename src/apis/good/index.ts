@@ -67,9 +67,20 @@ export const addPost = async (data: any) => {
 
     formData.append('request', requestBlob);
 
-    data.files.forEach((file: any) => {
-      formData.append('files', file);
-    });
+    if (data.files.length == 0) {
+      formData.append('files', '[]');
+    } else {
+      data.files.forEach((file: any) => {
+        if (file.type === 'image/webp') {
+          const convertedFile = new File([file], file.name, {
+            type: 'image/webp',
+          });
+          formData.append('files', convertedFile);
+        } else {
+          formData.append('files', file);
+        }
+      });
+    }
 
     const response = await instance.post(
       'http://13.209.220.63/good/offer/info',
@@ -107,9 +118,20 @@ export const editPost = async (data: any) => {
 
     formData.append('request', requestBlob);
 
-    data.files.forEach((file: any) => {
-      formData.append('files', file);
-    });
+    if (data.files.length == 0) {
+      formData.append('files', '[]');
+    } else {
+      data.files.forEach((file: any) => {
+        if (file.type === 'image/webp') {
+          const convertedFile = new File([file], file.name, {
+            type: 'image/webp',
+          });
+          formData.append('files', convertedFile);
+        } else {
+          formData.append('files', file);
+        }
+      });
+    }
 
     const response = await instance.put(
       'http://13.209.220.63/good/offer/info',

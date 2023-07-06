@@ -22,7 +22,7 @@ instance.interceptors.request.use((config) => {
 
 const getAccessToken = async (): Promise<string | void> => {
   try {
-    const response = await instance.post(`/user/token`);
+    const response = await instance.get(`/user/token`);
     localStorage.setItem('accessToken', response.data.substr(1));
 
     return response.data.substr(1);
@@ -79,6 +79,29 @@ export function socialUserProfileRequest(accessToken: string) {
 }
 
 //유저 정보 입력
-export function addInfoRequest(data: AddInfoProps, profileUrl: string) {
-  return instance.put('/user/change', { ...data, profile_url: profileUrl });
+export function addInfoRequest(data: AddInfoProps, file: File | null) {
+  const formData = new FormData();
+
+  const requestObject = {
+    nickName: data.nickName,
+    location: data.location,
+  };
+
+  const requestBlob = new Blob([JSON.stringify(requestObject)], {
+    type: 'application/json',
+  });
+
+  formData.append('request', requestBlob);
+
+  if (file) {
+    formData.append('files', file);
+  }
+
+  const response = instance.put('/user/change', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response;
 }

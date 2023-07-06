@@ -65,12 +65,15 @@ export const Breadcrumb = styled.div`
 
 export const BreadcrumbSpan = styled.span`
   cursor: pointer;
-  margin-left: 3px;
+  margin-left: 5px;
+  &:hover {
+    font-weight: bold;
+  }
 `;
 
 export const Title = styled.h3`
   cursor: pointer;
-  & :hover {
+  &:hover {
     text-decoration: underline;
   }
 `;
@@ -143,9 +146,10 @@ export const UpdateBtn = styled.button`
 `;
 
 export const Empty = styled.div`
+  display: flex;
   width: 100%;
   height: 100%;
-  justfy-content: center;
+  justify-content: center;
   align-items: center;
   padding: 20px;
   color: ${(props) => props.theme.color.lightGray};

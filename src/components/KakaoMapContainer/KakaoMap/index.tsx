@@ -9,7 +9,7 @@ import { ItemType } from '../itemType';
 
 import * as S from './styles';
 
-import uploadPostImg from '../../../assets/imgs/edit.png';
+import uploadPostImg from '../../../assets/imgs/write.png';
 
 interface KakaoMapProps {
   mapItems: ItemType[];
@@ -79,16 +79,16 @@ const KakaoMap = ({
 
         {map && (
           <>
-            <S.UploadPost to="/upload">
-              <S.UploadPostImg src={uploadPostImg} alt="나눔 글 작성 버튼" />
-              나눔 글 작성
-            </S.UploadPost>
             <S.SearchItemButton
               type="button"
               onClick={() => searchItems(map)}
             >
               현 지도에서 검색
             </S.SearchItemButton>
+            <S.UploadPost to="/upload">
+              <S.UploadPostImg src={uploadPostImg} alt="나눔 글 작성 버튼" />
+              나눔 글 작성
+            </S.UploadPost>
           </>
         )}
       </S.Container>

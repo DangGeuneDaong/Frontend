@@ -41,7 +41,7 @@ export default function App() {
       <Route path="/redirect-kakao" element={<RedirectKakaoPage />} />
       <Route path="/redirect-naver" element={<RedirectNaverPage />} />
       <Route path="/upload" element={<UploadPage />} />
-      <Route path="/edit" element={<EditPage />} />
+      <Route path="/edit/:id" element={<EditPage />} />
       <Route path="/addInfo" element={<AddInfoPage />} />
       <Route path="/signup" element={<JoinPage />} />
       <Route path="/edit-profile" element={<EditProfilePage />} />

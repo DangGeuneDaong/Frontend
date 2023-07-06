@@ -1,8 +1,9 @@
 import { useRecoilState } from 'recoil';
-import { userInfoState } from '../../states/userInfo';
+import { userState } from '../../states/userInfo';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueries, useMutation, useQueryClient } from 'react-query';
 import { instance } from '../../apis/auth/api';
 
 import { FaUser } from 'react-icons/fa';
@@ -25,14 +26,13 @@ interface MyPostsProps {
 }
 
 function MyPage() {
-  const userId = localStorage.getItem('userId');
-  const [userData, setUserData] = useRecoilState(userInfoState);
+  const [userData, setUserData] = useRecoilState(userState);
   const [selected, setSelected] = useState<number | null>(null);
   const [isDeleted, setIsDeleted] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [filter, setFilter] = useState('all');
   const [page, setPage] = useState(1);
-  const LIMIT = 5;
+  const LIMIT = 3;
   const offset = (page - 1) * LIMIT;
   const [myWrittenPosts, setMyWrittenPosts] = useState<
     MyPostsProps[] | undefined
@@ -48,51 +48,66 @@ function MyPage() {
       ? myWrittenPosts?.filter((post) => post.status === 'COMPLETE')
       : myAppliedPosts;
   const currentPagePosts = totalPosts?.slice(offset, offset + LIMIT);
+  const queryClient = useQueryClient();
+  const myPostsQueries = useQueries([
+    {
+      queryKey: ['myWrittenPosts', userData.userId],
+      queryFn: async () => {
+        const res = await instance.get(`/good/offer?userId=${userData.userId}`);
+        return res.data;
+      },
+      enabled: !!userData.userId,
+      onSuccess: (data: MyPostsProps[]) => setMyWrittenPosts(data),
+      onError: (error: any) => {
+        console.error(error);
+      },
+    },
+    {
+      queryKey: ['myAppliedPosts', userData.userId],
+      queryFn: async () => {
+        const res = await instance.get(
+          `/sharing/list?userId=${userData.userId}`
+        );
+        return res.data;
+      },
+      enabled: !!userData.userId,
+      onSuccess: (data: MyPostsProps[]) => setMyAppliedPosts(data),
+      onError: (error: any) => {
+        console.error(error);
+      },
+    },
+  ]);
 
-  const getMyPosts = async () => {
-    try {
-      //마이페이지 > 내가 쓴 글
-      const writtenResponse = await instance.get(
-        `/good/offer?userId=${userId}`
-      );
-      //마이페이지 > 나눔 신청한 글
-      const appliedResponse = await instance.get(
-        `/sharing/list?userId=${userId}`
-      );
-      setMyWrittenPosts(writtenResponse.data);
-      setMyAppliedPosts(appliedResponse.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    getMyPosts();
-  }, []);
-
-  //나눔완료 변경
-  const handleShared = async () => {
-    try {
+  const mutationShared = useMutation(
+    async () => {
       if (selected === null) return;
-      await instance.put(`good/offer/status?goodId=${selected}`);
-      setMyWrittenPosts(
-        myWrittenPosts?.map((post) =>
-          post.id === selected ? { ...post, status: 'COMPLETE' } : post
-        )
-      );
-    } catch (error) {
-      console.error(error);
+      const res = await instance.put(`good/offer/status?goodId=${selected}`);
+      return res.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['myWrittenPosts', userData.userId]);
+      },
+      onError: (error) => {
+        console.error(error);
+      },
     }
-  };
-  //나눔글 삭제
-  const handleDelete = async (id: number) => {
-    try {
+  );
+  const mutationDeleted = useMutation(
+    async () => {
       if (selected === null) return;
-      await instance.delete(`good/offer/info?goodId=${selected}`);
-      setMyWrittenPosts(myWrittenPosts?.filter((post) => post.id !== selected));
-    } catch (error) {
-      console.error(error);
+      const res = await instance.delete(`good/offer/info?goodId=${selected}`);
+      return res.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['myWrittenPosts', userData.userId]);
+      },
+      onError: (error) => {
+        console.error(error);
+      },
     }
-  };
+  );
   return (
     <MainTemplate>
       {isDeleted && (
@@ -104,7 +119,10 @@ function MyPage() {
           cancelText="취소"
           alignType="top"
           onCancel={() => setIsDeleted(false)}
-          onConfirm={() => handleDelete}
+          onConfirm={() => {
+            mutationDeleted.mutate();
+            setIsDeleted(false);
+          }}
         />
       )}
       {isShared && (
@@ -116,7 +134,10 @@ function MyPage() {
           cancelText="취소"
           alignType="top"
           onCancel={() => setIsShared(false)}
-          onConfirm={() => handleShared}
+          onConfirm={() => {
+            mutationShared.mutate();
+            setIsShared(false);
+          }}
         />
       )}
       <S.Container>
@@ -126,7 +147,7 @@ function MyPage() {
               <S.Span>
                 <Link to={'/edit-profile'}>프로필 수정 </Link>
               </S.Span>
-              <S.ProfileImg src={userData.profile_url} />
+              <S.ProfileImg src={userData.profileUrl} />
               <h3>{userData.nickName}</h3>
             </S.UserContainer>
           </S.UpdateContainer>
@@ -134,15 +155,17 @@ function MyPage() {
           <S.ListContainer>
             <S.Breadcrumb>
               <S.BreadcrumbSpan onClick={() => setFilter('all')}>
-                전체 |
+                전체{' '}
               </S.BreadcrumbSpan>
+              |
               <S.BreadcrumbSpan
                 onClick={() => {
                   setFilter('shared');
                 }}
               >
-                나눔완료한 글 |
+                나눔완료 글{' '}
               </S.BreadcrumbSpan>
+              |
               <S.BreadcrumbSpan onClick={() => setFilter('applied')}>
                 신청한 글
               </S.BreadcrumbSpan>
@@ -212,7 +235,7 @@ function MyPage() {
                 ))
               ) : (
                 <S.Empty>
-                  <h2>게시물이 존재하지 않습니다.</h2>
+                  <h3>게시물이 존재하지 않습니다.</h3>
                 </S.Empty>
               )}
 

@@ -15,7 +15,6 @@ import * as S from './styles';
 export interface AddInfoProps {
   nickName: string;
   location: string;
-  profile_url: string;
 }
 
 function AddInfoPage() {
@@ -23,7 +22,6 @@ function AddInfoPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const loginType = params.get('loginType');
-  console.log('loginType : ', loginType);
   const { getSocialUserProfile } = useAuth();
   const { generateRandomNicknameK, generateRandomNicknameN } = useRandom();
   const initialNickname =
@@ -31,6 +29,8 @@ function AddInfoPage() {
       ? generateRandomNicknameK()
       : generateRandomNicknameN();
   const [nicknameEdited, setNicknameEdited] = useState<boolean>(false);
+  const [thumbnail, setThumbnail] = useState<string>('');
+  const [profileFile, setProfileFile] = useState<File | null>(null);
   const [randomNickname, setRandomNickname] = useState<string>(initialNickname);
   const [initialProfile, setInitialProfile] = useState<string>('');
   const fileInput = useRef<HTMLInputElement>(null);
@@ -43,7 +43,6 @@ function AddInfoPage() {
     setError,
     setValue,
     trigger,
-    watch,
   } = useForm<AddInfoProps>({
     mode: 'onBlur',
     defaultValues: {
@@ -51,14 +50,12 @@ function AddInfoPage() {
       location: '',
     },
   });
-  const watchProfileUrl = watch('profile_url');
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       getSocialUserProfile(accessToken)
         .then((socialUserData) => {
-          setInitialProfile(socialUserData.profile_url);
-          setValue('profile_url', socialUserData.profile_url);
+          setInitialProfile(socialUserData.profileUrl);
         })
         .catch((error) => console.error('콘솔에러', error));
     }
@@ -66,18 +63,13 @@ function AddInfoPage() {
 
   //프로필 사진 미리보기
   const onPreviewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
     const file = e.target.files?.[0];
     if (file) {
       //file => URL
+      console.log(file);
+      setProfileFile(file);
       const url = URL.createObjectURL(file);
-      setValue('profile_url', url);
-
-      // 읽기 동작이 성공적으로 완료 되었을 시 실행
-      reader.onload = () => {
-        if (reader.result) {
-        }
-      };
+      setThumbnail(url);
     }
   };
   //랜덤 닉네임
@@ -91,14 +83,12 @@ function AddInfoPage() {
       setValue('nickName', newRandomNickname);
     }
   };
-  const handleUploadImg = () => {
-    fileInput.current?.click();
-  };
   const resetImg = () => {
     if (fileInput.current) {
       fileInput.current.value = '';
     }
-    setValue('profile_url', initialProfile);
+    setProfileFile(null);
+    setThumbnail(initialProfile);
   };
   return (
     <MainTemplate>
@@ -107,16 +97,16 @@ function AddInfoPage() {
           <S.H1>추가 정보 입력</S.H1>
           <S.Form
             onSubmit={handleSubmit((data) =>
-              handleInfoSubmit(data, watchProfileUrl)
+              handleInfoSubmit(data, profileFile)
             )}
           >
-            <S.ProfileImg src={watchProfileUrl} />
-            {watchProfileUrl ? (
+            <S.ProfileImg src={thumbnail} />
+            {thumbnail !== initialProfile ? (
               <S.CancelButton onClick={resetImg}>
                 프로필 이미지 변경 취소
               </S.CancelButton>
             ) : (
-              <S.AddSpan onClick={handleUploadImg}>
+              <S.AddSpan onClick={() => fileInput.current?.click()}>
                 프로필 이미지 변경
               </S.AddSpan>
             )}
@@ -124,6 +114,7 @@ function AddInfoPage() {
             <S.ImgInput
               ref={fileInput}
               type="file"
+              accept="image/*"
               onChange={(e) => onPreviewImg(e)}
             />
             <S.NicknameContainer>

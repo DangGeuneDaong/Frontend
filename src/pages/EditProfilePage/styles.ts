@@ -41,6 +41,7 @@ export const ActiveSaveButton = styled.button.attrs((props) => ({
 export const InactiveSaveButton = styled(ActiveSaveButton)`
   background-color: #f7d48f;
 `;
+
 export const H1 = styled.h1`
   display: flex;
   align-items: center;
@@ -53,11 +54,6 @@ export const NicknameContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-`;
-export const RefreshButton = styled.button`
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
 `;
 
 export const AddSpan = styled.span`
