@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
 export const TakerContainer = styled.div`
   width: 800px;
   height: fit-content;

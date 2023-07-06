@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { userInfoState } from '../../../states/userInfo';
+import { userState } from '../../../states/userInfo';
 import { keyValueType, usePosts } from '../../../hooks/usePosts';
 
 import MapMarkerController from '../MapMarkerController';
@@ -9,7 +9,7 @@ import { ItemType } from '../itemType';
 
 import * as S from './styles';
 
-import uploadPostImg from '../../../assets/imgs/edit.png';
+import uploadPostImg from '../../../assets/imgs/write.png';
 
 interface KakaoMapProps {
   mapItems: ItemType[];
@@ -18,7 +18,9 @@ interface KakaoMapProps {
   condition: ItemFilterProps;
   updateItems: Dispatch<SetStateAction<ItemType[]>>;
   currentPageItems: ItemType[];
-  setMapBoundsInfo: Dispatch<SetStateAction<kakao.maps.LatLngBounds | undefined>>;
+  setMapBoundsInfo: Dispatch<
+    SetStateAction<kakao.maps.LatLngBounds | undefined>
+  >;
 }
 
 const KakaoMap = ({
@@ -28,10 +30,10 @@ const KakaoMap = ({
   condition,
   updateItems,
   currentPageItems,
-  setMapBoundsInfo
+  setMapBoundsInfo,
 }: KakaoMapProps) => {
   const [map, setMap] = useState<kakao.maps.Map>();
-  const userInfo = useRecoilValue(userInfoState);
+  const userInfo = useRecoilValue(userState);
 
   // Data Fetch - 전체 데이터 (page제외, Lat/Lng 필수) + fetch후 updateItems(= setMapItemList)
   const queryParameters: keyValueType = {
@@ -48,12 +50,12 @@ const KakaoMap = ({
   const { isLoading, data } = usePosts(queryParameters);
 
   const searchItems = (kakaoMap: kakao.maps.Map) => {
-    if (kakaoMap){
+    if (kakaoMap) {
       const bounds = kakaoMap.getBounds();
       setMapBoundsInfo(bounds);
     }
   };
-
+  
   useEffect(() => {
     const $mapContainer = document.getElementById('mapContainer'); // 지도를 표시할 div
     const kakaoMap = new kakao.maps.Map($mapContainer!, {
@@ -75,20 +77,23 @@ const KakaoMap = ({
   return (
     <>
       <S.Container>
-        {map && <MapMarkerController mapItems={mapItems} currentPageItems={currentPageItems} map={map} />}
+        {map && (
+          <MapMarkerController
+            mapItems={mapItems}
+            currentPageItems={currentPageItems}
+            map={map}
+          />
+        )}
 
         {map && (
           <>
+            <S.SearchItemButton type="button" onClick={() => searchItems(map)}>
+              현 지도에서 검색
+            </S.SearchItemButton>
             <S.UploadPost to="/upload">
               <S.UploadPostImg src={uploadPostImg} alt="나눔 글 작성 버튼" />
               나눔 글 작성
             </S.UploadPost>
-            <S.SearchItemButton
-              type="button"
-              onClick={() => searchItems(map)}
-            >
-              현 지도에서 검색
-            </S.SearchItemButton>
           </>
         )}
       </S.Container>

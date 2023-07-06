@@ -19,6 +19,7 @@ import Dropdown from '../../components/Dropdown';
 import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
+import Loader from '../../components/Loader';
 
 export interface UploadPageCSSProps {
   inputContainerDirection?: 'row' | 'column';
@@ -40,6 +41,8 @@ function UploadPage() {
   const navigate = useNavigate();
 
   const [userInfo, _setUserInfo] = useRecoilState<any>(userState);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
@@ -67,13 +70,13 @@ function UploadPage() {
   } = useForm({ mode: 'onBlur' });
 
   // 디버깅용 코드
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) =>
+  //     console.log(value, name, type)
+  //   );
 
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
 
   // useEffect(() => {
   //   console.log('선택된 파일', selectedFiles);
@@ -102,6 +105,9 @@ function UploadPage() {
 
   // 폼 전송
   const { mutate: addPostMutation } = useMutation(addPost, {
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onSuccess: () => {
       setAlertMessage({
         title: '나눔글 등록',
@@ -117,11 +123,15 @@ function UploadPage() {
       setShowAlert(true);
       console.log(error);
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   const onSubmit = async (data: any) => {
     try {
       // TODO : REFACOTRING
+      setIsLoading(true);
       const mainCategory = categoryType.find(
         (item) => item.value === selectedCategory
       );
@@ -132,6 +142,7 @@ function UploadPage() {
       );
       const subCategoryKey = subCategory ? subCategory.key : undefined;
 
+      const id = localStorage.getItem('userId');
       const postData = {
         userId: userInfo.userId,
         mainCategory: mainCategoryKey,
@@ -145,6 +156,7 @@ function UploadPage() {
       addPostMutation(postData);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -214,7 +226,7 @@ function UploadPage() {
                   required: '내용을 입력해주세요',
                 })}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.keyCode === 13 && e.nativeEvent.keyCode !== 229) {
                     e.preventDefault();
                     setValue('description', `${watch('description')}\n`);
                   }
@@ -233,8 +245,13 @@ function UploadPage() {
                 취소
               </Button>
 
-              <Button width="128px" borderRadius="20px">
-                완료
+              <Button
+                width="128px"
+                borderRadius="20px"
+                styleType={isLoading ? 'disabled' : 'primary'}
+                style={{ position: 'relative' }}
+              >
+                {isLoading ? <Loader width={30} height={30} /> : '완료'}
               </Button>
             </S.ButtonContainer>
           </S.Inner>

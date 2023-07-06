@@ -39,6 +39,7 @@ interface PostsProps {
 function OfferPage() {
   const param = useParams();
   // const param = 20;
+  const postID = param.id as string;
 
   const [showPosts, setShowPosts] = useState<PostsProps>(); // 1개를 받아오기 때문에 배열 사용 X
   const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
@@ -58,12 +59,12 @@ function OfferPage() {
   const getData = async () => {
     try {
       // 1. Good의 n번째 id로 선택된 데이터 get 요청
-      const { data } = await instance.get(`/good/offer/info?goodId=${param}`);
+      const { data } = await instance.get(`/good/offer/info?goodId=${postID}`);
       setShowPosts(data);
 
       // 2. Sharing_Application 데이터 get 요청
       const result_takerlists = await instance.get(
-        `/sharing/application?goodId=${param}`
+        `/sharing/application?goodId=${postID}`
       );
       console.log('result_takerlists: ', result_takerlists);
       setShowTakerlists(result_takerlists.data);
@@ -90,11 +91,11 @@ function OfferPage() {
         offerId: offerId,
       };
       console.log('getData: ', getData);
-      const enterChatData = await instance.get(`/chat/enter`, getData);
-      console.log('enterChatData: ', enterChatData);
+      // const enterChatData = await instance.get(`/chat/enter`, getData);
+      // console.log('enterChatData: ', enterChatData);
       // setShowRoomlists(result_roomlists.data);
 
-      return enterChatData.roomId;
+      // return enterChatData.roomId;
     } catch (e) {
       console.log(e);
     }
@@ -139,20 +140,20 @@ function OfferPage() {
       roomId: roomId,
     };
     // data 내 저장한 값을 외부에서 사용
-    setSelectedUserData(data);
+    // setSelectedUserData(data);
   };
 
   // 삭제하기 버튼을 클릭했을 때, 서버에 good table을 삭제하고, 메인 페이지로 이동
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const onClickGoodDataDeleteHandler = async () => {
-    await instance.delete(`/good/offer/info?goodId=${param}`);
+    await instance.delete(`/good/offer/info?goodId=${postID}`);
     navigate(`/`); // main Page로 이동
   };
 
   // 나눔완료 버튼을 클릭했을 때, 서버 status를 COMPLETE로 변경하고, 화면에 COMPELTE 렌더링
   const [isCompleteText, setIsCompleteText] = useState<string>('SHARING');
   const onClickStatusHandler = async (status: string) => {
-    await instance.put(`/good/offer/status?goodId=${param}`); // 구조 분해 할당
+    await instance.put(`/good/offer/status?goodId=${postID}`); // 구조 분해 할당
     setIsCompleteText(status);
   };
 
@@ -194,7 +195,7 @@ function OfferPage() {
             )}
             <Button
               onClickHandler={() => {
-                navigate(`/edit/${param}`);
+                navigate(`/edit/${postID}`);
               }}
             >
               수정하기
@@ -264,10 +265,10 @@ function OfferPage() {
             roomId={selectedUserData?.roomId}
             sharingId={selectedUserData?.sharingId}
           >
-            <Chat
+            {/* <Chat
               roomId={selectedUserData.roomId}
               userId={selectedUserData.userId}
-            />
+            /> */}
           </ChatRoomArea>
         )}
       </S.Container>

@@ -1,7 +1,7 @@
 import Button from '../Button';
 import * as S from './styles';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import axios, { AxiosInstance } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -20,14 +20,19 @@ import { instance } from '../../apis/auth/api';
 // }
 // { userId }: TakerPageProps
 
-function CommentArea() {
+interface CommentAreaProps {
+  changeButton: boolean;
+  setChangeButton: Dispatch<SetStateAction<boolean>>;
+}
+
+function CommentArea({ changeButton, setChangeButton }: CommentAreaProps) {
   const param = useParams();
   // const param = '20';
+  const postID = param.id as string;
 
   // theme 속 styled-components를 사용하기 위해 useTheme 선언
   const theme = useTheme();
 
-  const [changeButton, setChangeButton] = useState(false);
   const [postComment, setPostComment] = useState<string>(''); // 댓글 Post 요청하기
   const [postTakerId, setPostTakerId] = useState<string>('');
   const [deleteComment, setDeleteComment] = useState<string>(''); // 댓글 Post 요청 취소하기
@@ -55,7 +60,7 @@ function CommentArea() {
     try {
       const data = {
         userId: userId,
-        goodId: param,
+        goodId: postID,
         content: content.postComment,
       };
 
@@ -75,7 +80,7 @@ function CommentArea() {
     // 서버에 sharingApplication Delete하기
     try {
       await instance.delete(
-        `/sharing/application?sharingApplicationId=${param}` // 차후, sharing/application?sharingApplicationId=1로 변경
+        `/sharing/application?sharingApplicationId=${postID}` // 차후, sharing/application?sharingApplicationId=1로 변경
       );
     } catch (e) {
       console.log(e);
@@ -90,13 +95,25 @@ function CommentArea() {
   // recoil로 user data
   // const [getUserData, setGetUserData] = useRecoilState<any>(userState);
   const userId = localStorage.getItem('userId');
-  instance.get(`/user/info?userId=${userId}`);
-  console.log(`userId: `, userId);
+  // instance.get(`/user/info?userId=${userId}`);
+  // console.log(`userId: `, userId);
 
   useEffect(() => {
     const checkChatStatus = async () => {
-      const { data } = await instance.get(`/chat/enter`);
-      console.log(`chatData1: `, data);
+      // const { data } = await instance.get(`/chat/enter`);
+      // console.log(`chatData1: `, data);
+      const data = {
+        roomId: 1,
+        takerId: 'test1234',
+        offerId: 'tester12',
+        sharingApplication: {
+          id: 1,
+          distance: 10007.541864499188,
+          requestedAt: '2023-07-05T15:58:46.995256',
+          content: '안녕하세요!',
+        },
+        isOpened: true,
+      };
       setCheckChatStatus(data.isOpened);
       setCheckRoomId(data.roomId);
     };
@@ -146,14 +163,6 @@ function CommentArea() {
             신청취소
           </Button>
         </S.Form>
-      )}
-      {changeButton && (
-        // checkChatStatus?.takerId === userId &&
-        // checkChatStatus?.isOpened && (
-        // roomId={checkChatStatus?.roomId}
-        <ChatRoomArea>
-          <Chat roomId={checkRoomId.roomId} userId={String(userId)} />
-        </ChatRoomArea>
       )}
     </S.Container>
   );

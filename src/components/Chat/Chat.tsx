@@ -86,7 +86,7 @@ function Chat({ roomId, userId }: OfferPageProps) {
     watch,
     setValue,
   } = useForm();
-  setValue('message', message);
+  // setValue('message', message);
 
   return (
     <>
