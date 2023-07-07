@@ -37,8 +37,6 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.11.2",
     "recoil": "^0.7.7",
-    "socket.io": "^4.7.0",
-    "socket.io-client": "^4.7.1",
     "sockjs-client": "^1.6.1",
     "styled-components": "^5.3.10",
     "webstomp-client": "^1.2.6"
