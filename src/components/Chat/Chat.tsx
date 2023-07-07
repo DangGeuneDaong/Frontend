@@ -4,7 +4,9 @@ import * as S from './styles';
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import SockJS from 'sockjs-client';
-import webstomp from 'webstomp-client';
+import StompJs from '@stomp/stompjs';
+// import webstomp from 'webstomp-client';
+// import stomp from 'stomp-client';
 import { AxiosInstance } from 'axios';
 
 import axiosInstance from '../../apis';
@@ -18,110 +20,118 @@ interface OfferPageProps {
 }
 
 function Chat({ roomId, userId }: OfferPageProps) {
-  let stomp: any;
+  // 1. client 객체 만들기
+  const client = new StompJs.Client({
+    // brokerURL: `ws://3.36.236.207/ws`,
+    brokerURL: `ws://localhost:3000/ws`,
+    connectHeaders: {
+      login: 'user',
+      passcode: 'password',
+    },
+    debug: function (str) {
+      console.log(str);
+    },
+    reconnectDelay: 5000, //자동 재연결
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+  });
 
-  const [messages, setMessages] = useState(
-    [] as {
-      message: string;
-      userId: string;
-      // sendAt: string;
-      // messageType: string;
-    }[]
-  );
-  const [message, setMessage] = useState('');
-
-  let sockjsClient = useRef();
-  const SERVER_URL = 'http://13.209.220.63';
-
-  useEffect(() => {
-    // ["websocket", "xhr-streaming", "xhr-polling"]
-    const sock = new SockJS(`${SERVER_URL}`, null, {
-      transports: ['websocket'],
-    });
-    stomp = webstomp.over(sock);
-    // Chat 서버 연결
-    sockjsClient = stomp.connect('/websocket');
-
-    // subscribe로 메시지 받기
-    stomp.subscribe(
-      `/websocket/sub/${roomId}`,
-      (messages: {
-        message: string;
-        userId: string;
-        // sendAt: string;
-        // messageType: string;
-      }) => {
-        setMessages((prev) => [...prev, messages]);
-      }
-    );
-  }, []);
-
-  // 메시지 발송 handler
-  const handleSendMessage = () => {
-    // 2. 메시지 발송하기
-    if (sockjsClient.current) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          message,
-          userId,
-          // sendAt,
-          // messageType
-        },
-      ]);
-      stomp.send(`/websocket/pub/message/${roomId}`, {
-        message,
-        userId,
-        // sendAt,
-        // messageType,
-      });
-      setMessage('');
-    }
+  // 2. 연결하기
+  client.onConnect = function (frame) {};
+  // 에러처리하기
+  client.onStompError = function (frame) {
+    console.log('Broker reported error: ' + frame.headers['message']);
+    console.log('Additional details: ' + frame.body);
   };
+  client.activate();
+  // 3. 메시지 보내기
+  function send(e: any) {
+    e.preventDefault();
+    const message = document.querySelector('.message') as HTMLInputElement;
+    // console.log('stompClient on Send: ', stompClient);
+    // stompClient.send(`/pub/message/29`, console.log('send Message'));
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setValue,
-  } = useForm();
-  // setValue('message', message);
+    client.publish({
+      destination: '/websocket/pub/message/29',
+      body: message.value,
+      headers: { priority: '9' },
+    });
+
+    message.value = '';
+    console.log('message on send!! Finished');
+  }
+  // 4. 메시지 받기
+  // const subscription =
+  client.subscribe('/websocket/sub/29', function () {
+    console.log('callback function position!!!!!');
+  });
 
   return (
     <>
+      <div>
+        <input type="text" className="message" />
+        <button onClick={send} className="send-btn">
+          보내기
+        </button>
+      </div>
       <div className="messages">
-        <ul id="messages">
-          {messages.map((message, i) => (
-            <Message
-              key={i + message.userId}
-              message={message}
-              messageReceived={
-                message.userId !== userId
-                  ? 'message received'
-                  : 'message sended'
-              }
-            />
-          ))}
-        </ul>
-
-        <div>
-          <S.Form onSubmit={handleSubmit(handleSendMessage)}>
-            <Input
-              placeholder={'메시지를 입력해주세요!'}
-              errors={errors}
-              containerType="content"
-              {...register('message', { required: '메시지가 없습니다!' })}
-            />
-            <Button>보내기</Button>
-          </S.Form>
-        </div>
+        <div id="messages"></div>
       </div>
     </>
   );
 }
 
 export default Chat;
+
+// function Chat({ roomId, userId }: OfferPageProps) {
+//   const SERVER_URL = 'http://13.209.220.63';
+
+//   let stompClient: any;
+//   // document.addEventListener('DOMContentLoaded', function () {
+//   // ["websocket", "xhr-streaming", "xhr-polling"]
+//   // 1. socket 객체 만들기
+//   const socket = new SockJS(`${SERVER_URL}/websocket`);
+//   // console.log('socket on new SockJS: ', socket);
+//   stompClient = webstomp.over(socket);
+//   // 2. 연결하기
+//   stompClient.connect({}, function (frame: any) {
+//     console.log('Connected!!');
+//     // 4. 메시지 받기
+//     stompClient.subscribe(
+//       `/sub/${roomId}`,
+//       // console.log('message on subscribe!!!!!!!!!!')
+//         function (frame: any) {
+//         const messages = document.querySelector('#messages') as HTMLDivElement;
+//         const message = document.createElement('li');
+//         message.innerText = frame.body;
+//         messages.appendChild(message);
+//       }
+//     );
+//   });
+//   // });
+//   // 3. 메시지 보내기
+//   function send(e: any) {
+//     e.preventDefault();
+//     const message = document.querySelector('.message') as HTMLInputElement;
+//     // console.log('stompClient on Send: ', stompClient);
+//     stompClient.send(`/pub/message/29`, message.value);
+//     message.value = '';
+//   }
+
+//   return (
+//     <>
+//       <div>
+//         <input type="text" className="message" />
+//         <button onClick={send} className="send-btn">
+//           보내기
+//         </button>
+//       </div>
+//       <div className="messages">
+//         <div id="messages"></div>
+//       </div>
+//     </>
+//   );
+// }
 
 // 230701 (3)
 // import { useEffect, useState } from 'react';

@@ -10,6 +10,7 @@ import CommentArea from '../../components/CommentArea';
 import MainTemplate from '../../components/template/MainTemplate';
 import { instance } from '../../apis/auth/api';
 import ChatRoomArea from '../../components/ChatRoomArea';
+import Chat from '../../components/Chat/Chat';
 
 interface PostsProps {
   goodId: number;
@@ -87,7 +88,7 @@ function TakerPage() {
             roomId={1}
             sharingId={1}
           >
-            {/* <Chat roomId={checkRoomId} userId={String(userId)} /> */}
+            <Chat roomId={1} userId={'tester12'} />
           </ChatRoomArea>
         )}
       </S.Container>

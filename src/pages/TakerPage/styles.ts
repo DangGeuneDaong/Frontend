@@ -11,11 +11,6 @@ export const Container = styled.div`
 export const TakerContainer = styled.div`
   width: 800px;
   height: fit-content;
-
-  margin: 0 auto;
-  margin-top: 10px;
-  margin-botton: 10px;
-
   background-color: white;
   border: 1px solid ${(props) => props.theme.color.gray};
 
