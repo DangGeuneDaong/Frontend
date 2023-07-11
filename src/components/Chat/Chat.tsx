@@ -1,3 +1,73 @@
+// // 230711 (5) Spring document 참고
+// import React from 'react';
+// import SockJS from 'sockjs-client';
+// import webstomp from 'webstomp-client';
+// import StompJs from '@stomp/stompjs';
+
+// function Chat() {
+//   const SERVER_URL = 'ws://13.209.220.63';
+//   const stompClient = new StompJs.Client({
+//     brokerURL: `${SERVER_URL}/websocket`, // WebSocketConfig.java 파일의 addEndpoints
+//   });
+
+//   stompClient.onConnect = (frame) => {
+//     setConnected(true);
+//     console.log('Connected: ', + frame);
+//     stompClient.subscribe('/sub', (greeting) => {
+//       // WebSocketConfig.java 파일의 enableSimpleBroker('/sub')
+//       showGreeting(JSON.parse(greeting.body).content);
+//     });
+//   };
+
+//   stompClient.onWebSocketError = (error) => {
+//     console.error('Error with websocket: ', error);
+//   };
+
+//   stompClient.onStompError = (frame) => {
+//     console.error('Broker reported error: ' + frame.headers['message']);
+//     console.error('Additional details: ' + frame.body);
+//   };
+
+//   function setConnected(connected) {
+//     $('#connect').prop('disabled', connected);
+//     $('#disconnect').prop('disabled', !connected);
+//     if (connected) {
+//       $('#conversation').show();
+//     } else {
+//       $('#conversation').hide();
+//     }
+//     $('#greetings').html('');
+//   }
+
+//   function connect() {
+//     stompClient.activate();
+//   }
+//   function disconnect() {
+//     stompClient.deactivate();
+//     setConnected(false);
+//     console.log('Disconnected!!!!!!');
+//   }
+//   function sendName() {
+//     stompClient.publish({
+//       destination: `/pub/message`,
+//       body: JSON.stringify({ name: $('#name').val() }),
+//     });
+//   }
+//   function showGreeting(message) {
+//     $('#greetings').append('<tr><td>' + message + '</td></tr>')
+//   }
+//   $(function () {
+//     $('form').on('submit', (e) => e.preventDefault())
+//     $('#connect').click(() => connect())
+//     $('#disconnect').click(() => disconnect());
+//     $('#send').click(() => sendName())
+//   })
+
+//   return <div>Chat</div>;
+// }
+
+// export default Chat;
+
 // 230702 (4)
 import * as S from './styles';
 
@@ -23,7 +93,8 @@ function Chat({ roomId, userId }: OfferPageProps) {
   // 1. client 객체 만들기
   const client = new StompJs.Client({
     // brokerURL: `ws://3.36.236.207/ws`,
-    brokerURL: `ws://localhost:3000/ws`,
+    // const SERVER_URL = 'ws://13.209.220.63';
+    brokerURL: `ws://13.209.220.63/websocket`,
     connectHeaders: {
       login: 'user',
       passcode: 'password',
