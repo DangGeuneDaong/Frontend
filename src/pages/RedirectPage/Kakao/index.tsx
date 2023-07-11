@@ -38,7 +38,7 @@ function RedirectKakaoPage() {
       )
       .then((res) => {
         console.log('로그인에러', res);
-        const accessToken = res.data.accessToken;
+        const accessToken = res.data;
         if (!accessToken) {
           setAlertMessage('로그인에 실패하였습니다.');
         }
