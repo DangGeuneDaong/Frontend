@@ -150,7 +150,7 @@ export const editPost = async (data: any) => {
 };
 
 interface GetPostModel {
-  responseLists: ItemType[];
+  content: ItemType[];
   totalPage: number;
 }
 
@@ -159,7 +159,7 @@ export const getPosts = async (requestURL: string) => {
     const response = await instance.get(`http://13.209.220.63${requestURL}`);
     if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
     const responseData: GetPostModel = response.data;
-    return responseData.responseLists;
+    return responseData.content;
   } catch (error) {
     console.log('getPosts error : ', error);
   }
