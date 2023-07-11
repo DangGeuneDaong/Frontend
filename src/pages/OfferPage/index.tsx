@@ -95,7 +95,7 @@ function OfferPage() {
   const getChatData = async (createChatData2: any) => {
     console.log('getChatData parameter: ', createChatData2);
     const enterChatData = await instance.get(
-      `/chat/enter?roomdId=${createChatData2.id}&takerId=${createChatData2.takerId}&offerId=${createChatData2.offerId}`
+      `/chat/enter?roomId=${createChatData2.id}&takerId=${createChatData2.takerId}&offerId=${createChatData2.offerId}`
     );
     console.log('enterChatData result: ', enterChatData.data);
     // return enterChatData.data.roomId;
