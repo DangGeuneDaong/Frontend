@@ -107,7 +107,10 @@ function LoginPage() {
               title="로그인"
               message="로그인에 실패하였습니다. 다시 시도해주세요."
               confirmType="warning"
-              onConfirm={() => navigate('/signin')}
+              onConfirm={() => {
+                navigate('/signin');
+                setShowModal(false);
+              }}
             />
           )}
           {showModal &&
@@ -118,7 +121,10 @@ function LoginPage() {
                 message="가입되어 있지 않습니다. 회원가입을 진행하시겠습니까?"
                 confirmType="confirm"
                 onCancel={() => setShowModal(false)}
-                onConfirm={() => navigate('/signup')}
+                onConfirm={() => {
+                  navigate('/signup');
+                  setShowModal(false);
+                }}
               />
             )}
         </S.SubContainer>

@@ -51,6 +51,7 @@ instance.interceptors.response.use(
       const accessToken = await getAccessToken();
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
+        localStorage.setItem('accessToken', accessToken);
       }
       return instance(config);
     }

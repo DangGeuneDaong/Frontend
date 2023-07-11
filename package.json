@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "danggeunedaong",
   "main": "./src/index.tsx",
+  "proxy": "http://13.209.220.63/",
   "scripts": {
     "start": "NODE_ENV=development webpack serve",
     "build": "NODE_ENV=production webpack",

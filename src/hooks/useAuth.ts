@@ -120,16 +120,16 @@ export function useAuth<T extends { [key: string]: any }>() {
   const handleLogout = async () => {
     try {
       const response = await logoutRequest();
-      if (response.status !== 200) throw new Error('서버가 작동하지 않습니다.');
+      if (!response || response.status !== 200)
+        throw new Error('서버가 작동하지 않습니다.');
 
       //로컬에서 accessToken 삭제
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('userId');
+      ['accessToken', 'userId'].forEach((key) => localStorage.removeItem(key));
 
       //상태 삭제
       setUserInfo(null);
     } catch (error: any) {
-      console.error(error);
+      console.error('로그아웃 중 에러 발생 :', error.message || error);
     }
   };
 

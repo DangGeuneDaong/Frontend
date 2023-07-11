@@ -59,7 +59,10 @@ function Header() {
             title="로그아웃"
             message="로그아웃 하시겠습니까?"
             onCancel={() => setShowModal(false)}
-            onConfirm={() => handleLogout()}
+            onConfirm={() => {
+              handleLogout();
+              setShowModal(false);
+            }}
           />
         )}
         <S.HeaderRightMenu>

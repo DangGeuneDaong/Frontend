@@ -9,7 +9,10 @@ import AlertModal from '../../../components/Modal/Alert';
 function RedirectKakaoPage() {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  console.log('step1');
   useEffect(() => {
+    console.log('step2');
     const params = new URL(window.location.href).searchParams;
     const code = params.get('code');
     const grantType = 'authorization_code';
@@ -34,7 +37,8 @@ function RedirectKakaoPage() {
         )
       )
       .then((res) => {
-        const accessToken = res.data;
+        console.log('로그인에러', res);
+        const accessToken = res.data.accessToken;
         if (!accessToken) {
           setAlertMessage('로그인에 실패하였습니다.');
         }
@@ -57,6 +61,7 @@ function RedirectKakaoPage() {
         console.error(error);
       });
   }, []);
+  console.log('step3');
   return (
     <S.Container>
       <Loader />
