@@ -13,7 +13,6 @@ export const fetchPost = async (postId: string) => {
     console.log('개별글 조회 시작');
 
     const post = await instance.get(`/good/offer/info?goodId=${postId}`);
-
     return post.data;
   } catch (error: any) {
     console.log('에러 발생', error);
@@ -82,12 +81,18 @@ export const addPost = async (data: any) => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            ((progressEvent?.loaded ?? 0) * 100) / (progressEvent?.total ?? 1)
+          );
+          console.log(`Upload progress: ${percentCompleted}%`);
+        },
       }
     );
 
     return response;
   } catch (error: any) {
-    console.log('에러 발생', error);
+    throw new Error(error);
   }
 };
 
@@ -131,7 +136,7 @@ export const editPost = async (data: any) => {
 
     return response;
   } catch (error: any) {
-    console.log('에러 발생', error);
+    throw new Error(error);
   }
 };
 
