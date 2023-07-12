@@ -52,14 +52,7 @@ export const addPost = async (data: any) => {
   const formData = new FormData();
 
   try {
-    const requestObject = {
-      userId: data.userId,
-      mainCategory: data.mainCategory,
-      subCategory: data.subCategory,
-      title: data.title,
-      description: data.description,
-      status: data.status,
-    };
+    const { files, ...requestObject } = data;
 
     const requestBlob = new Blob([JSON.stringify(requestObject)], {
       type: 'application/json',
@@ -67,10 +60,10 @@ export const addPost = async (data: any) => {
 
     formData.append('request', requestBlob);
 
-    if (data.files.length == 0) {
+    if (files.length == 0) {
       formData.append('files', '');
     } else {
-      data.files.forEach((file: any) => {
+      files.forEach((file: any) => {
         if (file.type === 'image/webp') {
           const convertedFile = new File([file], file.name, {
             type: 'image/webp',
@@ -103,14 +96,7 @@ export const editPost = async (data: any) => {
   const formData = new FormData();
 
   try {
-    const requestObject = {
-      goodId: data.goodId,
-      mainCategory: data.mainCategory,
-      subCategory: data.subCategory,
-      title: data.title,
-      description: data.description,
-      status: data.status,
-    };
+    const { files, ...requestObject } = data;
 
     const requestBlob = new Blob([JSON.stringify(requestObject)], {
       type: 'application/json',
@@ -118,10 +104,10 @@ export const editPost = async (data: any) => {
 
     formData.append('request', requestBlob);
 
-    if (data.files.length == 0) {
+    if (files.length == 0) {
       formData.append('files', '');
     } else {
-      data.files.forEach((file: any) => {
+      files.forEach((file: any) => {
         if (file.type === 'image/webp') {
           const convertedFile = new File([file], file.name, {
             type: 'image/webp',
