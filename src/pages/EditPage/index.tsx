@@ -1,9 +1,10 @@
-import S3 from 'aws-sdk/clients/s3';
-
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+
+import { useRecoilState } from 'recoil';
+import { userState } from '../../states/userInfo';
 
 import { addPost, editPost, fetchPost, useFetchPost } from '../../apis/good';
 
@@ -18,14 +19,6 @@ import MultiUploader from '../../components/FileUploader/MultiUploader';
 import AlertModal from '../../components/Modal/Alert';
 import ConfirmModal from '../../components/Modal/Confirm';
 import Loader from '../../components/Loader';
-import { useRecoilState } from 'recoil';
-import { userState } from '../../states/userInfo';
-
-const s3 = new S3({
-  accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
-  secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_ACCESS_KEY}`,
-  region: `${process.env.REACT_APP_AWS_REGION}`,
-});
 
 const categoryType = [
   { key: 'DOG', value: '강아지' },
@@ -49,23 +42,36 @@ const getProductValueByKey = (key: string) => {
   return product ? product.value : undefined;
 };
 
+// type 0 : category, 1 : product
+const getKeyByValue = (value: string, type: string) => {
+  if (type === 'category') {
+    const category = categoryType.find((item) => item.value === value);
+    return category && category.key;
+  } else {
+    const product = productType.find((item) => item.value === value);
+    return product && product.key;
+  }
+};
+
 function EditPage() {
   const navigate = useNavigate();
-  const param = useParams();
+  const { id } = useParams();
 
-  const postID = param.id as string;
-  const { post } = useFetchPost(postID);
+  // const postID = param.id as string;
+  const { post } = useFetchPost(id as string);
 
   const [isPostLoading, setIsPostLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [userInfo, _setUserInfo] = useRecoilState<any>(userState);
-
-  console.log(post);
+  // const [userInfo, _setUserInfo] = useRecoilState<any>(userState);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [storedImageList, setStoredImageList] = useState<string[]>([
+    // 'https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample',
+    // 'https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample2',
+  ]);
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState({
@@ -101,53 +107,27 @@ function EditPage() {
   //   console.log('선택된 파일', selectedFiles);
   // }, [selectedFiles]);
 
-  // 수정 페이지 진입 시점에서, post 데이터가 존재하면 폼에 데이터 정보 삽입
+  // useEffect(
+  //   () => console.log('선택된 카테고리', selectedCategory, selectedProduct),
+  //   [selectedCategory, selectedProduct]
+  // );
 
+  // 수정 페이지 진입 시점에서, post 데이터가 존재하면 폼에 데이터 정보 삽입
   useEffect(() => {
     if (post) {
       console.log('post', post);
 
-      const getImageFromS3 = async (url: string) => {
-        const bucket = `${process.env.REACT_APP_AWS_BUCKET}/good`;
-        const key = url.substring(url.lastIndexOf('/') + 1);
-
-        try {
-          const response = await s3
-            .getObject({ Bucket: bucket, Key: key })
-            .promise();
-
-          if (response.Body === undefined) {
-            throw new Error('이미지 데이터가 없습니다.');
-          }
-
-          const blob = new Blob([response.Body as BlobPart], {
-            type: response.ContentType,
-          });
-
-          return blob;
-        } catch (error) {
-          console.error('S3에서 데이터를 불러오는 데 실패했습니다.', error);
-          throw error;
-        }
-      };
-
-      const createFileObjects = async (imageUrls: string[]) => {
-        try {
-          const imageFilesPromises = imageUrls.map(async (url: string) => {
-            const response = await getImageFromS3(url);
-            const filename = url.split('/').pop();
-            const metadata = { type: response.type };
-
-            console.log('response', response);
-            return new File([response], filename!, metadata);
-          });
-
-          const imageFiles = await Promise.all(imageFilesPromises);
-          setSelectedFiles(imageFiles);
-        } catch (error) {
-          console.error('파일 객체 생성에 실패했습니다:', error);
-        }
-      };
+      // if (
+      //   !isLoading &&
+      //   localStorage.getItem('userInfo') !== post.offerNickName
+      // ) {
+      //   setConfirmMessage({
+      //     title: '잘못된 접근입니다.',
+      //     message:
+      //       '요청하신 페이지에 접근할 수 없습니다. 메인 페이지로 이동합니다.',
+      //   });
+      //   setShowConfirm(true);
+      // }
 
       const categoryValue = getCategoryValueByKey(post.mainCategory);
       const productValue = getProductValueByKey(post.subCategory);
@@ -159,17 +139,11 @@ function EditPage() {
       setValue('description', post.description);
 
       if (post.goodImageList) {
-        createFileObjects(post.goodImageList);
+        setStoredImageList(post.goodImageList);
       }
     }
     setIsLoading(false);
   }, [post, setValue]);
-
-  if (!isLoading && post && userInfo) {
-    if (post.offerNickName !== userInfo.nickName) {
-      navigate('/');
-    }
-  }
 
   // 엔터 입력 시 포커스가 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -214,26 +188,19 @@ function EditPage() {
 
   const onSubmit = async (data: any) => {
     try {
-      // TODO : REFACOTRING
       setIsPostLoading(true);
 
-      const mainCategory = categoryType.find(
-        (item) => item.value === selectedCategory
-      );
-      const mainCategoryKey = mainCategory ? mainCategory.key : undefined;
-
-      const subCategory = productType.find(
-        (item) => item.value === selectedProduct
-      );
-      const subCategoryKey = subCategory ? subCategory.key : undefined;
+      const mainCategory = getKeyByValue(selectedCategory, 'category');
+      const subCategory = getKeyByValue(selectedProduct, 'product');
 
       const postData = {
-        goodId: param,
-        mainCategory: mainCategoryKey,
-        subCategory: subCategoryKey,
+        goodId: id,
+        mainCategory: mainCategory,
+        subCategory: subCategory,
         title: data.title,
         description: data.description,
         status: 'SHARING',
+        goodImageList: storedImageList,
         files: selectedFiles,
       };
 
@@ -260,7 +227,10 @@ function EditPage() {
             {/* 이미지 등록 컨테이너 */}
             <div style={{ marginBottom: '20px' }}>
               <MultiUploader
-                storedImageList={selectedFiles}
+                storedImageList={storedImageList}
+                handleStoredImageList={(imageList) => {
+                  setStoredImageList(imageList);
+                }}
                 onAlertMessage={(message) => onAlertMessage(message)}
                 onSelectItem={(files) => setSelectedFiles(files)}
               />
@@ -348,7 +318,11 @@ function EditPage() {
           title={alertMessage.title}
           message={alertMessage.message}
           alignType="top"
-          onConfirm={() => navigate('/')}
+          onConfirm={() => {
+            alertMessage.title === '이미지 등록 개수 초과'
+              ? setShowAlert(false)
+              : navigate('/');
+          }}
         />
       )}
 
