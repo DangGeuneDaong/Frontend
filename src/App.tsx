@@ -29,7 +29,11 @@ import EditProfilePage from './pages/EditProfilePage';
 
 export default function App() {
   const userId = localStorage.getItem('userId');
-  //userFetchInfo(userId as string);
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken) {
+    userFetchInfo(userId as string);
+  }
 
   return (
     <Routes>
