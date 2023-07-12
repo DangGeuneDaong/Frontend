@@ -68,7 +68,7 @@ export const addPost = async (data: any) => {
     formData.append('request', requestBlob);
 
     if (data.files.length == 0) {
-      formData.append('files', '[]');
+      formData.append('files', '');
     } else {
       data.files.forEach((file: any) => {
         if (file.type === 'image/webp') {
@@ -119,7 +119,7 @@ export const editPost = async (data: any) => {
     formData.append('request', requestBlob);
 
     if (data.files.length == 0) {
-      formData.append('files', '[]');
+      formData.append('files', '');
     } else {
       data.files.forEach((file: any) => {
         if (file.type === 'image/webp') {
@@ -158,9 +158,14 @@ interface GetPostModel {
 export const getPosts = async (requestURL: string) => {
   try {
     const response = await instance.get(`http://13.209.220.63${requestURL}`);
+
     if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
+
     const responseData: GetPostModel = response.data;
-    return requestURL.includes('page') ? responseData.content : responseData.responseLists;
+
+    return requestURL.includes('page')
+      ? responseData.content
+      : responseData.responseLists;
   } catch (error) {
     console.log('getPosts error : ', error);
   }
