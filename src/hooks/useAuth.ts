@@ -128,6 +128,7 @@ export function useAuth<T extends { [key: string]: any }>() {
 
       //상태 삭제
       setUserInfo(null);
+      navigate('/');
     } catch (error: any) {
       console.error(error);
     }
