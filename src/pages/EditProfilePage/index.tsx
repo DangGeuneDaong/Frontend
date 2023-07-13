@@ -21,7 +21,7 @@ export interface EditProfilePageProps {
 function EditProfilePage() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useRecoilState(userState);
-  const [thumbnail, setThumbnail] = useState<string>('');
+  const [thumbnail, setThumbnail] = useState<string>(userInfo.profileUrl);
   const [profileFile, setProfileFile] = useState<File | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const { handleInfoSubmit, isLoading, error, alertMessage, showModal } =
@@ -82,13 +82,13 @@ function EditProfilePage() {
               handleProfileSubmit(data, profileFile)
             )}
           >
-            {userInfo.profileUrl ? (
+            {profileFile ? (
+              <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
+            ) : (
               <S.ProfileImg
                 src={userInfo.profileUrl}
                 alt="유저 프로필 이미지"
               />
-            ) : (
-              <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
             )}
             {thumbnail !== userInfo.profileUrl ? (
               <S.CancelButton onClick={resetImg}>
