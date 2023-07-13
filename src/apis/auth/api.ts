@@ -95,7 +95,7 @@ export function addInfoRequest(data: AddInfoProps, file: File | null) {
   formData.append('request', requestBlob);
 
   if (file) {
-    formData.append('files', file);
+    formData.append('file', file);
   }
 
   const response = instance.put('/user/change', formData, {
