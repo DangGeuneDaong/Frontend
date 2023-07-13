@@ -56,6 +56,7 @@ function AddInfoPage() {
       getSocialUserProfile(accessToken)
         .then((socialUserData) => {
           setInitialProfile(socialUserData.profileUrl);
+          setThumbnail(socialUserData.profileUrl);
         })
         .catch((error) => console.error('콘솔에러', error));
     }
@@ -99,10 +100,10 @@ function AddInfoPage() {
               handleInfoSubmit(data, profileFile)
             )}
           >
-            {initialProfile ? (
-              <S.ProfileImg src={initialProfile} alt="유저 프로필 이미지" />
-            ) : (
+            {thumbnail ? (
               <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
+            ) : (
+              <S.ProfileImg src={initialProfile} alt="유저 프로필 이미지" />
             )}
             {thumbnail !== initialProfile ? (
               <S.CancelButton onClick={resetImg}>
