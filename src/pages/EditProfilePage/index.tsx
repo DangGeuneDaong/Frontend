@@ -67,6 +67,8 @@ function EditProfilePage() {
     const errorMsg = await handleInfoSubmit(data, profileFile);
     if (errorMsg) {
       setError('nickName', { type: 'manual', message: errorMsg });
+    } else {
+      navigate('/');
     }
   };
 
