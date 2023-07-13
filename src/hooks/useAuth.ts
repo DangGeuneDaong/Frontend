@@ -129,19 +129,19 @@ export function useAuth<T extends { [key: string]: any }>() {
       //상태 삭제
       setUserInfo(null);
     } catch (error: any) {
-      console.error('로그아웃 중 에러 발생 :', error.message || error);
+      console.error(error);
     }
   };
 
   //추가 정보 제출
   const handleInfoSubmit = async (
-    data: AddInfoProps,
-    profileFile: File | null
+    data: AddInfoProps
+    // profileFile: File | null
   ): Promise<string | void> => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await addInfoRequest(data, profileFile);
+      const response = await addInfoRequest(data);
       if (response.status === 200) {
         const accessToken = localStorage.getItem('accessToken');
         if (accessToken) {
@@ -160,11 +160,11 @@ export function useAuth<T extends { [key: string]: any }>() {
               message: '닉네임이 중복되었습니다.',
             });
             break;
-          default:
-            setAlertMessage(
-              '정보입력 중 오류가 발생하였습니다. 다시 시도해주세요.'
-            );
-            setShowModal(true);
+          // default:
+          //   setAlertMessage(
+          //     '정보입력 중 오류가 발생하였습니다. 다시 시도해주세요.'
+          //   );
+          //   setShowModal(true);
         }
       } else {
         setAlertMessage('서버에 연결할 수 없습니다. 다시 시도해주세요.');

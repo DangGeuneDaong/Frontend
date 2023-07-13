@@ -21,8 +21,8 @@ export interface EditProfilePageProps {
 function EditProfilePage() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useRecoilState(userState);
-  const [thumbnail, setThumbnail] = useState<string>(userInfo.profileUrl);
-  const [profileFile, setProfileFile] = useState<File | null>(null);
+  // const [thumbnail, setThumbnail] = useState<string>(userInfo.profileUrl);
+  // const [profileFile, setProfileFile] = useState<File | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const { handleInfoSubmit, isLoading, error, alertMessage, showModal } =
     useAuth();
@@ -42,29 +42,26 @@ function EditProfilePage() {
     },
   });
 
-  //프로필 사진 미리보기
-  const onPreviewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      //file => URL
-      setProfileFile(file);
-      const url = URL.createObjectURL(file);
-      setThumbnail(url);
-    }
-  };
-  const resetImg = () => {
-    if (fileInput.current) {
-      fileInput.current.value = '';
-    }
-    setProfileFile(null);
-    setThumbnail(userInfo.profileUrl);
-  };
+  // //프로필 사진 미리보기
+  // const onPreviewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     //file => URL
+  //     setProfileFile(file);
+  //     const url = URL.createObjectURL(file);
+  //     setThumbnail(url);
+  //   }
+  // };
+  // const resetImg = () => {
+  //   if (fileInput.current) {
+  //     fileInput.current.value = '';
+  //   }
+  //   setProfileFile(null);
+  //   setThumbnail(userInfo.profileUrl);
+  // };
 
-  const handleProfileSubmit = async (
-    data: EditProfilePageProps,
-    profileFile: File | null
-  ) => {
-    const errorMsg = await handleInfoSubmit(data, profileFile);
+  const handleProfileSubmit = async (data: EditProfilePageProps) => {
+    const errorMsg = await handleInfoSubmit(data);
     if (errorMsg) {
       setError('nickName', { type: 'manual', message: errorMsg });
     } else {
@@ -77,20 +74,23 @@ function EditProfilePage() {
       <S.Container>
         <S.SubContainer>
           <S.H1>프로필 수정</S.H1>
-          <S.Form
-            onSubmit={handleSubmit((data) =>
-              handleProfileSubmit(data, profileFile)
-            )}
-          >
-            {profileFile ? (
-              <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
-            ) : (
+          <S.Form onSubmit={handleSubmit((data) => handleProfileSubmit(data))}>
+            {userInfo.profileUrl ? (
+              //   <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
+              // ) : (
               <S.ProfileImg
                 src={userInfo.profileUrl}
                 alt="유저 프로필 이미지"
               />
+            ) : (
+              <S.ProfileImg
+                src={
+                  'https://www.thechooeok.com/common/img/default_profile.png'
+                }
+                alt="유저 프로필 이미지"
+              />
             )}
-            {thumbnail !== userInfo.profileUrl ? (
+            {/* {thumbnail !== userInfo.profileUrl ? (
               <S.CancelButton onClick={resetImg}>
                 프로필 이미지 변경 취소
               </S.CancelButton>
@@ -103,7 +103,7 @@ function EditProfilePage() {
               ref={fileInput}
               type="file"
               onChange={(e) => onPreviewImg(e)}
-            />
+            /> */}
             <Input
               label="닉네임"
               placeholder={userInfo.nickName}
