@@ -71,6 +71,7 @@
 // 230702 (4)
 import * as S from './styles';
 
+import dayjs from 'dayjs';
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import SockJS from 'sockjs-client';
@@ -85,68 +86,106 @@ import Input from '../Form/Input';
 import Button from '../Button';
 
 interface OfferPageProps {
-  roomId: number;
-  userId: string;
+  roomId?: number;
+  takerId: string;
+  offerId: string;
 }
 
-function Chat({ roomId, userId }: OfferPageProps) {
-  // 1. client 객체 만들기
+function Chat({ roomId, takerId, offerId }: OfferPageProps) {
+  let now = dayjs();
+
+  // 1. http에서 ws로 protocol switch
   const client = new StompJs.Client({
     // brokerURL: `ws://3.36.236.207/ws`,
     // const SERVER_URL = 'ws://13.209.220.63';
     brokerURL: `ws://13.209.220.63/websocket`,
-    connectHeaders: {
-      login: 'user',
-      passcode: 'password',
-    },
     debug: function (str) {
       console.log(str);
     },
     reconnectDelay: 5000, //자동 재연결
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
+    // 2. 채팅창 연결하기
+    onConnect: function () {
+      subscribe();
+    },
+    // 에러 처리하기
+    onStompError: function (frame) {
+      console.log('Broker reported error: ' + frame.headers['message']);
+      console.log('Additional details: ' + frame.body);
+    },
   });
-
-  // 2. 연결하기
-  client.onConnect = function (frame) {};
-  // 에러처리하기
-  client.onStompError = function (frame) {
-    console.log('Broker reported error: ' + frame.headers['message']);
-    console.log('Additional details: ' + frame.body);
-  };
   client.activate();
-  // 3. 메시지 보내기
-  function send(e: any) {
+
+  // 3. 메시지 받기
+  // const [chatMessageList, setChatMessageList] = useState([]);
+  // const [chatMessage, setChatMessage] = useState('');
+  const subscribe = () => {
+    console.log('check1');
+    client.subscribe(`/sub/${roomId}`, function (frame: any) {
+      console.log('callback function position!!!!!');
+      const messages = document.querySelector('#messages') as HTMLUListElement;
+      // 보낸 사람
+      const userId = document.createElement('li');
+      userId.innerText =
+        localStorage.getItem('userId') === takerId ? takerId : offerId;
+      messages.appendChild(userId);
+      // 보낸 시각
+      const sendAt = document.createElement('li');
+      sendAt.innerText = String(now.format('YYYY.MM.DD HH:mm:ss'));
+      messages.appendChild(sendAt);
+      // 보낸 내용
+      const message = document.createElement('li');
+      message.innerText = frame.body;
+      messages.appendChild(message);
+    });
+  };
+
+  // 4. 메시지 보내기 (성공)
+  const publish = (e: any) => {
+    if (!client.connected) return;
+
     e.preventDefault();
     const message = document.querySelector('.message') as HTMLInputElement;
     // console.log('stompClient on Send: ', stompClient);
     // stompClient.send(`/pub/message/29`, console.log('send Message'));
-
+    const userId = localStorage.getItem('userId');
     client.publish({
-      destination: '/websocket/pub/message/29',
-      body: message.value,
-      headers: { priority: '9' },
+      destination: `/pub/message/${roomId}`,
+      body: JSON.stringify({
+        userId: userId === takerId ? takerId : offerId,
+        message: message.value,
+        messageType: 'CHAT',
+      }),
     });
 
-    message.value = '';
-    console.log('message on send!! Finished');
-  }
-  // 4. 메시지 받기
-  // const subscription =
-  client.subscribe('/websocket/sub/29', function () {
-    console.log('callback function position!!!!!');
-  });
+    message.value = ''; // input창 초기화
+  };
+
+  const clickButton = (e: any) => {
+    publish(e);
+  };
+  const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key == 'Enter') {
+      publish(e);
+    }
+  };
+  // useEffect(() => {
+  //   if (chatMessage) {
+  //     // setChatMessageList([...chatMessageList, chatMessage]);
+  //   }
+  // }, [chatMessage]);
 
   return (
     <>
+      <div className="messages">
+        <ul id="messages"></ul>
+      </div>
       <div>
-        <input type="text" className="message" />
-        <button onClick={send} className="send-btn">
+        <input type="text" className="message" onKeyDown={pressEnter} />
+        <button onClick={clickButton} className="send-btn">
           보내기
         </button>
-      </div>
-      <div className="messages">
-        <div id="messages"></div>
       </div>
     </>
   );

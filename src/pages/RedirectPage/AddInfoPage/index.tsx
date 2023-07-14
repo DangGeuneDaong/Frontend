@@ -56,6 +56,7 @@ function AddInfoPage() {
       getSocialUserProfile(accessToken)
         .then((socialUserData) => {
           setInitialProfile(socialUserData.profileUrl);
+          setThumbnail(socialUserData.profileUrl);
         })
         .catch((error) => console.error('콘솔에러', error));
     }
@@ -94,17 +95,13 @@ function AddInfoPage() {
       <S.Container>
         <S.SubContainer>
           <S.H1>추가 정보 입력</S.H1>
-          <S.Form
-            onSubmit={handleSubmit((data) =>
-              handleInfoSubmit(data, profileFile)
-            )}
-          >
-            {initialProfile ? (
-              <S.ProfileImg src={initialProfile} alt="유저 프로필 이미지" />
-            ) : (
+          <S.Form onSubmit={handleSubmit((data) => handleInfoSubmit(data))}>
+            {thumbnail ? (
               <S.ProfileImg src={thumbnail} alt="유저 프로필 이미지" />
+            ) : (
+              <S.ProfileImg src={initialProfile} alt="유저 프로필 이미지" />
             )}
-            {thumbnail !== initialProfile ? (
+            {/* {thumbnail !== initialProfile ? (
               <S.CancelButton onClick={resetImg}>
                 프로필 이미지 변경 취소
               </S.CancelButton>
@@ -112,14 +109,14 @@ function AddInfoPage() {
               <S.AddSpan onClick={() => fileInput.current?.click()}>
                 프로필 이미지 변경
               </S.AddSpan>
-            )}
+            )} */}
 
-            <S.ImgInput
+            {/* <S.ImgInput
               ref={fileInput}
               type="file"
               accept="image/*"
               onChange={(e) => onPreviewImg(e)}
-            />
+            /> */}
             <S.NicknameContainer>
               <Controller
                 control={control}

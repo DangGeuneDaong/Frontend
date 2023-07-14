@@ -80,7 +80,7 @@ export function socialUserProfileRequest(accessToken: string) {
 }
 
 //유저 정보 입력
-export function addInfoRequest(data: AddInfoProps, file: File | null) {
+export function addInfoRequest(data: AddInfoProps) {
   const formData = new FormData();
 
   const requestObject = {
@@ -93,10 +93,6 @@ export function addInfoRequest(data: AddInfoProps, file: File | null) {
   });
 
   formData.append('request', requestBlob);
-
-  if (file) {
-    formData.append('files', file);
-  }
 
   const response = instance.put('/user/change', formData, {
     headers: {

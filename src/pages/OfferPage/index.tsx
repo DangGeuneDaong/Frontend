@@ -13,12 +13,14 @@ import Button from '../../components/Button';
 import Confirm from '../../components/Modal/Confirm';
 import Chat from '../../components/Chat/Chat';
 import { instance } from '../../apis/auth/api';
+import TakerPage from '../TakerPage';
 
 interface DataProps {
   sharingId: number;
   takerId: string;
   distance: number;
   roomId: number;
+  offerId: string;
 }
 
 interface PostsProps {
@@ -36,13 +38,17 @@ interface PostsProps {
   modifiedAt: string;
 }
 
-function OfferPage() {
+interface TakerPageProps {
+  getOfferPageDataProps?: Function;
+}
+
+function OfferPage({ getOfferPageDataProps }: TakerPageProps) {
   const param = useParams();
   // const param = 20;
   const postID = param.id as string;
 
   const [showPosts, setShowPosts] = useState<PostsProps>(); // 1개를 받아오기 때문에 배열 사용 X
-  const [showTakerlists, setShowTakerlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
+  const [showTakerLists, setShowTakerLists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
   const [showRoomlists, setShowRoomlists] = useState([]); // 여러 개를 받아오기 때문에 배열 사용 O
   const [showRoomId, setShowRoomId] = useState(); // 여러 개를 받아오기 때문에 배열 사용 O
   const [selectedButtonId, setSelectedButtonId] = useState<number | null>(null); // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
@@ -67,7 +73,7 @@ function OfferPage() {
         `/sharing/application?goodId=${postID}`
       );
       // console.log('result_takerlists: ', result_takerlists);
-      setShowTakerlists(result_takerlists.data);
+      setShowTakerLists(result_takerlists.data);
     } catch (e) {
       console.log(e);
     }
@@ -97,7 +103,7 @@ function OfferPage() {
     const enterChatData = await instance.get(
       `/chat/enter?roomId=${createChatData2.id}&takerId=${createChatData2.takerId}&offerId=${createChatData2.offerId}`
     );
-    console.log('enterChatData result: ', enterChatData.data);
+    console.log('enterChatData result: ', enterChatData);
     // return enterChatData.data.roomId;
   };
 
@@ -110,6 +116,7 @@ function OfferPage() {
     takerId: '',
     distance: -1,
     roomId: -1,
+    offerId: '',
   });
 
   const showChange = async (
@@ -134,15 +141,16 @@ function OfferPage() {
     }
 
     const result = await postChatData(sharingId, userId, offerId);
-    console.log('createChatData?????????????????: ', result);
-    const roomId = await getChatData(result);
+    console.log('createChatData: ', result);
+    await getChatData(result);
     // console.log('roomId2: ', roomId);
     // map으로 보낸 데이터 저장
     const data = {
       sharingId: sharingId,
       takerId: userId,
       distance: 거리,
-      roomId: roomId as unknown as number,
+      roomId: result.id,
+      offerId: offerId!,
     };
     // data 내 저장한 값을 외부에서 사용
     setSelectedUserData(data);
@@ -226,7 +234,7 @@ function OfferPage() {
             )}
           </S.EditContainer>
           <S.ListTitleContainer>Taker 목록</S.ListTitleContainer>
-          {showTakerlists
+          {showTakerLists
             .slice(offset, offset + LIMIT)
             .map(({ sharingId, userId, distance, content }) => (
               <>
@@ -245,7 +253,7 @@ function OfferPage() {
             ))}
 
           <Pagination
-            total={showTakerlists.length}
+            total={showTakerLists.length}
             limit={LIMIT}
             page={page}
             setPage={setPage}
@@ -263,10 +271,11 @@ function OfferPage() {
             roomId={selectedUserData.roomId}
             sharingId={selectedUserData.sharingId}
           >
-            {/* <Chat
+            <Chat
               roomId={selectedUserData.roomId}
-              userId={selectedUserData.userId}
-            /> */}
+              takerId={selectedUserData.takerId}
+              offerId={selectedUserData.offerId}
+            />
           </ChatRoomArea>
         )}
       </S.Container>
