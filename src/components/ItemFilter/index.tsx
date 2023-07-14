@@ -54,7 +54,7 @@ const ItemFilter = ({ condition, onClose, onSelectFilter, setPage } : ItemFilter
           </S.PetTypeLabel>
           <S.PetType type='radio' id='cat' name='petType' value='CAT' checked={petType === 'CAT'} onChange={(e) => setPetType(e.target.value)}/>
           <S.PetTypeLabel htmlFor='cat'>
-            <S.TypeImg src={catImg} alt='강아지'/>고양이
+            <S.TypeImg src={catImg} alt='고양이'/>고양이
           </S.PetTypeLabel>
         </S.PetTypeFilter>
         <S.FilterHeader>나눔 상태 🧑🏻‍🌾👩🏻‍🌾</S.FilterHeader>
