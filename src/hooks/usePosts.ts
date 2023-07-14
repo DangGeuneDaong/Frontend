@@ -6,10 +6,6 @@ export type keyValueType = {
 };
 
 export const usePosts = (queryParameters: keyValueType) => {
-  // console.log(!queryParameters['swLatitude'] && !queryParameters['swLongitude'] && !queryParameters['neLatitude'] && !queryParameters['neLongitude']);
-  // if (!queryParameters['swLatitude'] && !queryParameters['swLongitude'] && !queryParameters['neLatitude'] && !queryParameters['neLongitude'])
-  //   return {isLoading: true};
-
   let requestURL = Object.keys(queryParameters).includes('page') ? '/good/taker/search/title?' : '/good/taker/search/coordinate?';
   for (const parameterKey in queryParameters) {
     if (
