@@ -179,7 +179,7 @@
 
 | 상세 페이지(신청자) | 상세 페이지(작성자) |
 | :-----------------: | :-----------------: |
-|                     |                     |
+|                     | ![ezgif com-crop](https://github.com/DangGeuneDaong/Frontend/assets/71238020/08f740cb-69e5-42dc-942b-9ce2e46a51eb) |
 
 <br/>
 
