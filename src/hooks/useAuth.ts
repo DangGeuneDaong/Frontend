@@ -152,6 +152,7 @@ export function useAuth<T extends { [key: string]: any }>() {
           }
         }
       }
+      navigate('/');
     } catch (error: any) {
       if (error.response && error.response.data.message) {
         switch (error.response.data.message) {
