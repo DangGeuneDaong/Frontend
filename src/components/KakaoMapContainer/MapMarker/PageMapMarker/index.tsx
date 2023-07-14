@@ -56,7 +56,7 @@ const PageMapMarker = ({ item, map }: PageMapMarkerProps) => {
     $markerContainer &&
     createPortal(
       <S.Container onClick={moveDetailPage}>
-        {item.mainCategory === 'dog' ? (
+        {item.mainCategory === 'DOG' ? (
           <S.MarkerImage src={dogMarkerImg} alt="강아지" />
         ) : (
           <S.MarkerImage src={catMarkerImg} alt="고양이" />

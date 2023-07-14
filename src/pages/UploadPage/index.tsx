@@ -37,6 +37,17 @@ const productType = [
   { key: 'SUPPLY', value: '용품' },
 ];
 
+// type 0 : category, 1 : product
+const getKeyByValue = (value: string, type: string) => {
+  if (type === 'category') {
+    const category = categoryType.find((item) => item.value === value);
+    return category && category.key;
+  } else {
+    const product = productType.find((item) => item.value === value);
+    return product && product.key;
+  }
+};
+
 function UploadPage() {
   const navigate = useNavigate();
 
@@ -82,11 +93,6 @@ function UploadPage() {
   //   console.log('선택된 파일', selectedFiles);
   // }, [selectedFiles]);
 
-  // useEffect(() => {
-  //   setValue('title', '제목');
-  //   setValue('description', '내용');
-  // }, []);
-
   // 엔터 입력 시 포커스가 다른 폼으로 넘어가지 않도록 방지
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
@@ -130,23 +136,15 @@ function UploadPage() {
 
   const onSubmit = async (data: any) => {
     try {
-      // TODO : REFACOTRING
       setIsLoading(true);
-      const mainCategory = categoryType.find(
-        (item) => item.value === selectedCategory
-      );
-      const mainCategoryKey = mainCategory ? mainCategory.key : undefined;
 
-      const subCategory = productType.find(
-        (item) => item.value === selectedProduct
-      );
-      const subCategoryKey = subCategory ? subCategory.key : undefined;
+      const mainCategory = getKeyByValue(selectedCategory, 'category');
+      const subCategory = getKeyByValue(selectedProduct, 'product');
 
-      const id = localStorage.getItem('userId');
       const postData = {
         userId: userInfo.userId,
-        mainCategory: mainCategoryKey,
-        subCategory: subCategoryKey,
+        mainCategory: mainCategory,
+        subCategory: subCategory,
         title: data.title,
         description: data.description,
         status: 'SHARING',

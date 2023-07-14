@@ -45,15 +45,6 @@ function CommentArea({ changeButton, setChangeButton }: CommentAreaProps) {
     watch, // 실시간 값 감시 가능
   } = useForm();
 
-  // 디버깅용 코드
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) =>
-  //     console.log(value, name, type)
-  //   );
-
-  //   return () => subscription.unsubscribe();
-  // }, [watch]);
-
   // const SERVER_URL = 'http://localhost:5000';
   const postData = async (content: any) => {
     // 서버에 content 데이터 post하기
@@ -100,20 +91,7 @@ function CommentArea({ changeButton, setChangeButton }: CommentAreaProps) {
 
   useEffect(() => {
     const checkChatStatus = async () => {
-      // const { data } = await instance.get(`/chat/enter`);
-      // console.log(`chatData1: `, data);
-      const data = {
-        roomId: 1,
-        takerId: 'test1234',
-        offerId: 'tester12',
-        sharingApplication: {
-          id: 1,
-          distance: 10007.541864499188,
-          requestedAt: '2023-07-05T15:58:46.995256',
-          content: '안녕하세요!',
-        },
-        isOpened: true,
-      };
+      const { data } = await instance.get(`/chat/enter`);
       setCheckChatStatus(data.isOpened);
       setCheckRoomId(data.roomId);
     };

@@ -48,20 +48,24 @@ const MainPage = () => {
               setPage={setCurrentPage}
             />
           </S.ItemFilter>
-          <ItemList
-            currentPageItems={currentPageItemList}
-            setCurrentPageItems={setCurrentPageItemList}
-            category={category}
-            condition={filterCondition}
-            keyword={keyword}
-            currentPage={currentPage}
-            mapBoundsInfo={mapBounds}
-          />
-          <ItemListPagination
-            totalPage={totalPage}
-            currentPage={currentPage}
-            onMovePage={setCurrentPage}
-          />
+          {mapBounds && (
+            <>
+              <ItemList
+                currentPageItems={currentPageItemList}
+                setCurrentPageItems={setCurrentPageItemList}
+                category={category}
+                condition={filterCondition}
+                keyword={keyword}
+                currentPage={currentPage}
+                mapBoundsInfo={mapBounds}
+              />
+              <ItemListPagination
+                totalPage={totalPage}
+                currentPage={currentPage}
+                onMovePage={setCurrentPage}
+              />
+            </>
+          )}
         </S.ItemInfo>
         {isShowFilterModal && (
           <ItemFilter

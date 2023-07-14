@@ -48,7 +48,7 @@ const DefaultMapMarker = ({ item, map }: DefaultMapMarkerProps) => {
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(item.latitude, item.longitude),
       image: new kakao.maps.MarkerImage(
-        item.mainCategory === 'dog' ? dogMarkerImg : catMarkerImg,
+        item.mainCategory === 'DOG' ? dogMarkerImg : catMarkerImg,
         new kakao.maps.Size(18, 18)
       ),
     });
@@ -86,7 +86,7 @@ const DefaultMapMarker = ({ item, map }: DefaultMapMarkerProps) => {
     $markerContainer &&
     createPortal(
       <S.Container onClick={moveDetailPage} isShow={isShow}>
-        {item.mainCategory === 'dog' ? (
+        {item.mainCategory === 'DOG' ? (
           <S.MarkerImage src={dogMarkerImg} alt="강아지" />
         ) : (
           <S.MarkerImage src={catMarkerImg} alt="고양이" />
