@@ -4,18 +4,33 @@ import * as S from './styles';
 import { AiFillCamera, AiOutlineClose } from 'react-icons/ai';
 
 interface MultiUploaderProps {
-  storedImageList?: File[];
+  storedImageList?: string[];
+  handleStoredImageList?: (imageList: string[]) => void;
   onAlertMessage: (message: any) => void;
   onSelectItem: (files: File[]) => void;
 }
 
 function MultiUploader({
   storedImageList,
+  handleStoredImageList,
   onAlertMessage,
   onSelectItem,
 }: MultiUploaderProps) {
   const MAX_REGISTER_IMAGE_COUNT = 7; //최대 이미지 등록 개수
   const [imageList, setImageList] = useState<File[]>([]); //이미지 리스트
+
+  const storedLength = storedImageList ? storedImageList.length : 0;
+  const totalImageCount =
+    storedLength !== undefined
+      ? storedLength + imageList.length
+      : imageList.length;
+
+  // 디버깅용 코드
+  useEffect(() => {
+    if (storedImageList) {
+      console.log('storedImageList', storedImageList);
+    }
+  }, [storedImageList]);
 
   // 상위 컴포넌트(이미지와 폼 데이터를 함께 보내는 컴포넌트)에 이미지 리스트를 전달
   useEffect(() => {
@@ -23,13 +38,6 @@ function MultiUploader({
   }, [imageList]);
 
   // 수정 페이지에서는 기존에 등록된 이미지를 보여줘야 하기 때문에 props가 존재하면, 이미지 리스트에 추가
-  useEffect(() => {
-    if (storedImageList) {
-      setImageList(storedImageList);
-      onSelectItem(storedImageList);
-    }
-  }, [storedImageList, onSelectItem]);
-
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const files = event.target.files;
@@ -37,7 +45,7 @@ function MultiUploader({
     if (!files) return;
 
     // MAX_RESISTER_IMAGE_COUNT 개수를 초과하면, 이미지 등록 불가
-    if (files.length + imageList.length > MAX_REGISTER_IMAGE_COUNT) {
+    if (files.length + totalImageCount > MAX_REGISTER_IMAGE_COUNT) {
       onAlertMessage({
         title: '이미지 등록 개수 초과',
         message: '최대 이미지 등록 개수를 초과하였습니다.',
@@ -65,7 +73,7 @@ function MultiUploader({
         <AiFillCamera className="cameraIcon" />
         <S.FileUploaderGuideText>이미지 등록</S.FileUploaderGuideText>
         <S.FileCountContainer>
-          {imageList.length}/{MAX_REGISTER_IMAGE_COUNT}
+          {totalImageCount}/{MAX_REGISTER_IMAGE_COUNT}
         </S.FileCountContainer>
 
         {/* 파일 업로드 Input */}
@@ -80,6 +88,28 @@ function MultiUploader({
       </S.FileUploaderWrapper>
 
       {/* 파일 썸네일 컨테이너 */}
+      {storedImageList &&
+        storedImageList.length > 0 &&
+        storedImageList.map((file, index) => (
+          <S.ThumbnailContainer key={index}>
+            {/* 파일 썸네일 */}
+            <img src={file} />
+
+            {/* 파일 삭제 버튼 */}
+            <S.DeleteRegisterImageButton
+              type="button"
+              onClick={() => {
+                handleStoredImageList &&
+                  handleStoredImageList(
+                    storedImageList.filter((image) => image !== file)
+                  );
+              }}
+            >
+              <AiOutlineClose />
+            </S.DeleteRegisterImageButton>
+          </S.ThumbnailContainer>
+        ))}
+
       {imageList.map((file, index) => (
         <S.ThumbnailContainer key={index}>
           {/* 파일 썸네일 */}

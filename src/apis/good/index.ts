@@ -13,7 +13,6 @@ export const fetchPost = async (postId: string) => {
     console.log('개별글 조회 시작');
 
     const post = await instance.get(`/good/offer/info?goodId=${postId}`);
-
     return post.data;
   } catch (error: any) {
     console.log('에러 발생', error);
@@ -52,14 +51,7 @@ export const addPost = async (data: any) => {
   const formData = new FormData();
 
   try {
-    const requestObject = {
-      userId: data.userId,
-      mainCategory: data.mainCategory,
-      subCategory: data.subCategory,
-      title: data.title,
-      description: data.description,
-      status: data.status,
-    };
+    const { files, ...requestObject } = data;
 
     const requestBlob = new Blob([JSON.stringify(requestObject)], {
       type: 'application/json',
@@ -67,10 +59,10 @@ export const addPost = async (data: any) => {
 
     formData.append('request', requestBlob);
 
-    if (data.files.length == 0) {
-      formData.append('files', '[]');
+    if (files.length == 0) {
+      formData.append('files', '');
     } else {
-      data.files.forEach((file: any) => {
+      files.forEach((file: any) => {
         if (file.type === 'image/webp') {
           const convertedFile = new File([file], file.name, {
             type: 'image/webp',
@@ -89,12 +81,18 @@ export const addPost = async (data: any) => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            ((progressEvent?.loaded ?? 0) * 100) / (progressEvent?.total ?? 1)
+          );
+          console.log(`Upload progress: ${percentCompleted}%`);
+        },
       }
     );
 
     return response;
   } catch (error: any) {
-    console.log('에러 발생', error);
+    throw new Error(error);
   }
 };
 
@@ -103,14 +101,7 @@ export const editPost = async (data: any) => {
   const formData = new FormData();
 
   try {
-    const requestObject = {
-      goodId: data.goodId,
-      mainCategory: data.mainCategory,
-      subCategory: data.subCategory,
-      title: data.title,
-      description: data.description,
-      status: data.status,
-    };
+    const { files, ...requestObject } = data;
 
     const requestBlob = new Blob([JSON.stringify(requestObject)], {
       type: 'application/json',
@@ -118,10 +109,10 @@ export const editPost = async (data: any) => {
 
     formData.append('request', requestBlob);
 
-    if (data.files.length == 0) {
-      formData.append('files', '[]');
+    if (files.length == 0) {
+      formData.append('files', '');
     } else {
-      data.files.forEach((file: any) => {
+      files.forEach((file: any) => {
         if (file.type === 'image/webp') {
           const convertedFile = new File([file], file.name, {
             type: 'image/webp',
@@ -145,7 +136,7 @@ export const editPost = async (data: any) => {
 
     return response;
   } catch (error: any) {
-    console.log('에러 발생', error);
+    throw new Error(error);
   }
 };
 
@@ -158,9 +149,14 @@ interface GetPostModel {
 export const getPosts = async (requestURL: string) => {
   try {
     const response = await instance.get(`http://13.209.220.63${requestURL}`);
+
     if (response.data === null) throw new Error('데이터가 존재하지 않습니다.');
+
     const responseData: GetPostModel = response.data;
-    return requestURL.includes('page') ? responseData.content : responseData.responseLists;
+
+    return requestURL.includes('page')
+      ? responseData.content
+      : responseData.responseLists;
   } catch (error) {
     console.log('getPosts error : ', error);
   }
