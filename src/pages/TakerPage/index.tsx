@@ -48,7 +48,7 @@ function TakerPage() {
   const postID = param.id as string;
 
   const [showPosts, setShowPosts] = useState<PostsProps>();
-  const [changeButton, setChangeButton] = useState(true);
+  const [changeButton, setChangeButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState<number | null>(null); // 클릭할 때, 채팅창 보여주거나 가리는 state 기능
   const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
 
