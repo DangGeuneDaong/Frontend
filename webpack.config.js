@@ -16,6 +16,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash:8].js',
+    publicPath: '/',
   },
   devServer: {
     port: 3000,
